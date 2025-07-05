@@ -2,57 +2,135 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Librería Electrónica IA</title>
   <style>
     body {
-      font-family: sans-serif;
+      font-family: Arial, sans-serif;
       margin: 0;
-      padding: 2rem;
-      background: #f2f2f2;
+      padding: 0;
+      background: #f5f5f5;
     }
     header {
+      background: #0a3d62;
+      color: white;
+      padding: 1rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      flex-wrap: wrap;
     }
-    h1 {
-      color: #0070f3;
+    nav a {
+      color: white;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .lang-toggle {
+      background: white;
+      color: #0a3d62;
+      border: none;
+      padding: 5px 10px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .hero {
+      padding: 2rem;
+      text-align: center;
+      background: #dff9fb;
+    }
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
     }
     .libro {
       background: white;
-      border-radius: 8px;
       padding: 1rem;
-      margin: 1rem 0;
-      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .libro img {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+    .footer {
+      background: #0a3d62;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Librería Electrónica IA</h1>
-    <div>
-      <select>
-        <option>Español</option>
-        <option>English</option>
-      </select>
-      <select>
-        <option>COP</option>
-        <option>USD</option>
-      </select>
-    </div>
+    <div><strong>Librería IA</strong></div>
+    <nav>
+      <a href="#">Inicio</a>
+      <a href="#">Catálogo</a>
+      <a href="#">Iniciar sesión</a>
+      <a href="#">Carrito</a>
+    </nav>
+    <button class="lang-toggle" onclick="toggleLang()">EN / ES</button>
   </header>
-  <main>
+
+  <section class="hero">
+    <h1 id="titulo">Bienvenido a tu Librería Electrónica</h1>
+    <p id="descripcion">Explora nuestro catálogo de libros digitales con precios accesibles.</p>
+  </section>
+
+  <section class="catalogo">
     <div class="libro">
-      <h2>Introducción a la Inteligencia Artificial</h2>
-      <p>Precio: $25.000 COP / $6 USD</p>
-      <button>Comprar</button>
+      <img src="https://via.placeholder.com/200x250?text=Libro+1" alt="Libro 1" />
+      <h3>Inteligencia Artificial para Todos</h3>
+      <p>Autor: Ana Torres</p>
+      <p>$19.000 COP</p>
     </div>
     <div class="libro">
-      <h2>Aprendizaje Automático Básico</h2>
-      <p>Precio: $30.000 COP / $8 USD</p>
-      <button>Comprar</button>
+      <img src="https://via.placeholder.com/200x250?text=Libro+2" alt="Libro 2" />
+      <h3>Machine Learning Básico</h3>
+      <p>Autor: Juan Pérez</p>
+      <p>$21.000 COP</p>
     </div>
-  </main>
+    <div class="libro">
+      <img src="https://via.placeholder.com/200x250?text=Libro+3" alt="Libro 3" />
+      <h3>Deep Learning Aplicado</h3>
+      <p>Autor: Laura Gómez</p>
+      <p>$25.000 COP</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    © 2025 Librería Electrónica IA – Todos los derechos reservados.
+  </footer>
+
+  <script>
+    const textoES = {
+      titulo: "Bienvenido a tu Librería Electrónica",
+      descripcion: "Explora nuestro catálogo de libros digitales con precios accesibles.",
+      links: ["Inicio", "Catálogo", "Iniciar sesión", "Carrito"]
+    };
+    const textoEN = {
+      titulo: "Welcome to Your Digital Library",
+      descripcion: "Browse our digital book catalog with affordable prices.",
+      links: ["Home", "Catalog", "Login", "Cart"]
+    };
+    let es = true;
+    function toggleLang() {
+      es = !es;
+      const t = es ? textoES : textoEN;
+      document.getElementById("titulo").textContent = t.titulo;
+      document.getElementById("descripcion").textContent = t.descripcion;
+      const links = document.querySelectorAll("nav a");
+      links.forEach((link, i) => {
+        link.textContent = t.links[i];
+      });
+    }
+  </script>
 </body>
 </html>
