@@ -1,11 +1,58 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <title>Librería Electrónica</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Librería Electrónica IA</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 0;
+      padding: 2rem;
+      background: #f2f2f2;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    h1 {
+      color: #0070f3;
+    }
+    .libro {
+      background: white;
+      border-radius: 8px;
+      padding: 1rem;
+      margin: 1rem 0;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    }
+  </style>
 </head>
 <body>
-  <h1>¡Bienvenido a tu librería electrónica!</h1>
-  <p>Esta es la página inicial creada directamente desde GitHub.</p>
+  <header>
+    <h1>Librería Electrónica IA</h1>
+    <div>
+      <select>
+        <option>Español</option>
+        <option>English</option>
+      </select>
+      <select>
+        <option>COP</option>
+        <option>USD</option>
+      </select>
+    </div>
+  </header>
+  <main>
+    <div class="libro">
+      <h2>Introducción a la Inteligencia Artificial</h2>
+      <p>Precio: $25.000 COP / $6 USD</p>
+      <button>Comprar</button>
+    </div>
+    <div class="libro">
+      <h2>Aprendizaje Automático Básico</h2>
+      <p>Precio: $30.000 COP / $8 USD</p>
+      <button>Comprar</button>
+    </div>
+  </main>
 </body>
 </html>
