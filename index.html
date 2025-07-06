@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -102,7 +103,6 @@
   </style>
 </head>
 <body>
-
   <header>
     <h1>Librería Electrónica IA</h1>
     <p>Tu librería digital inteligente e internacional</p>
@@ -116,65 +116,24 @@
     <a href="#">Contacto</a>
   </nav>
 
-  <!-- 🌍 Selector de país, idioma y moneda -->
   <div class="selector-container">
-    <label>🌍 País:
-      <select id="country" onchange="updateSelections()">
+    <label for="language">🌐 Idioma:
+      <select id="language" onchange="setLanguage()">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+
+    <label for="country">🌎 País:
+      <select id="country" onchange="setCountry()">
         <option value="CO">Colombia</option>
         <option value="US">Estados Unidos</option>
         <option value="MX">México</option>
         <option value="ES">España</option>
-        <option value="AR">Argentina</option>
-        <option value="BR">Brasil</option>
-        <option value="FR">Francia</option>
-        <option value="DE">Alemania</option>
-        <option value="IT">Italia</option>
-        <option value="JP">Japón</option>
-        <option value="KR">Corea del Sur</option>
-        <option value="CN">China</option>
-        <option value="IN">India</option>
-        <option value="CA">Canadá</option>
-        <option value="GB">Reino Unido</option>
-        <option value="AU">Australia</option>
-      </select>
-    </label>
-
-    <label>🗣️ Idioma:
-      <select id="language" onchange="updateLanguage()">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="pt">Português</option>
-        <option value="fr">Français</option>
-        <option value="de">Deutsch</option>
-        <option value="it">Italiano</option>
-        <option value="zh">中文</option>
-        <option value="ja">日本語</option>
-        <option value="ko">한국어</option>
-        <option value="hi">हिन्दी</option>
-        <option value="ar">العربية</option>
-      </select>
-    </label>
-
-    <label>💰 Moneda:
-      <select id="currency" onchange="updateCurrency()">
-        <option value="COP">COP $</option>
-        <option value="USD">USD $</option>
-        <option value="MXN">MXN $</option>
-        <option value="EUR">EUR €</option>
-        <option value="BRL">BRL R$</option>
-        <option value="ARS">ARS $</option>
-        <option value="GBP">GBP £</option>
-        <option value="JPY">JPY ¥</option>
-        <option value="KRW">KRW ₩</option>
-        <option value="CNY">CNY ¥</option>
-        <option value="INR">INR ₹</option>
-        <option value="CAD">CAD $</option>
-        <option value="AUD">AUD $</option>
       </select>
     </label>
   </div>
 
-  <!-- 📚 Catálogo de libros -->
   <section class="catalogo">
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 1">
@@ -205,59 +164,41 @@
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- ✅ Script limpio -->
+  <!-- ✅ JavaScript al final del body -->
   <script>
     const currencySymbols = {
-      COP: 'COP $',
-      USD: 'USD $',
-      MXN: 'MXN $',
-      EUR: 'EUR €',
-      BRL: 'BRL R$',
-      ARS: 'ARS $',
-      GBP: 'GBP £',
-      JPY: 'JPY ¥',
-      KRW: 'KRW ₩',
-      CNY: 'CNY ¥',
-      INR: 'INR ₹',
-      CAD: 'CAD $',
-      AUD: 'AUD $'
+      CO: 'COP $',
+      US: 'USD $',
+      MX: 'MXN $',
+      ES: 'EUR €'
     };
 
-    function updateSelections() {
+    function setCountry() {
       const country = document.getElementById('country').value;
-      localStorage.setItem('country', country);
-    }
-
-    function updateLanguage() {
-      const language = document.getElementById('language').value;
-      localStorage.setItem('language', language);
-      alert("Idioma cambiado a: " + language);
-    }
-
-    function updateCurrency() {
-      const currency = document.getElementById('currency').value;
+      const currency = currencySymbols[country] || 'USD $';
       localStorage.setItem('currency', currency);
-      updatePrices(currencySymbols[currency] || '');
+      updatePrices(currency);
     }
 
-    function updatePrices(symbol) {
-      const prices = document.querySelectorAll('.price');
+    function setLanguage() {
+      const lang = document.getElementById('language').value;
+      localStorage.setItem('lang', lang);
+      alert("Idioma cambiado a: " + (lang === 'es' ? 'Español' : 'English'));
+    }
+
+    function updatePrices(currency) {
+      const prices = document.querySelectorAll(".price");
       prices.forEach(el => {
-        const base = el.getAttribute('data-base');
-        el.textContent = symbol + base;
+        const value = el.getAttribute("data-base");
+        el.textContent = currency + value;
       });
     }
 
     window.onload = () => {
-      const country = localStorage.getItem('country') || 'CO';
-      const language = localStorage.getItem('language') || 'es';
-      const currency = localStorage.getItem('currency') || 'COP';
-
-      document.getElementById('country').value = country;
-      document.getElementById('language').value = language;
-      document.getElementById('currency').value = currency;
-
-      updatePrices(currencySymbols[currency] || '');
+      const savedCurrency = localStorage.getItem('currency') || 'USD $';
+      const savedLang = localStorage.getItem('lang') || 'es';
+      document.getElementById('language').value = savedLang;
+      updatePrices(savedCurrency);
     };
   </script>
 </body>
