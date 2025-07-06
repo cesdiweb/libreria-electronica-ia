@@ -9,128 +9,157 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
-      background: #f5f5f5;
+      background: #f3f6fa;
+      color: #222;
     }
+
     header {
-      background: #0a3d62;
+      background-color: #004080;
       color: white;
       padding: 1rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
+      text-align: center;
     }
+
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background-color: #0066cc;
+      padding: 0.5rem;
+    }
+
     nav a {
       color: white;
-      margin: 0 10px;
       text-decoration: none;
       font-weight: bold;
     }
-    .lang-toggle {
-      background: white;
-      color: #0a3d62;
-      border: none;
-      padding: 5px 10px;
-      font-weight: bold;
-      cursor: pointer;
+
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem;
     }
-    .hero {
-      padding: 2rem;
-      text-align: center;
-      background: #dff9fb;
+
+    .selector-container select {
+      padding: 0.5rem;
+      border-radius: 5px;
     }
+
     .catalogo {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
+      gap: 1.5rem;
       padding: 2rem;
     }
+
     .libro {
       background: white;
       padding: 1rem;
       border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       text-align: center;
     }
+
     .libro img {
-      width: 100%;
-      height: 220px;
-      object-fit: cover;
-      border-radius: 5px;
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
     }
-    .footer {
-      background: #0a3d62;
+
+    .libro h3 {
+      margin: 0.5rem 0 0.3rem;
+    }
+
+    .libro p {
+      margin: 0.3rem 0;
+    }
+
+    .carrito-btn {
+      margin-top: 0.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    footer {
+      background-color: #003366;
       color: white;
       text-align: center;
       padding: 1rem;
       margin-top: 2rem;
     }
+
+    @media (max-width: 600px) {
+      .selector-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
-    <div><strong>Librería IA</strong></div>
-    <nav>
-      <a href="#">Inicio</a>
-      <a href="#">Catálogo</a>
-      <a href="#">Iniciar sesión</a>
-      <a href="#">Carrito</a>
-    </nav>
-    <button class="lang-toggle" onclick="toggleLang()">EN / ES</button>
+    <h1>Librería Electrónica IA</h1>
+    <p>Tu librería digital inteligente e internacional</p>
   </header>
 
-  <section class="hero">
-    <h1 id="titulo">Bienvenido a tu Librería Electrónica</h1>
-    <p id="descripcion">Explora nuestro catálogo de libros digitales con precios accesibles.</p>
-  </section>
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Catálogo</a>
+    <a href="#">Registrarse</a>
+    <a href="#">Iniciar Sesión</a>
+    <a href="#">Contacto</a>
+  </nav>
+
+  <div class="selector-container">
+    <label for="idioma">🌐 Idioma:
+      <select id="idioma">
+        <option value="es">Español</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+
+    <label for="moneda">💰 Moneda:
+      <select id="moneda">
+        <option value="COP">COP</option>
+        <option value="USD">USD</option>
+        <option value="EUR">EUR</option>
+      </select>
+    </label>
+  </div>
 
   <section class="catalogo">
     <div class="libro">
-      <img src="https://via.placeholder.com/200x250?text=Libro+1" alt="Libro 1" />
-      <h3>Inteligencia Artificial para Todos</h3>
-      <p>Autor: Ana Torres</p>
-      <p>$19.000 COP</p>
+      <img src="https://via.placeholder.com/150" alt="Libro 1">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p><strong>Autor:</strong> Ana Pérez</p>
+      <p><strong>Precio:</strong> $30.000 COP</p>
+      <button class="carrito-btn">Agregar al carrito</button>
     </div>
+
     <div class="libro">
-      <img src="https://via.placeholder.com/200x250?text=Libro+2" alt="Libro 2" />
-      <h3>Machine Learning Básico</h3>
-      <p>Autor: Juan Pérez</p>
-      <p>$21.000 COP</p>
+      <img src="https://via.placeholder.com/150" alt="Libro 2">
+      <h3>Machine Learning Avanzado</h3>
+      <p><strong>Autor:</strong> John Smith</p>
+      <p><strong>Precio:</strong> $20 USD</p>
+      <button class="carrito-btn">Agregar al carrito</button>
     </div>
+
     <div class="libro">
-      <img src="https://via.placeholder.com/200x250?text=Libro+3" alt="Libro 3" />
-      <h3>Deep Learning Aplicado</h3>
-      <p>Autor: Laura Gómez</p>
-      <p>$25.000 COP</p>
+      <img src="https://via.placeholder.com/150" alt="Libro 3">
+      <h3>Redes Neuronales con Python</h3>
+      <p><strong>Autor:</strong> María López</p>
+      <p><strong>Precio:</strong> €18</p>
+      <button class="carrito-btn">Agregar al carrito</button>
     </div>
   </section>
 
-  <footer class="footer">
-    © 2025 Librería Electrónica IA – Todos los derechos reservados.
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
-
-  <script>
-    const textoES = {
-      titulo: "Bienvenido a tu Librería Electrónica",
-      descripcion: "Explora nuestro catálogo de libros digitales con precios accesibles.",
-      links: ["Inicio", "Catálogo", "Iniciar sesión", "Carrito"]
-    };
-    const textoEN = {
-      titulo: "Welcome to Your Digital Library",
-      descripcion: "Browse our digital book catalog with affordable prices.",
-      links: ["Home", "Catalog", "Login", "Cart"]
-    };
-    let es = true;
-    function toggleLang() {
-      es = !es;
-      const t = es ? textoES : textoEN;
-      document.getElementById("titulo").textContent = t.titulo;
-      document.getElementById("descripcion").textContent = t.descripcion;
-      const links = document.querySelectorAll("nav a");
-      links.forEach((link, i) => {
-        link.textContent = t.links[i];
-      });
-    }
-  </script>
 </body>
 </html>
