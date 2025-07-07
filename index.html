@@ -39,6 +39,7 @@
       justify-content: center;
       gap: 1rem;
       margin: 1rem;
+      flex-wrap: wrap;
     }
 
     .selector-container select {
@@ -115,40 +116,18 @@
     <a href="#">Contacto</a>
   </nav>
 
-  <!-- Selectores -->
   <div class="selector-container">
-    <label for="language">🌐 Idioma:
-      <select id="language" onchange="updateLanguage()">
-        <option value="es">Español</option>
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-        <option value="pt">Português</option>
-      </select>
+    <label>🌎 País:
+      <select id="country"></select>
     </label>
-
-    <label for="country">🌎 País:
-      <select id="country" onchange="updateCountry()">
-        <option value="CO">Colombia</option>
-        <option value="US">Estados Unidos</option>
-        <option value="MX">México</option>
-        <option value="ES">España</option>
-        <option value="FR">Francia</option>
-        <option value="BR">Brasil</option>
-      </select>
+    <label>🗣️ Idioma:
+      <select id="language"></select>
     </label>
-
-    <label for="currency">💰 Moneda:
-      <select id="currency" onchange="updateCurrency()">
-        <option value="COP">COP $</option>
-        <option value="USD">USD $</option>
-        <option value="EUR">EUR €</option>
-        <option value="BRL">BRL R$</option>
-        <option value="MXN">MXN $</option>
-      </select>
+    <label>💰 Moneda:
+      <select id="currency"></select>
     </label>
   </div>
 
-  <!-- Catálogo -->
   <section class="catalogo">
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 1">
@@ -157,7 +136,6 @@
       <p class="price" data-base="30000">COP $30000</p>
       <button class="carrito-btn">Agregar al carrito</button>
     </div>
-
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 2">
       <h3>Machine Learning Avanzado</h3>
@@ -165,7 +143,6 @@
       <p class="price" data-base="20">USD $20</p>
       <button class="carrito-btn">Agregar al carrito</button>
     </div>
-
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 3">
       <h3>Redes Neuronales con Python</h3>
@@ -179,52 +156,79 @@
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- Script -->
   <script>
-    const currencySymbols = {
-      COP: 'COP $',
-      USD: 'USD $',
-      EUR: 'EUR €',
-      BRL: 'BRL R$',
-      MXN: 'MXN $'
-    };
+    // Datos de países con su idioma principal y moneda
+    const countriesData = [
+      { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
+      { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
+      { code: "MX", name: "México", language: "es", currency: "MXN $" },
+      { code: "ES", name: "España", language: "es", currency: "EUR €" },
+      { code: "FR", name: "Francia", language: "fr", currency: "EUR €" },
+      { code: "BR", name: "Brasil", language: "pt", currency: "BRL R$" },
+      { code: "AR", name: "Argentina", language: "es", currency: "ARS $" },
+      { code: "JP", name: "Japón", language: "ja", currency: "JPY ¥" },
+      { code: "KR", name: "Corea del Sur", language: "ko", currency: "KRW ₩" },
+      { code: "IN", name: "India", language: "hi", currency: "INR ₹" },
+      { code: "CN", name: "China", language: "zh", currency: "CNY ¥" },
+      { code: "GB", name: "Reino Unido", language: "en", currency: "GBP £" },
+      { code: "CA", name: "Canadá", language: "en", currency: "CAD $" },
+      { code: "AU", name: "Australia", language: "en", currency: "AUD $" }
+    ];
 
-    window.onload = () => {
-      const country = localStorage.getItem('country') || 'CO';
-      const language = localStorage.getItem('language') || 'es';
-      const currency = localStorage.getItem('currency') || 'COP';
+    const countrySelect = document.getElementById("country");
+    const languageSelect = document.getElementById("language");
+    const currencySelect = document.getElementById("currency");
 
-      document.getElementById('country').value = country;
-      document.getElementById('language').value = language;
-      document.getElementById('currency').value = currency;
-
-      updatePrices(currencySymbols[currency]);
-    };
-
-    function updateCountry() {
-      const country = document.getElementById('country').value;
-      localStorage.setItem('country', country);
-    }
-
-    function updateLanguage() {
-      const language = document.getElementById('language').value;
-      localStorage.setItem('language', language);
-      alert("Idioma cambiado a: " + language);
-    }
-
-    function updateCurrency() {
-      const currency = document.getElementById('currency').value;
-      localStorage.setItem('currency', currency);
-      updatePrices(currencySymbols[currency]);
-    }
+    countriesData.forEach(country => {
+      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+        languageSelect.innerHTML += `<option value="${country.language}">${country.language}</option>`;
+      }
+      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+      }
+    });
 
     function updatePrices(symbol) {
-      const prices = document.querySelectorAll('.price');
+      const prices = document.querySelectorAll(".price");
       prices.forEach(el => {
-        const base = el.getAttribute('data-base');
+        const base = el.getAttribute("data-base");
         el.textContent = symbol + base;
       });
     }
+
+    countrySelect.onchange = () => {
+      const country = countrySelect.value;
+      const selected = countriesData.find(c => c.code === country);
+      languageSelect.value = selected.language;
+      currencySelect.value = selected.currency;
+      localStorage.setItem('country', country);
+      localStorage.setItem('language', selected.language);
+      localStorage.setItem('currency', selected.currency);
+      updatePrices(selected.currency);
+    };
+
+    languageSelect.onchange = () => {
+      localStorage.setItem('language', languageSelect.value);
+      alert("Idioma cambiado a: " + languageSelect.value);
+    };
+
+    currencySelect.onchange = () => {
+      localStorage.setItem('currency', currencySelect.value);
+      updatePrices(currencySelect.value);
+    };
+
+    // Restaurar preferencias si existen
+    window.onload = () => {
+      const savedCountry = localStorage.getItem("country") || "CO";
+      const savedLanguage = localStorage.getItem("language") || "es";
+      const savedCurrency = localStorage.getItem("currency") || "COP $";
+
+      countrySelect.value = savedCountry;
+      languageSelect.value = savedLanguage;
+      currencySelect.value = savedCurrency;
+      updatePrices(savedCurrency);
+    };
   </script>
 </body>
 </html>
