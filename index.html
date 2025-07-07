@@ -115,6 +115,7 @@
     <a href="#">Contacto</a>
   </nav>
 
+  <!-- Selectores -->
   <div class="selector-container">
     <label for="language">🌐 Idioma:
       <select id="language" onchange="updateLanguage()">
@@ -122,7 +123,6 @@
         <option value="en">English</option>
         <option value="fr">Français</option>
         <option value="pt">Português</option>
-        <!-- Puedes agregar más idiomas -->
       </select>
     </label>
 
@@ -134,7 +134,6 @@
         <option value="ES">España</option>
         <option value="FR">Francia</option>
         <option value="BR">Brasil</option>
-        <!-- Puedes agregar más países -->
       </select>
     </label>
 
@@ -145,74 +144,11 @@
         <option value="EUR">EUR €</option>
         <option value="BRL">BRL R$</option>
         <option value="MXN">MXN $</option>
-        <!-- Puedes agregar más monedas -->
       </select>
     </label>
   </div>
-  </nav>
 
-<!-- 🌍 Selector de país, idioma y moneda -->
-<div class="selector-container">
-  <label>🌍 País:
-    <select id="country" onchange="updateSelections()">
-      <option value="CO">Colombia</option>
-      <option value="US">Estados Unidos</option>
-      <option value="MX">México</option>
-      <option value="ES">España</option>
-      <option value="AR">Argentina</option>
-      <option value="BR">Brasil</option>
-      <option value="FR">Francia</option>
-      <option value="DE">Alemania</option>
-      <option value="IT">Italia</option>
-      <option value="JP">Japón</option>
-      <option value="KR">Corea del Sur</option>
-      <option value="CN">China</option>
-      <option value="IN">India</option>
-      <option value="CA">Canadá</option>
-      <option value="GB">Reino Unido</option>
-      <option value="AU">Australia</option>
-    </select>
-  </label>
-
-  <label>🗣️ Idioma:
-    <select id="language" onchange="updateLanguage()">
-      <option value="es">Español</option>
-      <option value="en">English</option>
-      <option value="pt">Português</option>
-      <option value="fr">Français</option>
-      <option value="de">Deutsch</option>
-      <option value="it">Italiano</option>
-      <option value="zh">中文</option>
-      <option value="ja">日本語</option>
-      <option value="ko">한국어</option>
-      <option value="hi">हिन्दी</option>
-      <option value="ar">العربية</option>
-    </select>
-  </label>
-
-  <label>💰 Moneda:
-    <select id="currency" onchange="updateCurrency()">
-      <option value="COP">COP $</option>
-      <option value="USD">USD $</option>
-      <option value="MXN">MXN $</option>
-      <option value="EUR">EUR €</option>
-      <option value="BRL">BRL R$</option>
-      <option value="ARS">ARS $</option>
-      <option value="GBP">GBP £</option>
-      <option value="JPY">JPY ¥</option>
-      <option value="KRW">KRW ₩</option>
-      <option value="CNY">CNY ¥</option>
-      <option value="INR">INR ₹</option>
-      <option value="CAD">CAD $</option>
-      <option value="AUD">AUD $</option>
-    </select>
-  </label>
-</div>
-
-<!-- Aquí comienza el catálogo -->
-<section class="catalogo">
-
-
+  <!-- Catálogo -->
   <section class="catalogo">
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 1">
@@ -243,7 +179,7 @@
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
 
-  <!-- ✅ JavaScript justo antes de </body> -->
+  <!-- Script -->
   <script>
     const currencySymbols = {
       COP: 'COP $',
