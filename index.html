@@ -157,7 +157,6 @@
   </footer>
 
   <script>
-    // Datos de países con su idioma principal y moneda
     const countriesData = [
       { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
       { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
@@ -218,7 +217,6 @@
       updatePrices(currencySelect.value);
     };
 
-    // Restaurar preferencias si existen
     window.onload = () => {
       const savedCountry = localStorage.getItem("country") || "CO";
       const savedLanguage = localStorage.getItem("language") || "es";
