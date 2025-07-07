@@ -120,21 +120,21 @@
       <img src="https://via.placeholder.com/150" alt="Libro 1">
       <h3>Introducción a la Inteligencia Artificial</h3>
       <p><strong>Autor:</strong> Ana Pérez</p>
-      <p class="price" data-base="30000">COP $30000</p>
+      <p class="price" data-base="30000">COP $ 30000</p>
       <button class="carrito-btn">Agregar al carrito</button>
     </div>
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 2">
       <h3>Machine Learning Avanzado</h3>
       <p><strong>Autor:</strong> John Smith</p>
-      <p class="price" data-base="20">USD $20</p>
+      <p class="price" data-base="20">USD $ 20</p>
       <button class="carrito-btn">Agregar al carrito</button>
     </div>
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 3">
       <h3>Redes Neuronales con Python</h3>
       <p><strong>Autor:</strong> María López</p>
-      <p class="price" data-base="18">EUR €18</p>
+      <p class="price" data-base="18">EUR € 18</p>
       <button class="carrito-btn">Agregar al carrito</button>
     </div>
   </section>
@@ -178,10 +178,12 @@
 
     countriesData.forEach(country => {
       countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+
       if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
         const langName = languageNames[country.language] || country.language;
         languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
       }
+
       if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
         currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
       }
@@ -208,7 +210,7 @@
 
     languageSelect.onchange = () => {
       localStorage.setItem('language', languageSelect.value);
-      alert("Idioma cambiado a: " + languageSelect.value);
+      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
     };
 
     currencySelect.onchange = () => {
