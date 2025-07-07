@@ -1,0 +1,220 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librería Electrónica IA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f3f6fa;
+      color: #222;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      background-color: #0066cc;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin: 1rem;
+      flex-wrap: wrap;
+    }
+    .selector-container select {
+      padding: 0.5rem;
+      border-radius: 5px;
+    }
+    .catalogo {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      padding: 2rem;
+    }
+    .libro {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+    .libro img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+    .libro h3 {
+      margin: 0.5rem 0 0.3rem;
+    }
+    .libro p {
+      margin: 0.3rem 0;
+    }
+    .carrito-btn {
+      margin-top: 0.5rem;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+    @media (max-width: 600px) {
+      .selector-container {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Librería Electrónica IA</h1>
+    <p>Tu librería digital inteligente e internacional</p>
+  </header>
+
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Catálogo</a>
+    <a href="#">Registrarse</a>
+    <a href="#">Iniciar Sesión</a>
+    <a href="#">Contacto</a>
+  </nav>
+
+  <div class="selector-container">
+    <label>🌎 País:
+      <select id="country"></select>
+    </label>
+    <label>🗣️ Idioma:
+      <select id="language"></select>
+    </label>
+    <label>💰 Moneda:
+      <select id="currency"></select>
+    </label>
+  </div>
+
+  <section class="catalogo">
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 1">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p><strong>Autor:</strong> Ana Pérez</p>
+      <p class="price" data-base="30000">COP $30000</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 2">
+      <h3>Machine Learning Avanzado</h3>
+      <p><strong>Autor:</strong> John Smith</p>
+      <p class="price" data-base="20">USD $20</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 3">
+      <h3>Redes Neuronales con Python</h3>
+      <p><strong>Autor:</strong> María López</p>
+      <p class="price" data-base="18">EUR €18</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    const countriesData = [
+      { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
+      { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
+      { code: "MX", name: "México", language: "es", currency: "MXN $" },
+      { code: "ES", name: "España", language: "es", currency: "EUR €" },
+      { code: "FR", name: "Francia", language: "fr", currency: "EUR €" },
+      { code: "BR", name: "Brasil", language: "pt", currency: "BRL R$" },
+      { code: "AR", name: "Argentina", language: "es", currency: "ARS $" },
+      { code: "JP", name: "Japón", language: "ja", currency: "JPY ¥" },
+      { code: "KR", name: "Corea del Sur", language: "ko", currency: "KRW ₩" },
+      { code: "IN", name: "India", language: "hi", currency: "INR ₹" },
+      { code: "CN", name: "China", language: "zh", currency: "CNY ¥" },
+      { code: "GB", name: "Reino Unido", language: "en", currency: "GBP £" },
+      { code: "CA", name: "Canadá", language: "en", currency: "CAD $" },
+      { code: "AU", name: "Australia", language: "en", currency: "AUD $" }
+    ];
+
+    const countrySelect = document.getElementById("country");
+    const languageSelect = document.getElementById("language");
+    const currencySelect = document.getElementById("currency");
+
+    countriesData.forEach(country => {
+      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+        languageSelect.innerHTML += `<option value="${country.language}">${country.language}</option>`;
+      }
+      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+      }
+    });
+
+    function updatePrices(symbol) {
+      const prices = document.querySelectorAll(".price");
+      prices.forEach(el => {
+        const base = el.getAttribute("data-base");
+        el.textContent = symbol + base;
+      });
+    }
+
+    countrySelect.onchange = () => {
+      const country = countrySelect.value;
+      const selected = countriesData.find(c => c.code === country);
+      languageSelect.value = selected.language;
+      currencySelect.value = selected.currency;
+      localStorage.setItem('country', country);
+      localStorage.setItem('language', selected.language);
+      localStorage.setItem('currency', selected.currency);
+      updatePrices(selected.currency);
+    };
+
+    languageSelect.onchange = () => {
+      localStorage.setItem('language', languageSelect.value);
+      alert("Idioma cambiado a: " + languageSelect.value);
+    };
+
+    currencySelect.onchange = () => {
+      localStorage.setItem('currency', currencySelect.value);
+      updatePrices(currencySelect.value);
+    };
+
+    window.onload = () => {
+      const savedCountry = localStorage.getItem("country") || "CO";
+      const savedLanguage = localStorage.getItem("language") || "es";
+      const savedCurrency = localStorage.getItem("currency") || "COP $";
+
+      countrySelect.value = savedCountry;
+      languageSelect.value = savedLanguage;
+      currencySelect.value = savedCurrency;
+      updatePrices(savedCurrency);
+    };
+  </script>
+</body>
+</html>
