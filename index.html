@@ -161,15 +161,66 @@
       { code: "AU", name: "Australia", language: "en", currency: "AUD $" }
     ];
 
+    // Agregar países adicionales
+    countriesData.push(
+      { code: "DE", name: "Alemania", language: "de", currency: "EUR €" },
+      { code: "IT", name: "Italia", language: "it", currency: "EUR €" },
+      { code: "RU", name: "Rusia", language: "ru", currency: "RUB ₽" },
+      { code: "TR", name: "Turquía", language: "tr", currency: "TRY ₺" },
+      { code: "SA", name: "Arabia Saudita", language: "ar", currency: "SAR ﷼" },
+      { code: "EG", name: "Egipto", language: "ar", currency: "EGP £" },
+      { code: "ZA", name: "Sudáfrica", language: "en", currency: "ZAR R" },
+      { code: "NG", name: "Nigeria", language: "en", currency: "NGN ₦" },
+      { code: "KE", name: "Kenia", language: "sw", currency: "KES KSh" },
+      { code: "PK", name: "Pakistán", language: "ur", currency: "PKR ₨" },
+      { code: "BD", name: "Bangladés", language: "bn", currency: "BDT ৳" },
+      { code: "ID", name: "Indonesia", language: "id", currency: "IDR Rp" },
+      { code: "PH", name: "Filipinas", language: "tl", currency: "PHP ₱" },
+      { code: "VN", name: "Vietnam", language: "vi", currency: "VND ₫" },
+      { code: "TH", name: "Tailandia", language: "th", currency: "THB ฿" },
+      { code: "MY", name: "Malasia", language: "ms", currency: "MYR RM" },
+      { code: "SG", name: "Singapur", language: "en", currency: "SGD $" },
+      { code: "NZ", name: "Nueva Zelanda", language: "en", currency: "NZD $" },
+      { code: "IE", name: "Irlanda", language: "en", currency: "EUR €" },
+      { code: "NL", name: "Países Bajos", language: "nl", currency: "EUR €" },
+      { code: "SE", name: "Suecia", language: "sv", currency: "SEK kr" },
+      { code: "NO", name: "Noruega", language: "no", currency: "NOK kr" },
+      { code: "FI", name: "Finlandia", language: "fi", currency: "EUR €" },
+      { code: "DK", name: "Dinamarca", language: "da", currency: "DKK kr" },
+      { code: "PL", name: "Polonia", language: "pl", currency: "PLN zł" },
+      { code: "CZ", name: "Chequia", language: "cs", currency: "CZK Kč" },
+      { code: "GR", name: "Grecia", language: "el", currency: "EUR €" },
+      { code: "HU", name: "Hungría", language: "hu", currency: "HUF Ft" },
+      { code: "RO", name: "Rumania", language: "ro", currency: "RON lei" },
+      { code: "UA", name: "Ucrania", language: "uk", currency: "UAH ₴" },
+      { code: "CH", name: "Suiza", language: "de", currency: "CHF Fr" },
+      { code: "AT", name: "Austria", language: "de", currency: "EUR €" },
+      { code: "BE", name: "Bélgica", language: "fr", currency: "EUR €" },
+      { code: "IL", name: "Israel", language: "he", currency: "ILS ₪" },
+      { code: "IR", name: "Irán", language: "fa", currency: "IRR ﷼" },
+      { code: "IQ", name: "Irak", language: "ar", currency: "IQD ع.د" },
+      { code: "CL", name: "Chile", language: "es", currency: "CLP $" },
+      { code: "PE", name: "Perú", language: "es", currency: "PEN S/" },
+      { code: "VE", name: "Venezuela", language: "es", currency: "VES Bs" },
+      { code: "BO", name: "Bolivia", language: "es", currency: "BOB Bs." },
+      { code: "EC", name: "Ecuador", language: "es", currency: "USD $" },
+      { code: "PY", name: "Paraguay", language: "es", currency: "PYG ₲" },
+      { code: "UY", name: "Uruguay", language: "es", currency: "UYU $" },
+      { code: "CR", name: "Costa Rica", language: "es", currency: "CRC ₡" },
+      { code: "GT", name: "Guatemala", language: "es", currency: "GTQ Q" },
+      { code: "DO", name: "República Dominicana", language: "es", currency: "DOP RD$" },
+      { code: "CU", name: "Cuba", language: "es", currency: "CUP $" },
+      { code: "HN", name: "Honduras", language: "es", currency: "HNL L" }
+    );
+
     const languageNames = {
-      es: "Español",
-      en: "Inglés",
-      fr: "Francés",
-      pt: "Portugués",
-      ja: "Japonés",
-      ko: "Coreano",
-      hi: "Hindi",
-      zh: "Chino"
+      es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
+      ko: "Coreano", hi: "Hindi", zh: "Chino",
+      de: "Alemán", it: "Italiano", ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili",
+      ur: "Urdu", bn: "Bengalí", id: "Indonesio", tl: "Tagalo", vi: "Vietnamita",
+      th: "Tailandés", ms: "Malayo", nl: "Neerlandés", sv: "Sueco", no: "Noruego",
+      fi: "Finlandés", da: "Danés", pl: "Polaco", cs: "Checo", el: "Griego",
+      hu: "Húngaro", ro: "Rumano", uk: "Ucraniano", he: "Hebreo", fa: "Persa"
     };
 
     const countrySelect = document.getElementById("country");
