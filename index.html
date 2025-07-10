@@ -369,6 +369,30 @@
       updatePrices(currencySelect.value);
     };
 
+// Detectar país automáticamente usando IP
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const ipCountry = data.country;
+    const ipLanguage = data.languages?.split(',')[0] || "en";
+    const ipCurrency = data.currency;
+
+    const matched = countriesData.find(c => c.code === ipCountry);
+
+    if (matched) {
+      countrySelect.value = matched.code;
+      languageSelect.value = matched.language;
+      currencySelect.value = matched.currency;
+      updatePrices(matched.currency);
+
+      // Guardar en localStorage para persistencia
+      localStorage.setItem("country", matched.code);
+      localStorage.setItem("language", matched.language);
+      localStorage.setItem("currency", matched.currency);
+    }
+  })
+  .catch(err => console.log("Error al obtener IP:", err));
+
     window.onload = () => {
       const savedCountry = localStorage.getItem("country") || "CO";
       const savedLanguage = localStorage.getItem("language") || "es";
@@ -382,4 +406,3 @@
   </script>
 </body>
 </html>
-
