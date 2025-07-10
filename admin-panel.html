@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel de Administrador</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f3f6fa;
+      padding: 2rem;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    .content {
+      margin-top: 2rem;
+    }
+    .logout-btn {
+      background-color: #c00;
+      color: white;
+      border: none;
+      padding: 0.6rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Panel de Administración</h1>
+  </header>
+
+  <div class="content">
+    <p>Bienvenido, administrador. Aquí puedes gestionar los contenidos de la Librería Electrónica IA.</p>
+    <button class="logout-btn" onclick="logout()">Cerrar sesión</button>
+  </div>
+
+  <script>
+    // Verificar si el usuario tiene permiso
+    if (localStorage.getItem("userRole") !== "admin") {
+      alert("Acceso denegado");
+      window.location.href = "admin-login.html";
+    }
+
+    function logout() {
+      localStorage.removeItem("userRole");
+      window.location.href = "admin-login.html";
+    }
+  </script>
+</body>
+</html>
