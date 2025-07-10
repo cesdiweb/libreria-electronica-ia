@@ -368,6 +368,20 @@
       localStorage.setItem('currency', currencySelect.value);
       updatePrices(currencySelect.value);
     };
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const countryCode = data.country_code || "CO";
+    const countryData = countriesData.find(c => c.code === countryCode);
+
+    if (countryData) {
+      localStorage.setItem("country", countryData.code);
+      localStorage.setItem("language", countryData.language);
+      localStorage.setItem("currency", countryData.currency);
+    }
+  })
+  .catch(error => console.error("Error al detectar ubicación por IP:", error));
+
 
     window.onload = () => {
       const savedCountry = localStorage.getItem("country") || "CO";
