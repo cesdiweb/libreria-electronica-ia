@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recuperar Contraseña - Librería Electrónica IA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f6fa;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    form {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      text-align: center;
+      color: #004080;
+    }
+    label {
+      display: block;
+      margin-top: 1rem;
+    }
+    input[type="email"] {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      margin-top: 0.5rem;
+    }
+    button {
+      margin-top: 1.5rem;
+      width: 100%;
+      padding: 0.75rem;
+      background-color: #004080;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .mensaje {
+      margin-top: 1rem;
+      color: green;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="form-recuperar">
+    <h2>Recuperar Contraseña</h2>
+    <label for="email">Correo electrónico:</label>
+    <input type="email" id="email" required />
+    <button type="submit">Enviar enlace de recuperación</button>
+    <div class="mensaje" id="mensaje"></div>
+  </form>
+
+  <script>
+    const form = document.getElementById("form-recuperar");
+    const mensaje = document.getElementById("mensaje");
+
+    form.onsubmit = (e) => {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+
+      // Aquí iría la lógica real con servidor
+      mensaje.textContent = `Se ha enviado un enlace de recuperación a: ${email}`;
+      form.reset();
+    };
+  </script>
+
+</body>
+</html>
