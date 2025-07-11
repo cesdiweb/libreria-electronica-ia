@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -68,7 +69,9 @@
       const username = document.getElementById("username").value.trim();
       const password = document.getElementById("password").value.trim();
 
-      if (username === "admin" && password === "admin123") {
+      const storedPassword = localStorage.getItem("adminPassword") || "admin123";
+if (username === "admin" && password === storedPassword) {
+
         localStorage.setItem("userRole", "admin");
         window.location.href = "admin-panel.html"; // Redirige a la página del administrador
       } else {
