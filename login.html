@@ -55,12 +55,16 @@
 <body>
   <div class="form-container">
     <h2>Iniciar Sesión</h2>
-    <form id="loginForm">
-      <input type="text" id="username" placeholder="Usuario" required />
-      <input type="password" id="password" placeholder="Contraseña" required />
-      <button type="submit">Ingresar</button>
-    </form>
-  </div>
+   <form id="loginForm">
+  <input type="text" id="username" placeholder="Usuario" required />
+  <input type="password" id="password" placeholder="Contraseña" required />
+  <button type="submit">Ingresar</button>
+  <p style="margin-top: 1rem;">
+    <a href="recuperar.html">¿Olvidó su clave?</a>
+  </p>
+</form>
+
+     </div>
 
   <script>
     document.getElementById("loginForm").addEventListener("submit", function(e) {
@@ -69,13 +73,20 @@
       const password = document.getElementById("password").value.trim();
       const stored = localStorage.getItem(`user_${username}`);
 
-      if (stored && stored === password) {
-        alert("Inicio de sesión exitoso.");
-        localStorage.setItem("userRole", "comprador");
-        window.location.href = "index.html"; // Redirige a página principal
-      } else {
-        alert("Credenciales incorrectas.");
-      }
+    if (stored && stored === password) {
+  if (username === "admin") {
+    localStorage.setItem("userRole", "admin");
+    alert("Inicio de sesión como administrador.");
+    window.location.href = "admin.html"; // Redirige a página de admin
+  } else {
+    localStorage.setItem("userRole", "comprador");
+    alert("Inicio de sesión exitoso.");
+    window.location.href = "index.html"; // Redirige a página principal
+  }
+} else {
+  alert("Credenciales incorrectas.");
+}
+
     });
   </script>
 </body>
