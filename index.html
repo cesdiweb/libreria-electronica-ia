@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -90,18 +91,20 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Librería Electrónica IA</h1>
-    <p>Tu librería digital inteligente e internacional</p>
-  </header>
+<header>
+  <h1 id="titulo">Librería Electrónica IA</h1>
+  <p id="subtitulo">Tu librería digital inteligente e internacional</p>
+</header>
 
- <nav>
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Catálogo</a>
-  <a href="register.html">Registrarse</a>
-  <a href="login.html">Iniciar Sesión</a>
-  <a href="contacto.html">Contacto</a>
+<nav>
+  <a href="index.html" id="nav-inicio">Inicio</a>
+  <a href="catalogo.html" id="nav-catalogo">Catálogo</a>
+  <a href="register.html" id="nav-registrarse">Registrarse</a>
+  <a href="login.html" id="nav-iniciar">Iniciar Sesión</a>
+  <a href="contacto.html" id="nav-contacto">Contacto</a>
 </nav>
+
+
 
 
   <div class="selector-container">
@@ -384,7 +387,7 @@ fetch("https://ipapi.co/json/")
   .catch(error => console.error("Error al detectar ubicación por IP:", error));
 
 
-    window.onload = () => {
+        window.onload = () => {
       const savedCountry = localStorage.getItem("country") || "CO";
       const savedLanguage = localStorage.getItem("language") || "es";
       const savedCurrency = localStorage.getItem("currency") || "COP $";
@@ -393,7 +396,59 @@ fetch("https://ipapi.co/json/")
       languageSelect.value = savedLanguage;
       currencySelect.value = savedCurrency;
       updatePrices(savedCurrency);
+      traducirTextos(savedLanguage); // ✅ Traduce automáticamente los textos
     };
+
+    const translations = {
+      es: {
+        titulo: "Librería Electrónica IA",
+        subtitulo: "Tu librería digital inteligente e internacional",
+        inicio: "Inicio",
+        catalogo: "Catálogo",
+        registrarse: "Registrarse",
+        iniciar: "Iniciar Sesión",
+        contacto: "Contacto"
+      },
+      en: {
+        titulo: "AI Electronic Bookstore",
+        subtitulo: "Your smart and international digital bookstore",
+        inicio: "Home",
+        catalogo: "Catalog",
+        registrarse: "Sign Up",
+        iniciar: "Login",
+        contacto: "Contact"
+      },
+      pt: {
+        titulo: "Livraria Eletrônica IA",
+        subtitulo: "Sua livraria digital inteligente e internacional",
+        inicio: "Início",
+        catalogo: "Catálogo",
+        registrarse: "Registrar",
+        iniciar: "Entrar",
+        contacto: "Contato"
+      },
+      fr: {
+        titulo: "Librairie Électronique IA",
+        subtitulo: "Votre librairie numérique intelligente et internationale",
+        inicio: "Accueil",
+        catalogo: "Catalogue",
+        registrarse: "S'inscrire",
+        iniciar: "Connexion",
+        contacto: "Contact"
+      }
+    };
+
+    function traducirTextos(lang) {
+      const t = translations[lang] || translations["es"];
+      document.getElementById("titulo").textContent = t.titulo;
+      document.getElementById("subtitulo").textContent = t.subtitulo;
+      document.getElementById("nav-inicio").textContent = t.inicio;
+      document.getElementById("nav-catalogo").textContent = t.catalogo;
+      document.getElementById("nav-registrarse").textContent = t.registrarse;
+      document.getElementById("nav-iniciar").textContent = t.iniciar;
+      document.getElementById("nav-contacto").textContent = t.contacto;
+    }
   </script>
 </body>
 </html>
+
