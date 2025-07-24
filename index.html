@@ -140,132 +140,6 @@
       <button class="carrito-btn">Agregar al carrito</button>
     </div>
   </section>
-<script>
-  const countrySelect = document.getElementById("country");
-  const languageSelect = document.getElementById("language");
-  const currencySelect = document.getElementById("currency");
-
-  const countriesData = [ /* todo tu array de países */ ];
-  const languageNames = { /* todo tu objeto languageNames */ };
-
-  const translations = {
-    es: {
-      title: "Librería Electrónica IA",
-      subtitle: "Tu librería digital inteligente e internacional",
-      menu: ["Inicio", "Catálogo", "Registrarse", "Iniciar Sesión", "Contacto"],
-      cart: "Agregar al carrito"
-    },
-    en: {
-      title: "AI Electronic Bookstore",
-      subtitle: "Your smart and international digital bookstore",
-      menu: ["Home", "Catalog", "Register", "Login", "Contact"],
-      cart: "Add to cart"
-    },
-    fr: {
-      title: "Librairie Électronique IA",
-      subtitle: "Votre librairie numérique intelligente et internationale",
-      menu: ["Accueil", "Catalogue", "S'inscrire", "Connexion", "Contact"],
-      cart: "Ajouter au panier"
-    },
-    pt: {
-      title: "Livraria Eletrônica IA",
-      subtitle: "Sua livraria digital inteligente e internacional",
-      menu: ["Início", "Catálogo", "Cadastrar-se", "Entrar", "Contato"],
-      cart: "Adicionar ao carrinho"
-    }
-  };
-
-  // Llenar selects
-  countriesData.forEach(country => {
-    countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
-
-    if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
-      const langName = languageNames[country.language] || country.language;
-      languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
-    }
-
-    if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-      currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
-    }
-  });
-
-  // Actualizar precios
-  function updatePrices(symbol) {
-    document.querySelectorAll(".price").forEach(el => {
-      const base = el.getAttribute("data-base");
-      el.textContent = `${symbol} ${base}`;
-    });
-  }
-
-  // Actualizar textos según idioma
-  function updateTexts(lang) {
-    const t = translations[lang] || translations["es"];
-    document.querySelector("header h1").textContent = t.title;
-    document.querySelector("header p").textContent = t.subtitle;
-
-    document.querySelectorAll("nav a").forEach((link, i) => {
-      link.textContent = t.menu[i];
-    });
-
-    document.querySelectorAll(".carrito-btn").forEach(btn => {
-      btn.textContent = t.cart;
-    });
-  }
-
-  // Selectores onchange
-  countrySelect.onchange = () => {
-    const selected = countriesData.find(c => c.code === countrySelect.value);
-    languageSelect.value = selected.language;
-    currencySelect.value = selected.currency;
-
-    localStorage.setItem("country", selected.code);
-    localStorage.setItem("language", selected.language);
-    localStorage.setItem("currency", selected.currency);
-
-    updatePrices(selected.currency);
-    updateTexts(selected.language);
-  };
-
-  languageSelect.onchange = () => {
-    localStorage.setItem("language", languageSelect.value);
-    updateTexts(languageSelect.value);
-    alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-  };
-
-  currencySelect.onchange = () => {
-    localStorage.setItem("currency", currencySelect.value);
-    updatePrices(currencySelect.value);
-  };
-
-  // Detección IP
-  fetch("https://ipapi.co/json/")
-    .then(res => res.json())
-    .then(data => {
-      const countryCode = data.country_code || "CO";
-      const country = countriesData.find(c => c.code === countryCode);
-      if (country) {
-        localStorage.setItem("country", country.code);
-        localStorage.setItem("language", country.language);
-        localStorage.setItem("currency", country.currency);
-      }
-    })
-    .catch(error => console.error("Error al detectar ubicación:", error));
-
-  // Cargar desde localStorage al cargar página
-  window.onload = () => {
-    const savedCountry = localStorage.getItem("country") || "CO";
-    const savedLanguage = localStorage.getItem("language") || "es";
-    const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-    countrySelect.value = savedCountry;
-    languageSelect.value = savedLanguage;
-    currencySelect.value = savedCurrency;
-
-    updatePrices(savedCurrency);
-    updateTexts(savedLanguage);
-  };
-</script>
-
 
   <footer>
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
@@ -290,7 +164,7 @@
     ];
 
     // Agregar países adicionales
-   
+    countriesData.push(
       { code: "AL", name: "Albania", language: "sq", currency: "ALL L" },
 { code: "DZ", name: "Argelia", language: "ar", currency: "DZD دج" },
 { code: "AM", name: "Armenia", language: "hy", currency: "AMD ֏" },
@@ -426,7 +300,7 @@
 { code: "LC", name: "Santa Lucía",         language: "en", currency: "XCD $" }
 
 
-    ];
+    )
 
     const languageNames = {
       es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
@@ -521,132 +395,6 @@ fetch("https://ipapi.co/json/")
       currencySelect.value = savedCurrency;
       updatePrices(savedCurrency);
     };
- <script>
- 
-    const countriesData = [/* tu array completo aquí */];
-    const languageNames = {/* tu objeto languageNames completo aquí */};
-
-    const translations = {
-      es: {
-        title: "Librería Electrónica IA",
-        subtitle: "Tu librería digital inteligente e internacional",
-        menu: ["Inicio", "Catálogo", "Registrarse", "Iniciar Sesión", "Contacto"],
-        cart: "Agregar al carrito"
-      },
-      en: {
-        title: "AI Electronic Bookstore",
-        subtitle: "Your smart and international digital bookstore",
-        menu: ["Home", "Catalog", "Register", "Login", "Contact"],
-        cart: "Add to cart"
-      },
-      fr: {
-        title: "Librairie Électronique IA",
-        subtitle: "Votre librairie numérique intelligente et internationale",
-        menu: ["Accueil", "Catalogue", "S'inscrire", "Connexion", "Contact"],
-        cart: "Ajouter au panier"
-      },
-      pt: {
-        title: "Livraria Eletrônica IA",
-        subtitle: "Sua livraria digital inteligente e internacional",
-        menu: ["Início", "Catálogo", "Cadastrar-se", "Entrar", "Contato"],
-        cart: "Adicionar ao carrinho"
-      }
-    };
-
-    // Llenar selects
-    countriesData.forEach(country => {
-      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
-
-      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
-        const langName = languageNames[country.language] || country.language;
-        languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
-      }
-
-      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
-      }
-    });
-
-    function updatePrices(symbol) {
-      document.querySelectorAll(".price").forEach(el => {
-        const base = el.getAttribute("data-base");
-        el.textContent = `${symbol} ${base}`;
-      });
-    }
-
-    function updateTexts(lang) {
-      const t = translations[lang] || translations["es"];
-      document.querySelector("header h1").textContent = t.title;
-      document.querySelector("header p").textContent = t.subtitle;
-
-      document.querySelectorAll("nav a").forEach((link, i) => {
-        link.textContent = t.menu[i];
-      });
-
-      document.querySelectorAll(".carrito-btn").forEach(btn => {
-        btn.textContent = t.cart;
-      });
-    }
-
-    // Listeners
-    countrySelect.onchange = () => {
-      const selected = countriesData.find(c => c.code === countrySelect.value);
-      languageSelect.value = selected.language;
-      currencySelect.value = selected.currency;
-
-      localStorage.setItem("country", selected.code);
-      localStorage.setItem("language", selected.language);
-      localStorage.setItem("currency", selected.currency);
-
-      updatePrices(selected.currency);
-      updateTexts(selected.language);
-    };
-
-    languageSelect.onchange = () => {
-      localStorage.setItem("language", languageSelect.value);
-      updateTexts(languageSelect.value);
-      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-    };
-
-    currencySelect.onchange = () => {
-      localStorage.setItem("currency", currencySelect.value);
-      updatePrices(currencySelect.value);
-    };
-
-    // IP detection
-    fetch("https://ipapi.co/json/")
-      .then(res => res.json())
-      .then(data => {
-        const countryCode = data.country_code || "CO";
-        const country = countriesData.find(c => c.code === countryCode);
-        if (country) {
-          localStorage.setItem("country", country.code);
-          localStorage.setItem("language", country.language);
-          localStorage.setItem("currency", country.currency);
-
-          countrySelect.value = country.code;
-          languageSelect.value = country.language;
-          currencySelect.value = country.currency;
-
-          updatePrices(country.currency);
-          updateTexts(country.language);
-        }
-      })
-      .catch(error => console.error("Error al detectar ubicación:", error));
-
-    // Cargar desde localStorage
-    const savedCountry = localStorage.getItem("country") || "CO";
-    const savedLanguage = localStorage.getItem("language") || "es";
-    const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-    countrySelect.value = savedCountry;
-    languageSelect.value = savedLanguage;
-    currencySelect.value = savedCurrency;
-
-    updatePrices(savedCurrency);
-    updateTexts(savedLanguage);
-  };
-</script>
-
+  </script>
 </body>
 </html>
