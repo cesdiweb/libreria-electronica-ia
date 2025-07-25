@@ -362,9 +362,10 @@
     };
 
     languageSelect.onchange = () => {
-      localStorage.setItem('language', languageSelect.value);
-      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-    };
+  localStorage.setItem('language', languageSelect.value);
+  aplicarTraduccion(); // 👈 Esto aplica la traducción en vivo
+};
+
 
     currencySelect.onchange = () => {
       localStorage.setItem('currency', currencySelect.value);
