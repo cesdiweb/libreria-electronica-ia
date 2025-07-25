@@ -323,6 +323,99 @@
 
 
      };
+const translations = {
+  es: {
+    title: "Librería Electrónica IA",
+    subtitle: "Tu librería digital inteligente e internacional",
+    navInicio: "Inicio",
+    navCatalogo: "Catálogo",
+    navRegistro: "Registrarse",
+    navLogin: "Iniciar Sesión",
+    navContacto: "Contacto",
+    pais: "País",
+    idioma: "Idioma",
+    moneda: "Moneda",
+    agregarCarrito: "Agregar al carrito",
+    derechos: "Todos los derechos reservados.",
+    autor: "Autor"
+  },
+  en: {
+    title: "AI Electronic Bookstore",
+    subtitle: "Your smart and international digital bookstore",
+    navInicio: "Home",
+    navCatalogo: "Catalog",
+    navRegistro: "Register",
+    navLogin: "Login",
+    navContacto: "Contact",
+    pais: "Country",
+    idioma: "Language",
+    moneda: "Currency",
+    agregarCarrito: "Add to Cart",
+    derechos: "All rights reserved.",
+    autor: "Author"
+  },
+  fr: {
+    title: "Librairie Électronique IA",
+    subtitle: "Votre librairie numérique intelligente et internationale",
+    navInicio: "Accueil",
+    navCatalogo: "Catalogue",
+    navRegistro: "S'inscrire",
+    navLogin: "Connexion",
+    navContacto: "Contact",
+    pais: "Pays",
+    idioma: "Langue",
+    moneda: "Monnaie",
+    agregarCarrito: "Ajouter au panier",
+    derechos: "Tous droits réservés.",
+    autor: "Auteur"
+  },
+  pt: {
+    title: "Livraria Eletrônica IA",
+    subtitle: "Sua livraria digital inteligente e internacional",
+    navInicio: "Início",
+    navCatalogo: "Catálogo",
+    navRegistro: "Registrar",
+    navLogin: "Entrar",
+    navContacto: "Contato",
+    pais: "País",
+    idioma: "Idioma",
+    moneda: "Moeda",
+    agregarCarrito: "Adicionar ao carrinho",
+    derechos: "Todos os direitos reservados.",
+    autor: "Autor"
+  },
+  de: {
+    title: "Elektronische Buchhandlung IA",
+    subtitle: "Deine intelligente und internationale digitale Buchhandlung",
+    navInicio: "Startseite",
+    navCatalogo: "Katalog",
+    navRegistro: "Registrieren",
+    navLogin: "Anmelden",
+    navContacto: "Kontakt",
+    pais: "Land",
+    idioma: "Sprache",
+    moneda: "Währung",
+    agregarCarrito: "In den Warenkorb",
+    derechos: "Alle Rechte vorbehalten.",
+    autor: "Autor"
+  },
+  zh: {
+    title: "人工智能电子书店",
+    subtitle: "您的智能国际数字书店",
+    navInicio: "首页",
+    navCatalogo: "目录",
+    navRegistro: "注册",
+    navLogin: "登录",
+    navContacto: "联系",
+    pais: "国家",
+    idioma: "语言",
+    moneda: "货币",
+    agregarCarrito: "加入购物车",
+    derechos: "版权所有。",
+    autor: "作者"
+  }
+};
+
     
 
     const countrySelect = document.getElementById("country");
@@ -361,10 +454,11 @@
       updatePrices(selected.currency);
     };
 
-    languageSelect.onchange = () => {
-      localStorage.setItem('language', languageSelect.value);
-      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-    };
+   languageSelect.onchange = () => {
+  localStorage.setItem('language', languageSelect.value);
+  location.reload(); // Recarga la página para aplicar la traducción automáticamente
+};
+
 
     currencySelect.onchange = () => {
       localStorage.setItem('currency', currencySelect.value);
@@ -394,6 +488,37 @@ fetch("https://ipapi.co/json/")
       languageSelect.value = savedLanguage;
       currencySelect.value = savedCurrency;
       updatePrices(savedCurrency);
+      // Aplicar traducción del contenido
+      const translate = translations[savedLanguage];
+      if (translate) {
+        document.title = translate.title;
+        document.querySelector("header h1").textContent = translate.title;
+        document.querySelector("header p").textContent = translate.subtitle;
+
+        const navLinks = document.querySelectorAll("nav a");
+        navLinks[0].textContent = translate.navInicio;
+        navLinks[1].textContent = translate.navCatalogo;
+        navLinks[2].textContent = translate.navRegistro;
+        navLinks[3].textContent = translate.navLogin;
+        navLinks[4].textContent = translate.navContacto;
+
+        document.querySelector("label[for='country']")?.childNodes[0].nodeValue = "🌎 " + translate.pais + ": ";
+        document.querySelector("label[for='language']")?.childNodes[0].nodeValue = "🗣️ " + translate.idioma + ": ";
+        document.querySelector("label[for='currency']")?.childNodes[0].nodeValue = "💰 " + translate.moneda + ": ";
+
+        document.querySelectorAll(".libro").forEach(el => {
+          const autor = el.querySelector("p strong");
+          if (autor && autor.textContent.includes("Autor")) {
+            autor.textContent = translate.autor + ":";
+          }
+          const btn = el.querySelector("button.carrito-btn");
+          if (btn) btn.textContent = translate.agregarCarrito;
+        });
+
+        const footer = document.querySelector("footer p");
+        if (footer) footer.innerHTML = `&copy; 2025 ${translate.title}. ${translate.derechos}`;
+      }
+
     };
   </script>
 </body>
