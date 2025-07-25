@@ -454,11 +454,10 @@ const translations = {
       updatePrices(selected.currency);
     };
 
-   languageSelect.onchange = () => {
-  localStorage.setItem('language', languageSelect.value);
-  location.reload(); // Recarga la página para aplicar la traducción automáticamente
-};
-
+    languageSelect.onchange = () => {
+      localStorage.setItem('language', languageSelect.value);
+      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+    };
 
     currencySelect.onchange = () => {
       localStorage.setItem('currency', currencySelect.value);
