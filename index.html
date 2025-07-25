@@ -146,6 +146,37 @@
   </footer>
 
   <script>
+function aplicarTraduccion(idioma) {
+  const t = translations[idioma] || translations["es"];
+
+  document.querySelector("header h1").textContent = t.title;
+  document.querySelector("header p").textContent = t.subtitle;
+
+  const enlaces = document.querySelectorAll("nav a");
+  enlaces[0].textContent = t.navInicio;
+  enlaces[1].textContent = t.navCatalogo;
+  enlaces[2].textContent = t.navRegistro;
+  enlaces[3].textContent = t.navLogin;
+  enlaces[4].textContent = t.navContacto;
+
+  document.querySelector("label[for='country']")?.childNodes[0].nodeValue = `🌎 ${t.pais}: `;
+  document.querySelector("label[for='language']")?.childNodes[0].nodeValue = `🗣️ ${t.idioma}: `;
+  document.querySelector("label[for='currency']")?.childNodes[0].nodeValue = `💰 ${t.moneda}: `;
+
+  document.querySelectorAll(".carrito-btn").forEach(btn => {
+    btn.textContent = t.agregarCarrito;
+  });
+
+  document.querySelectorAll(".libro p").forEach(p => {
+    if (p.innerText.startsWith("Autor") || p.innerText.startsWith("Author") || p.innerText.startsWith("Auteur")) {
+      const nombre = p.innerText.split(":")[1];
+      p.innerText = `${t.autor}:${nombre}`;
+    }
+  });
+
+  document.querySelector("footer p").textContent = `© 2025 ${t.title}. ${t.derechos}`;
+}
+
     const countriesData = [
       { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
       { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
@@ -420,6 +451,39 @@
     const countrySelect = document.getElementById("country");
     const languageSelect = document.getElementById("language");
     const currencySelect = document.getElementById("currency");
+function aplicarTraduccion(idioma) {
+  const t = translations[idioma] || translations["es"];
+
+  document.querySelector("header h1").textContent = t.title;
+  document.querySelector("header p").textContent = t.subtitle;
+
+  const enlaces = document.querySelectorAll("nav a");
+  if (enlaces.length >= 5) {
+    enlaces[0].textContent = t.navInicio;
+    enlaces[1].textContent = t.navCatalogo;
+    enlaces[2].textContent = t.navRegistro;
+    enlaces[3].textContent = t.navLogin;
+    enlaces[4].textContent = t.navContacto;
+  }
+
+  document.querySelector("label[for='country']")?.childNodes[0].nodeValue = `🌎 ${t.pais}: `;
+  document.querySelector("label[for='language']")?.childNodes[0].nodeValue = `🗣️ ${t.idioma}: `;
+  document.querySelector("label[for='currency']")?.childNodes[0].nodeValue = `💰 ${t.moneda}: `;
+
+  document.querySelectorAll(".carrito-btn").forEach(btn => {
+    btn.textContent = t.agregarCarrito;
+  });
+
+  document.querySelectorAll(".libro p").forEach(p => {
+    if (p.innerText.startsWith("Autor") || p.innerText.startsWith("Author") || p.innerText.startsWith("Auteur")) {
+      const nombre = p.innerText.split(":")[1];
+      p.innerText = `${t.autor}:${nombre}`;
+    }
+  });
+
+  document.querySelector("footer p").textContent = `© 2025 ${t.title}. ${t.derechos}`;
+}
+
 
     countriesData.forEach(country => {
       countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
