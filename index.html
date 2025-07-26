@@ -442,5 +442,45 @@ function aplicarTraduccion() {
 }
 
   </script>
+<script>
+  // ... Todo tu código actual arriba ...
+
+  // Función para agregar al carrito
+  function agregarAlCarrito(titulo, autor, precio, moneda) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const producto = {
+      titulo,
+      autor,
+      precio,
+      moneda,
+      cantidad: 1
+    };
+
+    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+    if (existente) {
+      existente.cantidad += 1;
+    } else {
+      carrito.push(producto);
+    }
+
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    alert(`📚 ${titulo} añadido al carrito.`);
+  }
+
+  // Asignar evento a cada botón del catálogo
+  document.querySelectorAll(".carrito-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const contenedor = btn.closest(".libro");
+      const titulo = contenedor.querySelector("h3").textContent;
+      const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
+      const precio = contenedor.querySelector(".price").getAttribute("data-base");
+      const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
+
+      agregarAlCarrito(titulo, autor, precio, moneda);
+    });
+  });
+</script>
+
 </body>
 </html>
