@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Catálogo - Librería Electrónica IA</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background-color: #f3f6fa;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      display: flex;
+      justify-content: center;
+      background-color: #0066cc;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background-color: #e9f0fb;
+    }
+    label {
+      font-weight: bold;
+    }
+    select {
+      margin-left: 0.5rem;
+    }
+    .catalogo {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      justify-content: center;
+      padding: 2rem;
+    }
+    .libro {
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      width: 250px;
+      text-align: center;
+    }
+    .libro img {
+      max-width: 100%;
+    }
+    .carrito-btn {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      margin-top: 0.5rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      background-color: #003366;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Librería Electrónica IA</h1>
+    <p>Tu catálogo internacional de libros digitales</p>
+  </header>
+
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar Sesión</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="carrito.html">🛒 Carrito</a>
+  </nav>
+
+  <div class="selector-container">
+    <label>🌎 País:
+      <select id="country"></select>
+    </label>
+    <label>🗣️ Idioma:
+      <select id="language"></select>
+    </label>
+    <label>💰 Moneda:
+      <select id="currency"></select>
+    </label>
+  </div>
+
+  <section class="catalogo">
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 1">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p><strong>Autor:</strong> Ana Pérez</p>
+      <p class="price" data-base="30000">COP $ 30000</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 2">
+      <h3>Machine Learning Avanzado</h3>
+      <p><strong>Autor:</strong> John Smith</p>
+      <p class="price" data-base="20">USD $ 20</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 3">
+      <h3>Redes Neuronales con Python</h3>
+      <p><strong>Autor:</strong> María López</p>
+      <p class="price" data-base="18">EUR € 18</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    // Datos simplificados para ejemplo
+    const countriesData = [
+      { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
+      { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
+      { code: "FR", name: "Francia", language: "fr", currency: "EUR €" }
+    ];
+
+    const languageNames = {
+      es: "Español", en: "English", fr: "Français"
+    };
+
+    const countrySelect = document.getElementById("country");
+    const languageSelect = document.getElementById("language");
+    const currencySelect = document.getElementById("currency");
+
+    countriesData.forEach(country => {
+      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+        languageSelect.innerHTML += `<option value="${country.language}">${languageNames[country.language]}</option>`;
+      }
+      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+      }
+    });
+
+    function updatePrices(symbol) {
+      document.querySelectorAll(".price").forEach(el => {
+        const base = el.getAttribute("data-base");
+        el.textContent = `${symbol} ${base}`;
+      });
+    }
+
+    countrySelect.onchange = () => {
+      const selected = countriesData.find(c => c.code === countrySelect.value);
+      languageSelect.value = selected.language;
+      currencySelect.value = selected.currency;
+      localStorage.setItem("country", selected.code);
+      localStorage.setItem("language", selected.language);
+      localStorage.setItem("currency", selected.currency);
+      updatePrices(selected.currency);
+    };
+
+    languageSelect.onchange = () => {
+      localStorage.setItem("language", languageSelect.value);
+      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+    };
+
+    currencySelect.onchange = () => {
+      localStorage.setItem("currency", currencySelect.value);
+      updatePrices(currencySelect.value);
+    };
+
+    window.onload = () => {
+      const savedCountry = localStorage.getItem("country") || "CO";
+      const savedLanguage = localStorage.getItem("language") || "es";
+      const savedCurrency = localStorage.getItem("currency") || "COP $";
+      countrySelect.value = savedCountry;
+      languageSelect.value = savedLanguage;
+      currencySelect.value = savedCurrency;
+      updatePrices(savedCurrency);
+    };
+
+    // Agregar al carrito
+    function agregarAlCarrito(titulo, autor, precio, moneda) {
+      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      const producto = { titulo, autor, precio, moneda, cantidad: 1 };
+      const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+      if (existente) {
+        existente.cantidad += 1;
+      } else {
+        carrito.push(producto);
+      }
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      alert(`📚 ${titulo} añadido al carrito.`);
+    }
+
+    document.querySelectorAll(".carrito-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const contenedor = btn.closest(".libro");
+        const titulo = contenedor.querySelector("h3").textContent;
+        const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
+        const precio = contenedor.querySelector(".price").getAttribute("data-base");
+        const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
+        agregarAlCarrito(titulo, autor, precio, moneda);
+      });
+    });
+  </script>
+</body>
+</html>
