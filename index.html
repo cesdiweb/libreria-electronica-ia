@@ -442,5 +442,28 @@ function aplicarTraduccion() {
 }
 
   </script>
+function agregarAlCarrito(titulo, autor, precio, moneda) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  const producto = {
+    titulo,
+    autor,
+    precio,
+    moneda,
+    cantidad: 1
+  };
+
+  // Verifica si ya está en el carrito
+  const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+  if (existente) {
+    existente.cantidad += 1;
+  } else {
+    carrito.push(producto);
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  alert(`📚 ${titulo} añadido al carrito.`);
+}
+
 </body>
 </html>
