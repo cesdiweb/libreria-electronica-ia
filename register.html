@@ -164,5 +164,65 @@
       window.location.href = "login.html";
     });
   </script>
+<script>
+  const translations = {
+    es: {
+      "Registro de Usuario": "Registro de Usuario",
+      "Nombre completo": "Nombre completo",
+      "Número de cédula": "Número de cédula",
+      "Correo electrónico": "Correo electrónico",
+      "Nombre de usuario": "Nombre de usuario",
+      "Contraseña": "Contraseña",
+      "Mostrar contraseña": "Mostrar contraseña",
+      "Rol": "Rol",
+      "Comprador": "Comprador",
+      "Administrador": "Administrador",
+      "Registrarse": "Registrarse"
+    },
+    en: {
+      "Registro de Usuario": "User Registration",
+      "Nombre completo": "Full Name",
+      "Número de cédula": "ID Number",
+      "Correo electrónico": "Email",
+      "Nombre de usuario": "Username",
+      "Contraseña": "Password",
+      "Mostrar contraseña": "Show password",
+      "Rol": "Role",
+      "Comprador": "Buyer",
+      "Administrador": "Administrator",
+      "Registrarse": "Register"
+    },
+    fr: {
+      "Registro de Usuario": "Inscription de l'utilisateur",
+      "Nombre completo": "Nom complet",
+      "Número de cédula": "Numéro d'identité",
+      "Correo electrónico": "E-mail",
+      "Nombre de usuario": "Nom d'utilisateur",
+      "Contraseña": "Mot de passe",
+      "Mostrar contraseña": "Afficher le mot de passe",
+      "Rol": "Rôle",
+      "Comprador": "Acheteur",
+      "Administrador": "Administrateur",
+      "Registrarse": "S'inscrire"
+    }
+    // Puedes agregar más idiomas aquí...
+  };
+
+  function aplicarTraduccionRegistro() {
+    const lang = localStorage.getItem("language") || "es";
+    const dict = translations[lang];
+    if (!dict) return;
+
+    document.querySelectorAll("h2, label, button, option").forEach(el => {
+      const original = el.textContent.trim();
+      if (dict[original]) el.textContent = dict[original];
+    });
+  }
+
+  window.onload = () => {
+    aplicarTraduccionRegistro();
+  };
+</script>
+
 </body>
 </html>
