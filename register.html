@@ -1,59 +1,169 @@
-<script>
-  const translations = {
-    es: {
-      "Registro de Usuario": "Registro de Usuario",
-      "Nombre completo": "Nombre completo",
-      "Número de cédula": "Número de cédula",
-      "Correo electrónico": "Correo electrónico",
-      "Nombre de usuario": "Nombre de usuario",
-      "Contraseña": "Contraseña",
-      "Mostrar contraseña": "Mostrar contraseña",
-      "Rol": "Rol",
-      "Comprador": "Comprador",
-      "Administrador": "Administrador",
-      "Registrarse": "Registrarse"
-    },
-    en: {
-      "Registro de Usuario": "User Registration",
-      "Nombre completo": "Full Name",
-      "Número de cédula": "ID Number",
-      "Correo electrónico": "Email",
-      "Nombre de usuario": "Username",
-      "Contraseña": "Password",
-      "Mostrar contraseña": "Show password",
-      "Rol": "Role",
-      "Comprador": "Buyer",
-      "Administrador": "Administrator",
-      "Registrarse": "Register"
-    },
-    fr: {
-      "Registro de Usuario": "Inscription de l'utilisateur",
-      "Nombre completo": "Nom complet",
-      "Número de cédula": "Numéro d'identité",
-      "Correo electrónico": "E-mail",
-      "Nombre de usuario": "Nom d'utilisateur",
-      "Contraseña": "Mot de passe",
-      "Mostrar contraseña": "Afficher le mot de passe",
-      "Rol": "Rôle",
-      "Comprador": "Acheteur",
-      "Administrador": "Administrateur",
-      "Registrarse": "S'inscrire"
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Registro de Usuario</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f3f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-    // Puedes agregar más idiomas...
-  };
 
-  function aplicarTraduccionRegistro() {
-    const lang = localStorage.getItem("language") || "es";
-    const dict = translations[lang];
-    if (!dict) return;
+    .form-container {
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: center;
+    }
 
-    document.querySelectorAll("h2, label, button, option").forEach(el => {
-      const original = el.textContent.trim();
-      if (dict[original]) el.textContent = dict[original];
+    h2 {
+      color: #004080;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 0.6rem;
+      margin: 0.4rem 0;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .password-toggle {
+      display: flex;
+      justify-content: start;
+      align-items: center;
+      font-size: 0.9em;
+      margin: 0.3rem 0;
+    }
+
+    .password-toggle input {
+      margin-right: 0.3rem;
+    }
+
+    button {
+      background-color: #004080;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+    }
+
+    button:hover {
+      background-color: #003366;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.9em;
+      margin-top: 0.5rem;
+    }
+
+    label {
+      font-size: 0.9em;
+      color: #333;
+      display: block;
+      text-align: left;
+      margin-top: 0.3rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Registro de Usuario</h2>
+    <form id="registerForm">
+      <label for="fullName">Nombre completo</label>
+      <input type="text" id="fullName" placeholder="Nombre completo" required />
+
+      <label for="cedula">Número de cédula</label>
+      <input type="number" id="cedula" placeholder="Cédula" required />
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" placeholder="Correo electrónico" required />
+
+      <label for="newUsername">Nombre de usuario</label>
+      <input type="text" id="newUsername" placeholder="Nombre de usuario" required />
+
+      <label for="newPassword">Contraseña</label>
+      <input type="password" id="newPassword" placeholder="Contraseña" required />
+      <div class="password-toggle">
+        <input type="checkbox" id="togglePassword" /> <label for="togglePassword">Mostrar contraseña</label>
+      </div>
+
+      <label for="userRole">Rol</label>
+      <select id="userRole">
+        <option value="comprador">Comprador</option>
+        <option value="administrador">Administrador</option>
+      </select>
+
+      <button type="submit">Registrarse</button>
+      <div class="error" id="errorMsg"></div>
+    </form>
+  </div>
+
+  <script>
+    // Mostrar / ocultar contraseña
+    document.getElementById("togglePassword").addEventListener("change", function () {
+      const passwordField = document.getElementById("newPassword");
+      passwordField.type = this.checked ? "text" : "password";
     });
-  }
 
-  window.onload = () => {
-    aplicarTraduccionRegistro();
-  };
-</script>
+    document.getElementById("registerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const fullName = document.getElementById("fullName").value.trim();
+      const cedula = document.getElementById("cedula").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const username = document.getElementById("newUsername").value.trim();
+      const password = document.getElementById("newPassword").value.trim();
+      const role = document.getElementById("userRole").value;
+      const errorMsg = document.getElementById("errorMsg");
+
+      errorMsg.textContent = "";
+
+      if (!fullName || !cedula || !email || !username || !password) {
+        errorMsg.textContent = "Todos los campos son obligatorios.";
+        return;
+      }
+
+      if (username.length < 3 || password.length < 4) {
+        errorMsg.textContent = "Usuario o contraseña demasiado cortos.";
+        return;
+      }
+
+      if (!email.includes("@") || !email.includes(".")) {
+        errorMsg.textContent = "Correo electrónico no válido.";
+        return;
+      }
+
+      const existingUser = localStorage.getItem(`user_${username}`);
+      if (existingUser) {
+        errorMsg.textContent = "⚠️ El nombre de usuario ya existe.";
+        return;
+      }
+
+      const userData = {
+        nombre: fullName,
+        cedula: cedula,
+        correo: email,
+        password: password,
+        role: role
+      };
+
+      localStorage.setItem(`user_${username}`, JSON.stringify(userData));
+      alert("✅ Usuario registrado correctamente.");
+      window.location.href = "login.html";
+    });
+  </script>
+</body>
+</html>
