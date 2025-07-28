@@ -9,17 +9,17 @@ const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
 countriesData.forEach(country => {
-  if (!countrySelect.querySelector(`option[value="${country.code}"]`)) {
-    countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+  if (!countrySelect.querySelector(option[value="${country.code}"])) {
+    countrySelect.innerHTML += <option value="${country.code}">${country.name}</option>;
   }
 
-  if (!languageSelect.querySelector(`option[value="${country.language}"]`)) {
+  if (!languageSelect.querySelector(option[value="${country.language}"])) {
     const langName = languageNames[country.language] || country.language;
-    languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
+    languageSelect.innerHTML += <option value="${country.language}">${langName}</option>;
   }
 
-  if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-    currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+  if (!currencySelect.querySelector(option[value='${country.currency}'])) {
+    currencySelect.innerHTML += <option value="${country.currency}">${country.currency}</option>;
   }
 });
 
@@ -72,7 +72,7 @@ function updatePrices(symbol) {
   const prices = document.querySelectorAll(".price");
   prices.forEach(el => {
     const base = el.getAttribute("data-base");
-    el.textContent = `${symbol} ${base}`;
+    el.textContent = ${symbol} ${base};
   });
 }
 
