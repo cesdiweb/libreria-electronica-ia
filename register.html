@@ -25,7 +25,7 @@
     h2 {
       color: #004080;
     }
-    input, select {
+    input {
       width: 100%;
       padding: 0.6rem;
       margin: 0.4rem 0;
@@ -92,11 +92,8 @@
         <label for="togglePassword" data-i18n="Mostrar contraseña">Mostrar contraseña</label>
       </div>
 
-      <label for="userRole" data-i18n="Rol">Rol</label>
-      <select id="userRole">
-        <option value="comprador" data-i18n="Comprador">Comprador</option>
-        <option value="administrador" data-i18n="Administrador">Administrador</option>
-      </select>
+      <!-- Rol oculto y fijo como comprador -->
+      <input type="hidden" id="userRole" value="comprador" />
 
       <button type="submit" data-i18n="Registrarse">Registrarse</button>
       <div class="error" id="errorMsg"></div>
@@ -111,12 +108,13 @@
 
     document.getElementById("registerForm").addEventListener("submit", function (e) {
       e.preventDefault();
+
       const fullName = document.getElementById("fullName").value.trim();
       const cedula = document.getElementById("cedula").value.trim();
       const email = document.getElementById("email").value.trim();
       const username = document.getElementById("newUsername").value.trim();
       const password = document.getElementById("newPassword").value.trim();
-      const role = document.getElementById("userRole").value;
+      const role = "comprador";
       const errorMsg = document.getElementById("errorMsg");
 
       errorMsg.textContent = "";
@@ -166,9 +164,6 @@
         "Nombre de usuario": "Nombre de usuario",
         "Contraseña": "Contraseña",
         "Mostrar contraseña": "Mostrar contraseña",
-        "Rol": "Rol",
-        "Comprador": "Comprador",
-        "Administrador": "Administrador",
         "Registrarse": "Registrarse"
       },
       en: {
@@ -179,9 +174,6 @@
         "Nombre de usuario": "Username",
         "Contraseña": "Password",
         "Mostrar contraseña": "Show password",
-        "Rol": "Role",
-        "Comprador": "Buyer",
-        "Administrador": "Administrator",
         "Registrarse": "Register"
       },
       fr: {
@@ -192,9 +184,6 @@
         "Nombre de usuario": "Nom d'utilisateur",
         "Contraseña": "Mot de passe",
         "Mostrar contraseña": "Afficher le mot de passe",
-        "Rol": "Rôle",
-        "Comprador": "Acheteur",
-        "Administrador": "Administrateur",
         "Registrarse": "S'inscrire"
       },
       pt: {
@@ -205,9 +194,6 @@
         "Nombre de usuario": "Nome de usuário",
         "Contraseña": "Senha",
         "Mostrar contraseña": "Mostrar senha",
-        "Rol": "Função",
-        "Comprador": "Comprador",
-        "Administrador": "Administrador",
         "Registrarse": "Registrar"
       },
       de: {
@@ -218,9 +204,6 @@
         "Nombre de usuario": "Benutzername",
         "Contraseña": "Passwort",
         "Mostrar contraseña": "Passwort anzeigen",
-        "Rol": "Rolle",
-        "Comprador": "Käufer",
-        "Administrador": "Administrator",
         "Registrarse": "Registrieren"
       },
       zh: {
@@ -231,9 +214,6 @@
         "Nombre de usuario": "用户名",
         "Contraseña": "密码",
         "Mostrar contraseña": "显示密码",
-        "Rol": "角色",
-        "Comprador": "买家",
-        "Administrador": "管理员",
         "Registrarse": "注册"
       }
     };
@@ -251,9 +231,7 @@
       document.title = dict["Registro de Usuario"] || "Registro";
     }
 
-    window.onload = () => {
-      aplicarTraduccionRegistro();
-    };
+    window.onload = aplicarTraduccionRegistro;
   </script>
 </body>
 </html>
