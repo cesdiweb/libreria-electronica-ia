@@ -1,133 +1,152 @@
-<script>
-// --- Datos de países, idiomas y monedas (usa tu countriesData ya integrado) ---
-const countriesData = [...]; // Usa el mismo array completo que ya tienes
-const languageNames = {...}; // Usa tu objeto completo
-
-// --- Llenar selectores de país, idioma y moneda ---
-const countrySelect = document.getElementById("country");
-const languageSelect = document.getElementById("language");
-const currencySelect = document.getElementById("currency");
-
-countriesData.forEach(country => {
-  if (!countrySelect.querySelector(option[value="${country.code}"])) {
-    countrySelect.innerHTML += <option value="${country.code}">${country.name}</option>;
-  }
-
-  if (!languageSelect.querySelector(option[value="${country.language}"])) {
-    const langName = languageNames[country.language] || country.language;
-    languageSelect.innerHTML += <option value="${country.language}">${langName}</option>;
-  }
-
-  if (!currencySelect.querySelector(option[value='${country.currency}'])) {
-    currencySelect.innerHTML += <option value="${country.currency}">${country.currency}</option>;
-  }
-});
-
-// --- Aplicar traducción al catálogo ---
-const translations = {
-  es: {
-    "Inicio": "Inicio",
-    "Catálogo": "Catálogo",
-    "Registrarse": "Registrarse",
-    "Iniciar Sesión": "Iniciar Sesión",
-    "Contacto": "Contacto",
-    "Agregar al carrito": "Agregar al carrito",
-    "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
-  },
-  en: {
-    "Inicio": "Home",
-    "Catálogo": "Catalog",
-    "Registrarse": "Register",
-    "Iniciar Sesión": "Login",
-    "Contacto": "Contact",
-    "Agregar al carrito": "Add to cart",
-    "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
-  },
-  fr: {
-    "Inicio": "Accueil",
-    "Catálogo": "Catalogue",
-    "Registrarse": "S'inscrire",
-    "Iniciar Sesión": "Connexion",
-    "Contacto": "Contact",
-    "Agregar al carrito": "Ajouter au panier",
-    "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
-  },
-  // Puedes agregar más idiomas
-};
-
-function aplicarTraduccion() {
-  const lang = localStorage.getItem('language') || 'es';
-  const dict = translations[lang];
-  if (!dict) return;
-
-  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-    if (dict[el.textContent]) {
-      el.textContent = dict[el.textContent];
+<!-- Archivo index.html corregido con carrito funcional -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Librería Electrónica IA</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #f3f6fa; color: #222; }
+    header { background-color: #004080; color: white; padding: 1rem; text-align: center; }
+    nav { display: flex; justify-content: center; gap: 1rem; background-color: #0066cc; padding: 0.5rem; }
+    nav a { color: white; text-decoration: none; font-weight: bold; }
+    .selector-container { display: flex; justify-content: center; gap: 1rem; margin: 1rem; flex-wrap: wrap; }
+    .selector-container select { padding: 0.5rem; border-radius: 5px; }
+    .catalogo { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; padding: 2rem; }
+    .libro { background: white; padding: 1rem; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); text-align: center; }
+    .libro img { max-width: 100%; height: auto; border-radius: 6px; }
+    .libro h3 { margin: 0.5rem 0 0.3rem; }
+    .libro p { margin: 0.3rem 0; }
+    .carrito-btn { margin-top: 0.5rem; background-color: #007bff; color: white; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+    footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+    @media (max-width: 600px) {
+      .selector-container { flex-direction: column; align-items: center; }
     }
+  </style>
+</head>
+<body>
+<header>
+  <h1 id="titulo">Librería Electrónica IA</h1>
+  <p id="subtitulo">Tu librería digital inteligente e internacional</p>
+</header>
+
+<nav>
+  <a href="index.html" id="nav-inicio">Inicio</a>
+  <a href="catalogo.html" id="nav-catalogo">Catálogo</a>
+  <a href="register.html" id="nav-registrarse">Registrarse</a>
+  <a href="login.html" id="nav-iniciar">Iniciar Sesión</a>
+  <a href="contacto.html" id="nav-contacto">Contacto</a>
+</nav>
+
+<div class="selector-container">
+  <label>🌎 País: <select id="country"></select></label>
+  <label>🗣️ Idioma: <select id="language"></select></label>
+  <label>💰 Moneda: <select id="currency"></select></label>
+</div>
+
+<section class="catalogo">
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 1">
+    <h3>Introducción a la Inteligencia Artificial</h3>
+    <p><strong>Autor:</strong> Ana Pérez</p>
+    <p class="price" data-base="30000">COP $ 30000</p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000)">Agregar al carrito</button>
+  </div>
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 2">
+    <h3>Machine Learning Avanzado</h3>
+    <p><strong>Autor:</strong> John Smith</p>
+    <p class="price" data-base="20">USD $ 20</p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('Machine Learning Avanzado', 20)">Agregar al carrito</button>
+  </div>
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 3">
+    <h3>Redes Neuronales con Python</h3>
+    <p><strong>Autor:</strong> María López</p>
+    <p class="price" data-base="18">EUR € 18</p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('Redes Neuronales con Python', 18)">Agregar al carrito</button>
+  </div>
+</section>
+
+<footer>
+  <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+</footer>
+
+<script>
+  const countriesData = [ { code: "CO", name: "Colombia", language: "es", currency: "COP $" }, { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" }, { code: "ES", name: "España", language: "es", currency: "EUR €" } ];
+  const languageNames = { es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés", de: "Alemán" };
+  const translations = {
+    es: { titulo: "Librería Electrónica IA", subtitulo: "Tu librería digital inteligente e internacional", inicio: "Inicio", catalogo: "Catálogo", registrarse: "Registrarse", iniciar: "Iniciar Sesión", contacto: "Contacto" },
+    en: { titulo: "AI Electronic Bookstore", subtitulo: "Your smart and international digital bookstore", inicio: "Home", catalogo: "Catalog", registrarse: "Sign Up", iniciar: "Login", contacto: "Contact" },
+    fr: { titulo: "Librairie Électronique IA", subtitulo: "Votre librairie numérique intelligente et internationale", inicio: "Accueil", catalogo: "Catalogue", registrarse: "S'inscrire", iniciar: "Connexion", contacto: "Contact" }
+  };
+
+  const countrySelect = document.getElementById("country");
+  const languageSelect = document.getElementById("language");
+  const currencySelect = document.getElementById("currency");
+
+  countriesData.forEach(c => {
+    countrySelect.innerHTML += `<option value="${c.code}">${c.name}</option>`;
+    if (!languageSelect.querySelector(`option[value="${c.language}"]`)) languageSelect.innerHTML += `<option value="${c.language}">${languageNames[c.language]}</option>`;
+    if (!currencySelect.querySelector(`option[value="${c.currency}"]`)) currencySelect.innerHTML += `<option value="${c.currency}">${c.currency}</option>`;
   });
-}
 
-// --- Actualizar precios según moneda ---
-function updatePrices(symbol) {
-  const prices = document.querySelectorAll(".price");
-  prices.forEach(el => {
-    const base = el.getAttribute("data-base");
-    el.textContent = ${symbol} ${base};
-  });
-}
+  countrySelect.onchange = () => {
+    const sel = countriesData.find(c => c.code === countrySelect.value);
+    languageSelect.value = sel.language;
+    currencySelect.value = sel.currency;
+    localStorage.setItem("country", sel.code);
+    localStorage.setItem("language", sel.language);
+    localStorage.setItem("currency", sel.currency);
+    updatePrices(sel.currency);
+    traducirTextos(sel.language);
+  };
 
-// --- Cambios de país manual ---
-countrySelect.onchange = () => {
-  const country = countrySelect.value;
-  const selected = countriesData.find(c => c.code === country);
-  languageSelect.value = selected.language;
-  currencySelect.value = selected.currency;
-  localStorage.setItem('country', country);
-  localStorage.setItem('language', selected.language);
-  localStorage.setItem('currency', selected.currency);
-  updatePrices(selected.currency);
-  aplicarTraduccion();
-};
+  languageSelect.onchange = () => {
+    localStorage.setItem("language", languageSelect.value);
+    traducirTextos(languageSelect.value);
+  };
 
-// --- Cambio de idioma manual ---
-languageSelect.onchange = () => {
-  localStorage.setItem('language', languageSelect.value);
-  aplicarTraduccion();
-};
+  currencySelect.onchange = () => {
+    localStorage.setItem("currency", currencySelect.value);
+    updatePrices(currencySelect.value);
+  };
 
-// --- Cambio de moneda manual ---
-currencySelect.onchange = () => {
-  localStorage.setItem('currency', currencySelect.value);
-  updatePrices(currencySelect.value);
-};
+  function updatePrices(symbol) {
+    document.querySelectorAll(".price").forEach(el => {
+      const base = el.getAttribute("data-base");
+      el.textContent = `${symbol} ${base}`;
+    });
+  }
 
-// --- Detectar IP si no hay datos guardados ---
-if (!localStorage.getItem("country")) {
-  fetch("https://ipapi.co/json/")
-    .then(response => response.json())
-    .then(data => {
-      const countryCode = data.country_code || "CO";
-      const countryData = countriesData.find(c => c.code === countryCode);
-      if (countryData) {
-        localStorage.setItem("country", countryData.code);
-        localStorage.setItem("language", countryData.language);
-        localStorage.setItem("currency", countryData.currency);
-      }
-    })
-    .catch(err => console.error("Error al detectar país por IP:", err));
-}
+  function traducirTextos(lang) {
+    const t = translations[lang] || translations.es;
+    document.getElementById("titulo").textContent = t.titulo;
+    document.getElementById("subtitulo").textContent = t.subtitulo;
+    document.getElementById("nav-inicio").textContent = t.inicio;
+    document.getElementById("nav-catalogo").textContent = t.catalogo;
+    document.getElementById("nav-registrarse").textContent = t.registrarse;
+    document.getElementById("nav-iniciar").textContent = t.iniciar;
+    document.getElementById("nav-contacto").textContent = t.contacto;
+  }
 
-// --- Cargar preferencias guardadas al cargar página ---
-window.onload = () => {
-  const savedCountry = localStorage.getItem("country") || "CO";
-  const savedLanguage = localStorage.getItem("language") || "es";
-  const savedCurrency = localStorage.getItem("currency") || "COP $";
+  function agregarAlCarrito(nombre, precio) {
+    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    carrito.push({ nombre, precio });
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    alert(`"${nombre}" fue agregado al carrito.`);
+  }
 
-  countrySelect.value = savedCountry;
-  languageSelect.value = savedLanguage;
-  currencySelect.value = savedCurrency;
-
-  updatePrices(savedCurrency);
-  aplicarTraduccion();
-};
+  window.onload = () => {
+    const pais = localStorage.getItem("country") || "CO";
+    const idioma = localStorage.getItem("language") || "es";
+    const moneda = localStorage.getItem("currency") || "COP $";
+    countrySelect.value = pais;
+    languageSelect.value = idioma;
+    currencySelect.value = moneda;
+    updatePrices(moneda);
+    traducirTextos(idioma);
+  };
 </script>
+</body>
+</html>
