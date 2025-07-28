@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registro de Usuario</title>
+  <title data-i18n="Registro de Usuario">Registro de Usuario</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,7 +14,6 @@
       height: 100vh;
       margin: 0;
     }
-
     .form-container {
       background: white;
       padding: 2rem;
@@ -23,11 +22,9 @@
       width: 350px;
       text-align: center;
     }
-
     h2 {
       color: #004080;
     }
-
     input, select {
       width: 100%;
       padding: 0.6rem;
@@ -35,7 +32,6 @@
       border-radius: 5px;
       border: 1px solid #ccc;
     }
-
     .password-toggle {
       display: flex;
       justify-content: start;
@@ -43,11 +39,9 @@
       font-size: 0.9em;
       margin: 0.3rem 0;
     }
-
     .password-toggle input {
       margin-right: 0.3rem;
     }
-
     button {
       background-color: #004080;
       color: white;
@@ -57,17 +51,14 @@
       cursor: pointer;
       margin-top: 1rem;
     }
-
     button:hover {
       background-color: #003366;
     }
-
     .error {
       color: red;
       font-size: 0.9em;
       margin-top: 0.5rem;
     }
-
     label {
       font-size: 0.9em;
       color: #333;
@@ -79,39 +70,40 @@
 </head>
 <body>
   <div class="form-container">
-    <h2>Registro de Usuario</h2>
+    <h2 data-i18n="Registro de Usuario">Registro de Usuario</h2>
     <form id="registerForm">
-      <label for="fullName">Nombre completo</label>
+      <label for="fullName" data-i18n="Nombre completo">Nombre completo</label>
       <input type="text" id="fullName" placeholder="Nombre completo" required />
 
-      <label for="cedula">Número de cédula</label>
+      <label for="cedula" data-i18n="Número de cédula">Número de cédula</label>
       <input type="number" id="cedula" placeholder="Cédula" required />
 
-      <label for="email">Correo electrónico</label>
+      <label for="email" data-i18n="Correo electrónico">Correo electrónico</label>
       <input type="email" id="email" placeholder="Correo electrónico" required />
 
-      <label for="newUsername">Nombre de usuario</label>
+      <label for="newUsername" data-i18n="Nombre de usuario">Nombre de usuario</label>
       <input type="text" id="newUsername" placeholder="Nombre de usuario" required />
 
-      <label for="newPassword">Contraseña</label>
+      <label for="newPassword" data-i18n="Contraseña">Contraseña</label>
       <input type="password" id="newPassword" placeholder="Contraseña" required />
+
       <div class="password-toggle">
-        <input type="checkbox" id="togglePassword" /> <label for="togglePassword">Mostrar contraseña</label>
+        <input type="checkbox" id="togglePassword" />
+        <label for="togglePassword" data-i18n="Mostrar contraseña">Mostrar contraseña</label>
       </div>
 
-      <label for="userRole">Rol</label>
+      <label for="userRole" data-i18n="Rol">Rol</label>
       <select id="userRole">
-        <option value="comprador">Comprador</option>
-        <option value="administrador">Administrador</option>
+        <option value="comprador" data-i18n="Comprador">Comprador</option>
+        <option value="administrador" data-i18n="Administrador">Administrador</option>
       </select>
 
-      <button type="submit">Registrarse</button>
+      <button type="submit" data-i18n="Registrarse">Registrarse</button>
       <div class="error" id="errorMsg"></div>
     </form>
   </div>
 
   <script>
-    // Mostrar / ocultar contraseña
     document.getElementById("togglePassword").addEventListener("change", function () {
       const passwordField = document.getElementById("newPassword");
       passwordField.type = this.checked ? "text" : "password";
@@ -119,7 +111,6 @@
 
     document.getElementById("registerForm").addEventListener("submit", function (e) {
       e.preventDefault();
-
       const fullName = document.getElementById("fullName").value.trim();
       const cedula = document.getElementById("cedula").value.trim();
       const email = document.getElementById("email").value.trim();
@@ -164,103 +155,105 @@
       window.location.href = "login.html";
     });
   </script>
-<script>
-  const translations = {
-    es: {
-      "Registro de Usuario": "Registro de Usuario",
-      "Nombre completo": "Nombre completo",
-      "Número de cédula": "Número de cédula",
-      "Correo electrónico": "Correo electrónico",
-      "Nombre de usuario": "Nombre de usuario",
-      "Contraseña": "Contraseña",
-      "Mostrar contraseña": "Mostrar contraseña",
-      "Rol": "Rol",
-      "Comprador": "Comprador",
-      "Administrador": "Administrador",
-      "Registrarse": "Registrarse"
-    },
-    en: {
-      "Registro de Usuario": "User Registration",
-      "Nombre completo": "Full Name",
-      "Número de cédula": "ID Number",
-      "Correo electrónico": "Email",
-      "Nombre de usuario": "Username",
-      "Contraseña": "Password",
-      "Mostrar contraseña": "Show password",
-      "Rol": "Role",
-      "Comprador": "Buyer",
-      "Administrador": "Administrator",
-      "Registrarse": "Register"
-    },
-    fr: {
-      "Registro de Usuario": "Inscription de l'utilisateur",
-      "Nombre completo": "Nom complet",
-      "Número de cédula": "Numéro d'identité",
-      "Correo electrónico": "E-mail",
-      "Nombre de usuario": "Nom d'utilisateur",
-      "Contraseña": "Mot de passe",
-      "Mostrar contraseña": "Afficher le mot de passe",
-      "Rol": "Rôle",
-      "Comprador": "Acheteur",
-      "Administrador": "Administrateur",
-      "Registrarse": "S'inscrire"
-    },
-    pt: {
-      "Registro de Usuario": "Registro de Usuário",
-      "Nombre completo": "Nome completo",
-      "Número de cédula": "Número de identificação",
-      "Correo electrónico": "E-mail",
-      "Nombre de usuario": "Nome de usuário",
-      "Contraseña": "Senha",
-      "Mostrar contraseña": "Mostrar senha",
-      "Rol": "Função",
-      "Comprador": "Comprador",
-      "Administrador": "Administrador",
-      "Registrarse": "Registrar"
-    },
-    de: {
-      "Registro de Usuario": "Benutzerregistrierung",
-      "Nombre completo": "Vollständiger Name",
-      "Número de cédula": "Ausweisnummer",
-      "Correo electrónico": "E-Mail",
-      "Nombre de usuario": "Benutzername",
-      "Contraseña": "Passwort",
-      "Mostrar contraseña": "Passwort anzeigen",
-      "Rol": "Rolle",
-      "Comprador": "Käufer",
-      "Administrador": "Administrator",
-      "Registrarse": "Registrieren"
-    },
-    zh: {
-      "Registro de Usuario": "用户注册",
-      "Nombre completo": "全名",
-      "Número de cédula": "身份证号码",
-      "Correo electrónico": "电子邮件",
-      "Nombre de usuario": "用户名",
-      "Contraseña": "密码",
-      "Mostrar contraseña": "显示密码",
-      "Rol": "角色",
-      "Comprador": "买家",
-      "Administrador": "管理员",
-      "Registrarse": "注册"
+
+  <script>
+    const translations = {
+      es: {
+        "Registro de Usuario": "Registro de Usuario",
+        "Nombre completo": "Nombre completo",
+        "Número de cédula": "Número de cédula",
+        "Correo electrónico": "Correo electrónico",
+        "Nombre de usuario": "Nombre de usuario",
+        "Contraseña": "Contraseña",
+        "Mostrar contraseña": "Mostrar contraseña",
+        "Rol": "Rol",
+        "Comprador": "Comprador",
+        "Administrador": "Administrador",
+        "Registrarse": "Registrarse"
+      },
+      en: {
+        "Registro de Usuario": "User Registration",
+        "Nombre completo": "Full Name",
+        "Número de cédula": "ID Number",
+        "Correo electrónico": "Email",
+        "Nombre de usuario": "Username",
+        "Contraseña": "Password",
+        "Mostrar contraseña": "Show password",
+        "Rol": "Role",
+        "Comprador": "Buyer",
+        "Administrador": "Administrator",
+        "Registrarse": "Register"
+      },
+      fr: {
+        "Registro de Usuario": "Inscription de l'utilisateur",
+        "Nombre completo": "Nom complet",
+        "Número de cédula": "Numéro d'identité",
+        "Correo electrónico": "E-mail",
+        "Nombre de usuario": "Nom d'utilisateur",
+        "Contraseña": "Mot de passe",
+        "Mostrar contraseña": "Afficher le mot de passe",
+        "Rol": "Rôle",
+        "Comprador": "Acheteur",
+        "Administrador": "Administrateur",
+        "Registrarse": "S'inscrire"
+      },
+      pt: {
+        "Registro de Usuario": "Registro de Usuário",
+        "Nombre completo": "Nome completo",
+        "Número de cédula": "Número de identificação",
+        "Correo electrónico": "E-mail",
+        "Nombre de usuario": "Nome de usuário",
+        "Contraseña": "Senha",
+        "Mostrar contraseña": "Mostrar senha",
+        "Rol": "Função",
+        "Comprador": "Comprador",
+        "Administrador": "Administrador",
+        "Registrarse": "Registrar"
+      },
+      de: {
+        "Registro de Usuario": "Benutzerregistrierung",
+        "Nombre completo": "Vollständiger Name",
+        "Número de cédula": "Ausweisnummer",
+        "Correo electrónico": "E-Mail",
+        "Nombre de usuario": "Benutzername",
+        "Contraseña": "Passwort",
+        "Mostrar contraseña": "Passwort anzeigen",
+        "Rol": "Rolle",
+        "Comprador": "Käufer",
+        "Administrador": "Administrator",
+        "Registrarse": "Registrieren"
+      },
+      zh: {
+        "Registro de Usuario": "用户注册",
+        "Nombre completo": "全名",
+        "Número de cédula": "身份证号码",
+        "Correo electrónico": "电子邮件",
+        "Nombre de usuario": "用户名",
+        "Contraseña": "密码",
+        "Mostrar contraseña": "显示密码",
+        "Rol": "角色",
+        "Comprador": "买家",
+        "Administrador": "管理员",
+        "Registrarse": "注册"
+      }
+    };
+
+    function aplicarTraduccionRegistro() {
+      const lang = localStorage.getItem("language") || "es";
+      const dict = translations[lang];
+      if (!dict) return;
+
+      document.querySelectorAll("[data-i18n]").forEach(el => {
+        const key = el.getAttribute("data-i18n");
+        if (dict[key]) el.textContent = dict[key];
+      });
+
+      document.title = dict["Registro de Usuario"] || "Registro";
     }
-  };
 
-  function aplicarTraduccionRegistro() {
-    const lang = localStorage.getItem("language") || "es";
-    const dict = translations[lang];
-    if (!dict) return;
-
-    document.querySelectorAll("h2, label, button, option").forEach(el => {
-      const original = el.textContent.trim();
-      if (dict[original]) el.textContent = dict[original];
-    });
-  }
-
-  window.onload = () => {
-    aplicarTraduccionRegistro();
-  };
-</script>
-
+    window.onload = () => {
+      aplicarTraduccionRegistro();
+    };
+  </script>
 </body>
 </html>
