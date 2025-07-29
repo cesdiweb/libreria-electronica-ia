@@ -3,235 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title data-i18n="Registro de Usuario">Registro de Usuario</title>
+  <title>Registrarse</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f3f6fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
+      background: #f3f6fa;
+      color: #333;
     }
-    .form-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 350px;
+    header {
+      background: #003366;
+      color: white;
+      padding: 1rem;
       text-align: center;
     }
-    h2 {
-      color: #004080;
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
     }
-    input {
-      width: 100%;
-      padding: 0.6rem;
-      margin: 0.4rem 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    header p {
+      margin: 0.2rem 0 0;
+      font-size: 0.95rem;
     }
-    .password-toggle {
+    nav {
+      background: #0d6efd;
       display: flex;
-      justify-content: start;
-      align-items: center;
-      font-size: 0.9em;
-      margin: 0.3rem 0;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem;
     }
-    .password-toggle input {
-      margin-right: 0.3rem;
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .form-container {
+      max-width: 500px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .form-group input, .form-group select {
+      width: 100%;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+    .form-group input[type="checkbox"] {
+      width: auto;
     }
     button {
-      background-color: #004080;
+      width: 100%;
+      background: #0d6efd;
       color: white;
-      padding: 0.6rem 1.2rem;
+      padding: 0.7rem;
       border: none;
-      border-radius: 5px;
+      font-weight: bold;
       cursor: pointer;
-      margin-top: 1rem;
+      border-radius: 5px;
     }
-    button:hover {
-      background-color: #003366;
-    }
-    .error {
-      color: red;
-      font-size: 0.9em;
-      margin-top: 0.5rem;
-    }
-    label {
-      font-size: 0.9em;
-      color: #333;
-      display: block;
-      text-align: left;
-      margin-top: 0.3rem;
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      background: #eaeaea;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Electronic Bookstore AI</h1>
+    <p>Your smart and international digital bookstore</p>
+  </header>
+
+  <nav>
+    <a href="index.html" data-translate="inicio">Inicio</a>
+    <a href="catalogo.html" data-translate="catalogo">Catálogo</a>
+    <a href="register.html" data-translate="registro">Registrarse</a>
+    <a href="login.html" data-translate="iniciar_sesion">Iniciar Sesión</a>
+    <a href="contacto.html" data-translate="contacto">Contacto</a>
+    <a href="carrito.html" data-translate="carrito">🛒 Carrito</a>
+  </nav>
+
   <div class="form-container">
-    <h2 data-i18n="Registro de Usuario">Registro de Usuario</h2>
-    <form id="registerForm">
-      <label for="fullName" data-i18n="Nombre completo">Nombre completo</label>
-      <input type="text" id="fullName" placeholder="Nombre completo" required />
+    <h2 data-translate="registro">Registrarse</h2>
 
-      <label for="cedula" data-i18n="Número de cédula">Número de cédula</label>
-      <input type="number" id="cedula" placeholder="Cédula" required />
+    <div class="form-group">
+      <label for="nombre" data-translate="nombre">Nombre completo</label>
+      <input type="text" id="nombre" required>
+    </div>
 
-      <label for="email" data-i18n="Correo electrónico">Correo electrónico</label>
-      <input type="email" id="email" placeholder="Correo electrónico" required />
+    <div class="form-group">
+      <label for="cedula" data-translate="cedula">Número de cédula</label>
+      <input type="text" id="cedula" required>
+    </div>
 
-      <label for="newUsername" data-i18n="Nombre de usuario">Nombre de usuario</label>
-      <input type="text" id="newUsername" placeholder="Nombre de usuario" required />
+    <div class="form-group">
+      <label for="correo" data-translate="correo">Correo electrónico</label>
+      <input type="email" id="correo" required>
+    </div>
 
-      <label for="newPassword" data-i18n="Contraseña">Contraseña</label>
-      <input type="password" id="newPassword" placeholder="Contraseña" required />
+    <div class="form-group">
+      <label for="usuario" data-translate="usuario">Nombre de usuario</label>
+      <input type="text" id="usuario" required>
+    </div>
 
-      <div class="password-toggle">
-        <input type="checkbox" id="togglePassword" />
-        <label for="togglePassword" data-i18n="Mostrar contraseña">Mostrar contraseña</label>
-      </div>
+    <div class="form-group">
+      <label for="contrasena" data-translate="clave">Contraseña</label>
+      <input type="password" id="contrasena" required>
+      <input type="checkbox" onclick="togglePassword()"> <span data-translate="mostrar">Mostrar contraseña</span>
+    </div>
 
-      <!-- Rol oculto y fijo como comprador -->
-      <input type="hidden" id="userRole" value="comprador" />
+    <div class="form-group">
+      <label for="rol" data-translate="rol">Rol</label>
+      <select id="rol" required>
+        <option value="comprador" data-translate="comprador">Comprador</option>
+        <option value="admin" data-translate="administrador">Administrador</option>
+      </select>
+    </div>
 
-      <button type="submit" data-i18n="Registrarse">Registrarse</button>
-      <div class="error" id="errorMsg"></div>
-    </form>
+    <button onclick="registrarUsuario()" data-translate="boton_registrar">Registrarse</button>
   </div>
 
-  <script>
-    document.getElementById("togglePassword").addEventListener("change", function () {
-      const passwordField = document.getElementById("newPassword");
-      passwordField.type = this.checked ? "text" : "password";
-    });
-
-    document.getElementById("registerForm").addEventListener("submit", function (e) {
-      e.preventDefault();
-
-      const fullName = document.getElementById("fullName").value.trim();
-      const cedula = document.getElementById("cedula").value.trim();
-      const email = document.getElementById("email").value.trim();
-      const username = document.getElementById("newUsername").value.trim();
-      const password = document.getElementById("newPassword").value.trim();
-      const role = "comprador";
-      const errorMsg = document.getElementById("errorMsg");
-
-      errorMsg.textContent = "";
-
-      if (!fullName || !cedula || !email || !username || !password) {
-        errorMsg.textContent = "Todos los campos son obligatorios.";
-        return;
-      }
-
-      if (username.length < 3 || password.length < 4) {
-        errorMsg.textContent = "Usuario o contraseña demasiado cortos.";
-        return;
-      }
-
-      if (!email.includes("@") || !email.includes(".")) {
-        errorMsg.textContent = "Correo electrónico no válido.";
-        return;
-      }
-
-      const existingUser = localStorage.getItem(`user_${username}`);
-      if (existingUser) {
-        errorMsg.textContent = "⚠️ El nombre de usuario ya existe.";
-        return;
-      }
-
-      const userData = {
-        nombre: fullName,
-        cedula: cedula,
-        correo: email,
-        password: password,
-        role: role
-      };
-
-      localStorage.setItem(`user_${username}`, JSON.stringify(userData));
-      alert("✅ Usuario registrado correctamente.");
-      window.location.href = "login.html";
-    });
-  </script>
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
 
   <script>
     const translations = {
       es: {
-        "Registro de Usuario": "Registro de Usuario",
-        "Nombre completo": "Nombre completo",
-        "Número de cédula": "Número de cédula",
-        "Correo electrónico": "Correo electrónico",
-        "Nombre de usuario": "Nombre de usuario",
-        "Contraseña": "Contraseña",
-        "Mostrar contraseña": "Mostrar contraseña",
-        "Registrarse": "Registrarse"
+        inicio: "Inicio",
+        catalogo: "Catálogo",
+        registro: "Registrarse",
+        iniciar_sesion: "Iniciar Sesión",
+        contacto: "Contacto",
+        carrito: "Carrito",
+        nombre: "Nombre completo",
+        cedula: "Número de cédula",
+        correo: "Correo electrónico",
+        usuario: "Nombre de usuario",
+        clave: "Contraseña",
+        mostrar: "Mostrar contraseña",
+        rol: "Rol",
+        comprador: "Comprador",
+        administrador: "Administrador",
+        boton_registrar: "Registrarse"
       },
       en: {
-        "Registro de Usuario": "User Registration",
-        "Nombre completo": "Full Name",
-        "Número de cédula": "ID Number",
-        "Correo electrónico": "Email",
-        "Nombre de usuario": "Username",
-        "Contraseña": "Password",
-        "Mostrar contraseña": "Show password",
-        "Registrarse": "Register"
+        inicio: "Home",
+        catalogo: "Catalog",
+        registro: "Register",
+        iniciar_sesion: "Login",
+        contacto: "Contact",
+        carrito: "Cart",
+        nombre: "Full Name",
+        cedula: "ID Number",
+        correo: "Email",
+        usuario: "Username",
+        clave: "Password",
+        mostrar: "Show password",
+        rol: "Role",
+        comprador: "Buyer",
+        administrador: "Administrator",
+        boton_registrar: "Register"
       },
       fr: {
-        "Registro de Usuario": "Inscription de l'utilisateur",
-        "Nombre completo": "Nom complet",
-        "Número de cédula": "Numéro d'identité",
-        "Correo electrónico": "E-mail",
-        "Nombre de usuario": "Nom d'utilisateur",
-        "Contraseña": "Mot de passe",
-        "Mostrar contraseña": "Afficher le mot de passe",
-        "Registrarse": "S'inscrire"
-      },
-      pt: {
-        "Registro de Usuario": "Registro de Usuário",
-        "Nombre completo": "Nome completo",
-        "Número de cédula": "Número de identificação",
-        "Correo electrónico": "E-mail",
-        "Nombre de usuario": "Nome de usuário",
-        "Contraseña": "Senha",
-        "Mostrar contraseña": "Mostrar senha",
-        "Registrarse": "Registrar"
-      },
-      de: {
-        "Registro de Usuario": "Benutzerregistrierung",
-        "Nombre completo": "Vollständiger Name",
-        "Número de cédula": "Ausweisnummer",
-        "Correo electrónico": "E-Mail",
-        "Nombre de usuario": "Benutzername",
-        "Contraseña": "Passwort",
-        "Mostrar contraseña": "Passwort anzeigen",
-        "Registrarse": "Registrieren"
-      },
-      zh: {
-        "Registro de Usuario": "用户注册",
-        "Nombre completo": "全名",
-        "Número de cédula": "身份证号码",
-        "Correo electrónico": "电子邮件",
-        "Nombre de usuario": "用户名",
-        "Contraseña": "密码",
-        "Mostrar contraseña": "显示密码",
-        "Registrarse": "注册"
+        inicio: "Accueil",
+        catalogo: "Catalogue",
+        registro: "S'inscrire",
+        iniciar_sesion: "Connexion",
+        contacto: "Contact",
+        carrito: "Panier",
+        nombre: "Nom complet",
+        cedula: "Numéro d'identité",
+        correo: "Courriel",
+        usuario: "Nom d'utilisateur",
+        clave: "Mot de passe",
+        mostrar: "Afficher le mot de passe",
+        rol: "Rôle",
+        comprador: "Acheteur",
+        administrador: "Administrateur",
+        boton_registrar: "S'inscrire"
       }
     };
 
-    function aplicarTraduccionRegistro() {
+    function aplicarTraduccion() {
       const lang = localStorage.getItem("language") || "es";
-      const dict = translations[lang];
-      if (!dict) return;
-
-      document.querySelectorAll("[data-i18n]").forEach(el => {
-        const key = el.getAttribute("data-i18n");
-        if (dict[key]) el.textContent = dict[key];
+      document.querySelectorAll("[data-translate]").forEach(el => {
+        const key = el.getAttribute("data-translate");
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
       });
-
-      document.title = dict["Registro de Usuario"] || "Registro";
     }
 
-    window.onload = aplicarTraduccionRegistro;
+    function togglePassword() {
+      const pass = document.getElementById("contrasena");
+      pass.type = pass.type === "password" ? "text" : "password";
+    }
+
+    function registrarUsuario() {
+      alert("Registro simulado exitosamente.");
+      // Aquí puedes enviar los datos al backend o guardarlos temporalmente
+    }
+
+    window.onload = () => {
+      aplicarTraduccion();
+    };
   </script>
 </body>
 </html>
