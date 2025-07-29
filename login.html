@@ -1,4 +1,3 @@
-<!-- login.html -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -8,86 +7,170 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f3f6fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
       margin: 0;
+      background: #f3f6fa;
+      color: #333;
     }
-
-    .form-container {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
+    header {
+      background: #003366;
+      color: white;
+      padding: 1rem;
       text-align: center;
     }
-
-    h2 {
-      color: #004080;
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
     }
-
-    input {
-      width: 100%;
-      padding: 0.6rem;
-      margin: 0.5rem 0;
-      border-radius: 5px;
-      border: 1px solid #ccc;
+    header p {
+      margin: 0.2rem 0 0;
+      font-size: 0.95rem;
     }
-
-    button {
-      background-color: #004080;
+    nav {
+      background: #0d6efd;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+    nav a {
       color: white;
-      padding: 0.6rem 1.2rem;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin-top: 1rem;
+      text-decoration: none;
+      font-weight: bold;
     }
-
-    button:hover {
-      background-color: #003366;
+    .form-container {
+      max-width: 400px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-container h2 {
+      text-align: center;
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      background: #0d6efd;
+      color: white;
+      padding: 0.7rem;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      background: #eaeaea;
     }
   </style>
 </head>
 <body>
-  <div class="form-container">
-    <h2>Iniciar Sesión</h2>
-   <form id="loginForm">
-  <input type="text" id="username" placeholder="Usuario" required />
-  <input type="password" id="password" placeholder="Contraseña" required />
-  <button type="submit">Ingresar</button>
-  <p style="margin-top: 1rem;">
-    <a href="recuperar.html">¿Olvidó su clave?</a>
-  </p>
-</form>
+  <header>
+    <h1>Electronic Bookstore AI</h1>
+    <p>Your smart and international digital bookstore</p>
+  </header>
 
-     </div>
+  <nav>
+    <a href="index.html" data-translate="inicio">Inicio</a>
+    <a href="catalogo.html" data-translate="catalogo">Catálogo</a>
+    <a href="register.html" data-translate="registro">Registrarse</a>
+    <a href="login.html" data-translate="iniciar_sesion">Iniciar Sesión</a>
+    <a href="contacto.html" data-translate="contacto">Contacto</a>
+    <a href="carrito.html" data-translate="carrito">🛒 Carrito</a>
+  </nav>
+
+  <div class="form-container">
+    <h2 data-translate="iniciar_sesion">Iniciar Sesión</h2>
+    <div class="form-group">
+      <label for="username" data-translate="usuario">Usuario</label>
+      <input type="text" id="username" placeholder="Usuario / Email">
+    </div>
+    <div class="form-group">
+      <label for="password" data-translate="clave">Contraseña</label>
+      <input type="password" id="password" placeholder="Contraseña">
+    </div>
+    <button onclick="iniciarSesion()" data-translate="boton_ingresar">Ingresar</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
 
   <script>
-    document.getElementById("loginForm").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const username = document.getElementById("username").value.trim();
-      const password = document.getElementById("password").value.trim();
-      const stored = localStorage.getItem(`user_${username}`);
+    const translations = {
+      es: {
+        inicio: "Inicio",
+        catalogo: "Catálogo",
+        registro: "Registrarse",
+        iniciar_sesion: "Iniciar Sesión",
+        contacto: "Contacto",
+        carrito: "Carrito",
+        usuario: "Usuario",
+        clave: "Contraseña",
+        boton_ingresar: "Ingresar"
+      },
+      en: {
+        inicio: "Home",
+        catalogo: "Catalog",
+        registro: "Register",
+        iniciar_sesion: "Login",
+        contacto: "Contact",
+        carrito: "Cart",
+        usuario: "Username or Email",
+        clave: "Password",
+        boton_ingresar: "Login"
+      },
+      fr: {
+        inicio: "Accueil",
+        catalogo: "Catalogue",
+        registro: "S'inscrire",
+        iniciar_sesion: "Connexion",
+        contacto: "Contact",
+        carrito: "Panier",
+        usuario: "Nom d'utilisateur ou e-mail",
+        clave: "Mot de passe",
+        boton_ingresar: "Se connecter"
+      }
+    };
 
-    if (stored && stored === password) {
-  if (username === "admin") {
-    localStorage.setItem("userRole", "admin");
-    alert("Inicio de sesión como administrador.");
-    window.location.href = "admin.html"; // Redirige a página de admin
-  } else {
-    localStorage.setItem("userRole", "comprador");
-    alert("Inicio de sesión exitoso.");
-    window.location.href = "index.html"; // Redirige a página principal
-  }
-} else {
-  alert("Credenciales incorrectas.");
-}
+    function aplicarTraduccion() {
+      const lang = localStorage.getItem("language") || "es";
+      document.querySelectorAll("[data-translate]").forEach(el => {
+        const key = el.getAttribute("data-translate");
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
 
-    });
+    function iniciarSesion() {
+      const usuario = document.getElementById("username").value;
+      const clave = document.getElementById("password").value;
+      if (usuario && clave) {
+        alert("Inicio de sesión simulado con éxito.");
+        // Aquí puedes redirigir o almacenar sesión temporal
+      } else {
+        alert("Por favor complete todos los campos.");
+      }
+    }
+
+    window.onload = () => {
+      aplicarTraduccion();
+    };
   </script>
 </body>
 </html>
