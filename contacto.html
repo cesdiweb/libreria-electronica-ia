@@ -37,11 +37,11 @@
       text-decoration: none;
       font-weight: bold;
     }
-    .contact-form {
-      max-width: 500px;
+    .form-container {
+      max-width: 600px;
       margin: 2rem auto;
-      background: white;
       padding: 2rem;
+      background: white;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
@@ -90,25 +90,23 @@
     <a href="carrito.html" data-translate="carrito">🛒 Carrito</a>
   </nav>
 
-  <div class="contact-form">
+  <div class="form-container">
     <h2 data-translate="titulo_contacto">Formulario de Contacto</h2>
-    
-    <div class="form-group">
-      <label for="nombre" data-translate="nombre">Nombre</label>
-      <input type="text" id="nombre" required>
-    </div>
-
-    <div class="form-group">
-      <label for="correo" data-translate="correo">Correo Electrónico</label>
-      <input type="email" id="correo" required>
-    </div>
-
-    <div class="form-group">
-      <label for="mensaje" data-translate="mensaje">Mensaje</label>
-      <textarea id="mensaje" rows="5" required></textarea>
-    </div>
-
-    <button onclick="enviarMensaje()" data-translate="enviar">Enviar</button>
+    <form action="mailto:distribuidoradegafascesdi1@gmail.com" method="post" enctype="text/plain">
+      <div class="form-group">
+        <label for="nombre" data-translate="nombre">Nombre</label>
+        <input type="text" id="nombre" name="Nombre" required>
+      </div>
+      <div class="form-group">
+        <label for="correo" data-translate="correo">Correo electrónico</label>
+        <input type="email" id="correo" name="Correo" required>
+      </div>
+      <div class="form-group">
+        <label for="mensaje" data-translate="mensaje">Mensaje</label>
+        <textarea id="mensaje" name="Mensaje" rows="5" required></textarea>
+      </div>
+      <button type="submit" data-translate="enviar">Enviar</button>
+    </form>
   </div>
 
   <footer>
@@ -126,7 +124,7 @@
         carrito: "Carrito",
         titulo_contacto: "Formulario de Contacto",
         nombre: "Nombre",
-        correo: "Correo Electrónico",
+        correo: "Correo electrónico",
         mensaje: "Mensaje",
         enviar: "Enviar"
       },
@@ -166,10 +164,6 @@
           el.textContent = translations[lang][key];
         }
       });
-    }
-
-    function enviarMensaje() {
-      alert("Mensaje enviado correctamente (simulado).");
     }
 
     window.onload = aplicarTraduccion;
