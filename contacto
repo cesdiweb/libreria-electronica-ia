@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contacto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f3f6fa;
+      color: #333;
+    }
+    header {
+      background: #003366;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+    header p {
+      margin: 0.2rem 0 0;
+      font-size: 0.95rem;
+    }
+    nav {
+      background: #0d6efd;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .form-container {
+      max-width: 600px;
+      margin: 2rem auto;
+      padding: 2rem;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.5rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      background: #0d6efd;
+      color: white;
+      padding: 0.7rem;
+      border: none;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+      background: #eaeaea;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Electronic Bookstore AI</h1>
+    <p>Your smart and international digital bookstore</p>
+  </header>
+
+  <nav>
+    <a href="index.html" data-translate="inicio">Inicio</a>
+    <a href="catalogo.html" data-translate="catalogo">Catálogo</a>
+    <a href="register.html" data-translate="registro">Registrarse</a>
+    <a href="login.html" data-translate="iniciar_sesion">Iniciar Sesión</a>
+    <a href="contacto.html" data-translate="contacto">Contacto</a>
+    <a href="carrito.html" data-translate="carrito">🛒 Carrito</a>
+  </nav>
+
+  <div class="form-container">
+    <h2 data-translate="contacto">Contacto</h2>
+    <div class="form-group">
+      <label for="nombre" data-translate="nombre">Nombre</label>
+      <input type="text" id="nombre" required>
+    </div>
+    <div class="form-group">
+      <label for="correo" data-translate="correo">Correo electrónico</label>
+      <input type="email" id="correo" required>
+    </div>
+    <div class="form-group">
+      <label for="mensaje" data-translate="mensaje">Mensaje</label>
+      <textarea id="mensaje" rows="5" required></textarea>
+    </div>
+    <button onclick="enviarMensaje()" data-translate="boton_enviar">Enviar</button>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
+
+  <script>
+    const translations = {
+      es: {
+        inicio: "Inicio",
+        catalogo: "Catálogo",
+        registro: "Registrarse",
+        iniciar_sesion: "Iniciar Sesión",
+        contacto: "Contacto",
+        carrito: "Carrito",
+        nombre: "Nombre",
+        correo: "Correo electrónico",
+        mensaje: "Mensaje",
+        boton_enviar: "Enviar"
+      },
+      en: {
+        inicio: "Home",
+        catalogo: "Catalog",
+        registro: "Register",
+        iniciar_sesion: "Login",
+        contacto: "Contact",
+        carrito: "Cart",
+        nombre: "Name",
+        correo: "Email",
+        mensaje: "Message",
+        boton_enviar: "Send"
+      },
+      fr: {
+        inicio: "Accueil",
+        catalogo: "Catalogue",
+        registro: "S'inscrire",
+        iniciar_sesion: "Connexion",
+        contacto: "Contact",
+        carrito: "Panier",
+        nombre: "Nom",
+        correo: "Courriel",
+        mensaje: "Message",
+        boton_enviar: "Envoyer"
+      }
+    };
+
+    function aplicarTraduccion() {
+      const lang = localStorage.getItem("language") || "es";
+      document.querySelectorAll("[data-translate]").forEach(el => {
+        const key = el.getAttribute("data-translate");
+        if (translations[lang] && translations[lang][key]) {
+          el.textContent = translations[lang][key];
+        }
+      });
+    }
+
+    function enviarMensaje() {
+      alert("Mensaje enviado (simulado). Gracias por contactarnos.");
+    }
+
+    window.onload = () => {
+      aplicarTraduccion();
+    };
+  </script>
+</body>
+</html>
