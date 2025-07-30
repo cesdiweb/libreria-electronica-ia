@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contacto - Librería Electrónica IA</title>
+  <title>Contacto - Electronic Bookstore AI</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -87,7 +87,8 @@
 </head>
 <body>
   <header>
-    <h1 id="titulo">Librería Electrónica IA</h1>
+    <h1>Electronic Bookstore AI</h1>
+    <p>Your smart and international digital bookstore</p>
   </header>
 
   <nav>
@@ -107,30 +108,29 @@
 
   <div class="form-container">
     <h2 id="contacto-titulo">Formulario de Contacto</h2>
- <form action="https://formspree.io/f/mblkynzg" method="POST">
-  <label for="name">Nombre:</label>
-  <input type="text" id="name" name="name" required>
+    <form action="https://formspree.io/f/mblkynzg" method="POST">
+      <label for="name" id="label-nombre">Nombre:</label>
+      <input type="text" id="name" name="name" required>
 
-  <label for="email">Correo electrónico:</label>
-  <input type="email" id="email" name="email" required>
+      <label for="email" id="label-email">Correo electrónico:</label>
+      <input type="email" id="email" name="email" required>
 
-  <label for="message">Mensaje:</label>
-  <textarea id="message" name="message" rows="5" required></textarea>
+      <label for="message" id="label-mensaje">Mensaje:</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
 
-  <button type="submit">Enviar</button>
-</form>
-
+      <button type="submit" id="boton-enviar">Enviar</button>
+    </form>
   </div>
 
   <footer>
-    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+    <p>&copy; 2025 Electronic Bookstore AI. All rights reserved.</p>
   </footer>
 
+  <!-- Scripts -->
   <script>
-    // Usa tus arrays countriesData, languageNames y translations que ya tienes integrados
-    const countriesData = [...]; // ← pega aquí tu array completo de países
-    const languageNames = {...}; // ← pega aquí tu objeto completo de idiomas
-    const translations = {...}; // ← pega aquí tu bloque translations con los 6 idiomas
+    const countriesData = []; // Debes pegar aquí tu array completo de países
+    const languageNames = {}; // Debes pegar aquí tu objeto de idiomas
+    const translations = {};  // Debes pegar aquí tu bloque translations con los 6 idiomas
 
     const countrySelect = document.getElementById("country");
     const languageSelect = document.getElementById("language");
@@ -146,7 +146,6 @@
 
     function aplicarTraduccion(lang) {
       const t = translations[lang] || translations["es"];
-      document.getElementById("titulo").textContent = t.titulo;
       document.getElementById("nav-inicio").textContent = t.inicio;
       document.getElementById("nav-catalogo").textContent = t.catalogo;
       document.getElementById("nav-registro").textContent = t.registro;
