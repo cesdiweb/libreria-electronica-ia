@@ -3,109 +3,120 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contacto</title>
+  <title>Contacto - Librería Electrónica IA</title>
   <style>
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      background: #f3f6fa;
-      color: #333;
+      padding: 0;
+      background: #f5f5f5;
     }
+
     header {
-      background: #003366;
+      background: #1e88e5;
       color: white;
       padding: 1rem;
       text-align: center;
     }
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-    header p {
-      margin: 0.2rem 0 0;
-      font-size: 0.95rem;
-    }
+
     nav {
-      background: #0d6efd;
+      background: #1565c0;
       display: flex;
       justify-content: center;
       gap: 1rem;
-      padding: 0.5rem;
+      padding: 0.5rem 0;
     }
+
     nav a {
       color: white;
       text-decoration: none;
       font-weight: bold;
     }
+
+    .selector-container {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: #e3f2fd;
+    }
+
     .form-container {
       max-width: 600px;
       margin: 2rem auto;
       padding: 2rem;
       background: white;
-      border-radius: 10px;
+      border-radius: 8px;
       box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-    .form-group {
-      margin-bottom: 1rem;
-    }
-    .form-group label {
+
+    form label {
       display: block;
-      margin-bottom: 0.3rem;
+      margin-top: 1rem;
+      font-weight: bold;
     }
-    .form-group input, .form-group textarea {
+
+    form input,
+    form textarea {
       width: 100%;
       padding: 0.5rem;
-      box-sizing: border-box;
+      margin-top: 0.25rem;
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
-    button {
-      width: 100%;
-      background: #0d6efd;
+
+    form button {
+      margin-top: 1rem;
+      padding: 0.75rem 1.5rem;
+      background: #1e88e5;
       color: white;
-      padding: 0.7rem;
       border: none;
-      font-weight: bold;
+      border-radius: 4px;
       cursor: pointer;
-      border-radius: 5px;
     }
+
     footer {
+      background: #1e88e5;
+      color: white;
       text-align: center;
       padding: 1rem;
       margin-top: 2rem;
-      background: #eaeaea;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Electronic Bookstore AI</h1>
-    <p>Your smart and international digital bookstore</p>
+    <h1 id="titulo">Librería Electrónica IA</h1>
   </header>
 
   <nav>
-    <a href="index.html" data-translate="inicio">Inicio</a>
-    <a href="catalogo.html" data-translate="catalogo">Catálogo</a>
-    <a href="register.html" data-translate="registro">Registrarse</a>
-    <a href="login.html" data-translate="iniciar_sesion">Iniciar Sesión</a>
-    <a href="contacto.html" data-translate="contacto">Contacto</a>
-    <a href="carrito.html" data-translate="carrito">🛒 Carrito</a>
+    <a href="index.html" id="nav-inicio">Inicio</a>
+    <a href="catalogo.html" id="nav-catalogo">Catálogo</a>
+    <a href="register.html" id="nav-registro">Registro</a>
+    <a href="login.html" id="nav-inicio-sesion">Iniciar Sesión</a>
+    <a href="contacto.html" id="nav-contacto">Contacto</a>
+    <a href="carrito.html" id="nav-carrito">Carrito</a>
   </nav>
 
+  <div class="selector-container">
+    <select id="country"></select>
+    <select id="language"></select>
+    <select id="currency"></select>
+  </div>
+
   <div class="form-container">
-    <h2 data-translate="titulo_contacto">Formulario de Contacto</h2>
-    <form action="mailto:distribuidoradegafascesdi1@gmail.com" method="post" enctype="text/plain">
-      <div class="form-group">
-        <label for="nombre" data-translate="nombre">Nombre</label>
-        <input type="text" id="nombre" name="Nombre" required>
-      </div>
-      <div class="form-group">
-        <label for="correo" data-translate="correo">Correo electrónico</label>
-        <input type="email" id="correo" name="Correo" required>
-      </div>
-      <div class="form-group">
-        <label for="mensaje" data-translate="mensaje">Mensaje</label>
-        <textarea id="mensaje" name="Mensaje" rows="5" required></textarea>
-      </div>
-      <button type="submit" data-translate="enviar">Enviar</button>
+    <h2 id="contacto-titulo">Formulario de Contacto</h2>
+    <form action="https://formspree.io/f/mblkynzg" method="POST">
+      <label for="name" id="label-nombre">Nombre:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email" id="label-email">Correo electrónico:</label>
+      <input type="email" id="email" name="_replyto" required>
+
+      <label for="message" id="label-mensaje">Mensaje:</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit" id="boton-enviar">Enviar</button>
     </form>
   </div>
 
@@ -114,59 +125,97 @@
   </footer>
 
   <script>
-    const translations = {
-      es: {
-        inicio: "Inicio",
-        catalogo: "Catálogo",
-        registro: "Registrarse",
-        iniciar_sesion: "Iniciar Sesión",
-        contacto: "Contacto",
-        carrito: "Carrito",
-        titulo_contacto: "Formulario de Contacto",
-        nombre: "Nombre",
-        correo: "Correo electrónico",
-        mensaje: "Mensaje",
-        enviar: "Enviar"
-      },
-      en: {
-        inicio: "Home",
-        catalogo: "Catalog",
-        registro: "Register",
-        iniciar_sesion: "Login",
-        contacto: "Contact",
-        carrito: "Cart",
-        titulo_contacto: "Contact Form",
-        nombre: "Name",
-        correo: "Email",
-        mensaje: "Message",
-        enviar: "Send"
-      },
-      fr: {
-        inicio: "Accueil",
-        catalogo: "Catalogue",
-        registro: "S'inscrire",
-        iniciar_sesion: "Connexion",
-        contacto: "Contact",
-        carrito: "Panier",
-        titulo_contacto: "Formulaire de Contact",
-        nombre: "Nom",
-        correo: "Courriel",
-        mensaje: "Message",
-        enviar: "Envoyer"
-      }
-    };
+    // Usa tus arrays countriesData, languageNames y translations que ya tienes integrados
+    const countriesData = [...]; // ← pega aquí tu array completo de países
+    const languageNames = {...}; // ← pega aquí tu objeto completo de idiomas
+    const translations = {...}; // ← pega aquí tu bloque translations con los 6 idiomas
 
-    function aplicarTraduccion() {
-      const lang = localStorage.getItem("language") || "es";
-      document.querySelectorAll("[data-translate]").forEach(el => {
-        const key = el.getAttribute("data-translate");
-        if (translations[lang] && translations[lang][key]) {
-          el.textContent = translations[lang][key];
-        }
-      });
+    const countrySelect = document.getElementById("country");
+    const languageSelect = document.getElementById("language");
+    const currencySelect = document.getElementById("currency");
+
+    function llenarSelectores() {
+      countrySelect.innerHTML = countriesData.map(c => `<option value="${c.code}">${c.name}</option>`).join('');
+      const uniqueLanguages = [...new Set(countriesData.map(c => c.language))];
+      languageSelect.innerHTML = uniqueLanguages.map(l => `<option value="${l}">${languageNames[l] || l}</option>`).join('');
+      const uniqueCurrencies = [...new Set(countriesData.map(c => c.currency))];
+      currencySelect.innerHTML = uniqueCurrencies.map(c => `<option value="${c}">${c}</option>`).join('');
     }
 
-    window.onload = aplicarTraduccion;
+    function aplicarTraduccion(lang) {
+      const t = translations[lang] || translations["es"];
+      document.getElementById("titulo").textContent = t.titulo;
+      document.getElementById("nav-inicio").textContent = t.inicio;
+      document.getElementById("nav-catalogo").textContent = t.catalogo;
+      document.getElementById("nav-registro").textContent = t.registro;
+      document.getElementById("nav-inicio-sesion").textContent = t.iniciarSesion;
+      document.getElementById("nav-contacto").textContent = t.contacto;
+      document.getElementById("nav-carrito").textContent = t.carrito;
+      document.getElementById("contacto-titulo").textContent = t.contacto;
+      document.getElementById("label-nombre").textContent = t.nombre + ":";
+      document.getElementById("label-email").textContent = t.correo + ":";
+      document.getElementById("label-mensaje").textContent = t.mensaje + ":";
+      document.getElementById("boton-enviar").textContent = t.enviar;
+    }
+
+    function guardarPreferencias(country, language, currency) {
+      localStorage.setItem("country", country);
+      localStorage.setItem("language", language);
+      localStorage.setItem("currency", currency);
+    }
+
+    function detectarPorIP() {
+      fetch("https://ipapi.co/json/")
+        .then(res => res.json())
+        .then(data => {
+          const userCountry = data.country || "CO";
+          const countryData = countriesData.find(c => c.code === userCountry) || countriesData[0];
+          const userLanguage = countryData.language;
+          const userCurrency = countryData.currency;
+
+          guardarPreferencias(userCountry, userLanguage, userCurrency);
+          countrySelect.value = userCountry;
+          languageSelect.value = userLanguage;
+          currencySelect.value = userCurrency;
+          aplicarTraduccion(userLanguage);
+        });
+    }
+
+    window.onload = () => {
+      llenarSelectores();
+
+      const savedCountry = localStorage.getItem("country");
+      const savedLanguage = localStorage.getItem("language");
+      const savedCurrency = localStorage.getItem("currency");
+
+      if (savedCountry && savedLanguage && savedCurrency) {
+        countrySelect.value = savedCountry;
+        languageSelect.value = savedLanguage;
+        currencySelect.value = savedCurrency;
+        aplicarTraduccion(savedLanguage);
+      } else {
+        detectarPorIP();
+      }
+
+      countrySelect.onchange = () => {
+        const selected = countriesData.find(c => c.code === countrySelect.value);
+        if (selected) {
+          languageSelect.value = selected.language;
+          currencySelect.value = selected.currency;
+          aplicarTraduccion(selected.language);
+          guardarPreferencias(selected.code, selected.language, selected.currency);
+        }
+      };
+
+      languageSelect.onchange = () => {
+        aplicarTraduccion(languageSelect.value);
+        localStorage.setItem("language", languageSelect.value);
+      };
+
+      currencySelect.onchange = () => {
+        localStorage.setItem("currency", currencySelect.value);
+      };
+    };
   </script>
 </body>
 </html>
