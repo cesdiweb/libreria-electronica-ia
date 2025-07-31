@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,37 +5,77 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Política de Reembolso - Librería Electrónica IA</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f9f9f9; color: #333; }
-    header, footer { background-color: #333; color: white; text-align: center; padding: 1rem; }
-    nav ul { display: flex; justify-content: center; list-style: none; padding: 0; margin: 0; background: #444; }
-    nav ul li { margin: 0 1rem; }
-    nav ul li a { color: white; text-decoration: none; }
-    .selector-container { text-align: center; padding: 1rem; background-color: #eee; }
-    .selector-container select { margin: 0 10px; padding: 0.3rem; }
-    .contenido { padding: 2rem; max-width: 800px; margin: auto; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #0066cc;
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+      flex-wrap: wrap;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+      font-weight: bold;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #004080;
+    }
+    footer {
+      text-align: center;
+      background: #f0f0f0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+    ul {
+      padding-left: 1.2rem;
+    }
   </style>
 </head>
 <body>
   <header>
-    <h1>Librería Electrónica IA</h1>
+    <h2>Electronic Bookstore AI</h2>
+    <p>Your smart and international digital bookstore</p>
   </header>
 
   <nav>
-    <ul>
-      <li><a href="index.html">Inicio</a></li>
-      <li><a href="catalogo.html">Catálogo</a></li>
-      <li><a href="register.html">Registro</a></li>
-      <li><a href="login.html">Iniciar Sesión</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
-      <li><a href="reembolso.html">Reembolso</a></li>
-      <li><a href="terminos.html">Términos</a></li>
-    </ul>
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="carrito.html">🛒 Carrito</a>
+    <a href="terminos.html">Términos</a>
+    <a href="reembolso.html">Reembolso</a>
   </nav>
 
-  
-
-  <div class="contenido">
-    <h2 data-translate="refundTitle">Política de Reembolso</h2>
+  <main>
+    <h1 data-translate="refundTitle">Política de Reembolso</h1>
     <p data-translate="refund1">En Librería Electrónica IA, tu satisfacción es nuestra prioridad. Si no estás completamente satisfecho con tu compra, ofrecemos reembolsos bajo las siguientes condiciones:</p>
     <ul>
       <li data-translate="refund2">Solicita el reembolso dentro de los 7 días posteriores a la compra.</li>
@@ -44,142 +83,12 @@
       <li data-translate="refund4">Para productos con acceso inmediato, no se garantiza reembolso.</li>
     </ul>
     <p data-translate="refund5">Para iniciar un reembolso, por favor contáctanos a través del formulario de contacto con tu número de pedido y el motivo de la solicitud.</p>
-  </div>
+  </main>
 
   <footer>
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
 
-  <script>
-    const countriesData = [...]; // Usa aquí tu array completo de países
-    const languageNames = {...}; // Usa aquí tu objeto de idiomas completo
-    const translations = {
-      es: {
-        refundTitle: "Política de Reembolso",
-        refund1: "En Librería Electrónica IA, tu satisfacción es nuestra prioridad. Si no estás completamente satisfecho con tu compra, ofrecemos reembolsos bajo las siguientes condiciones:",
-        refund2: "Solicita el reembolso dentro de los 7 días posteriores a la compra.",
-        refund3: "El producto debe no haber sido descargado o accedido digitalmente.",
-        refund4: "Para productos con acceso inmediato, no se garantiza reembolso.",
-        refund5: "Para iniciar un reembolso, por favor contáctanos a través del formulario de contacto con tu número de pedido y el motivo de la solicitud."
-      },
-      en: {
-        refundTitle: "Refund Policy",
-        refund1: "At AI Electronic Bookstore, your satisfaction is our priority. If you're not fully satisfied with your purchase, we offer refunds under the following conditions:",
-        refund2: "Request a refund within 7 days of purchase.",
-        refund3: "The product must not have been downloaded or digitally accessed.",
-        refund4: "For instant-access products, refunds are not guaranteed.",
-        refund5: "To request a refund, contact us through the contact form with your order number and reason."
-      },
-      fr: {
-        refundTitle: "Politique de remboursement",
-        refund1: "Chez Librería Electrónica IA, votre satisfaction est notre priorité. Si vous n'êtes pas entièrement satisfait de votre achat, nous offrons des remboursements selon les conditions suivantes :",
-        refund2: "Demandez le remboursement dans les 7 jours suivant l'achat.",
-        refund3: "Le produit ne doit pas avoir été téléchargé ou consulté numériquement.",
-        refund4: "Pour les produits à accès immédiat, le remboursement n'est pas garanti.",
-        refund5: "Pour demander un remboursement, contactez-nous via le formulaire de contact avec votre numéro de commande et le motif."
-      },
-      pt: {
-        refundTitle: "Política de Reembolso",
-        refund1: "Na Livraria Eletrônica IA, sua satisfação é nossa prioridade. Se você não estiver totalmente satisfeito com sua compra, oferecemos reembolsos nas seguintes condições:",
-        refund2: "Solicite o reembolso em até 7 dias após a compra.",
-        refund3: "O produto não deve ter sido baixado ou acessado digitalmente.",
-        refund4: "Para produtos com acesso imediato, não garantimos reembolso.",
-        refund5: "Para iniciar o reembolso, entre em contato pelo formulário com seu número de pedido e motivo."
-      },
-      de: {
-        refundTitle: "Rückerstattungsrichtlinie",
-        refund1: "Bei der Elektronischen Buchhandlung IA ist Ihre Zufriedenheit unsere Priorität. Wenn Sie mit Ihrem Kauf nicht zufrieden sind, bieten wir Rückerstattungen unter folgenden Bedingungen an:",
-        refund2: "Fordern Sie die Rückerstattung innerhalb von 7 Tagen nach dem Kauf an.",
-        refund3: "Das Produkt darf nicht heruntergeladen oder digital genutzt worden sein.",
-        refund4: "Bei Produkten mit Sofortzugriff ist eine Rückerstattung nicht garantiert.",
-        refund5: "Zur Einleitung einer Rückerstattung kontaktieren Sie uns über das Formular mit Bestellnummer und Grund."
-      },
-      zh: {
-        refundTitle: "退款政策",
-        refund1: "在电子书店IA，我们以客户满意为优先。如果您对购买不满意，我们在以下条件下提供退款：",
-        refund2: "请在购买后7天内申请退款。",
-        refund3: "产品不得已下载或数字访问。",
-        refund4: "即时访问的产品不保证退款。",
-        refund5: "要申请退款，请通过联系表单提供订单号和原因。"
-      }
-    };
-
-    function llenarSelectores() {
-      const countrySelect = document.getElementById("country");
-      const languageSelect = document.getElementById("language");
-      const currencySelect = document.getElementById("currency");
-
-      countriesData.forEach((c) => {
-        const option = new Option(c.name, c.code);
-        countrySelect.appendChild(option);
-      });
-
-      Object.entries(languageNames).forEach(([code, name]) => {
-        const option = new Option(name, code);
-        languageSelect.appendChild(option);
-      });
-
-      const uniqueCurrencies = [...new Set(countriesData.map(c => c.currency))];
-      uniqueCurrencies.forEach(currency => {
-        const option = new Option(currency, currency);
-        currencySelect.appendChild(option);
-      });
-    }
-
-    function aplicarTraduccion() {
-      const lang = localStorage.getItem("language") || "es";
-      document.querySelectorAll("[data-translate]").forEach(el => {
-        const key = el.getAttribute("data-translate");
-        el.textContent = translations[lang][key] || el.textContent;
-      });
-    }
-
-    function detectarIP() {
-      fetch("https://ipapi.co/json/")
-        .then(res => res.json())
-        .then(data => {
-          const country = data.country || "CO";
-          const language = countriesData.find(c => c.code === country)?.language || "es";
-          const currency = countriesData.find(c => c.code === country)?.currency || "COP $";
-          localStorage.setItem("country", country);
-          localStorage.setItem("language", language);
-          localStorage.setItem("currency", currency);
-          document.getElementById("country").value = country;
-          document.getElementById("language").value = language;
-          document.getElementById("currency").value = currency;
-          aplicarTraduccion();
-        });
-    }
-
-    window.onload = () => {
-      llenarSelectores();
-      detectarIP();
-
-      document.getElementById("country").addEventListener("change", (e) => {
-        const selected = e.target.value;
-        const lang = countriesData.find(c => c.code === selected)?.language;
-        const currency = countriesData.find(c => c.code === selected)?.currency;
-        localStorage.setItem("country", selected);
-        if (lang) {
-          localStorage.setItem("language", lang);
-          document.getElementById("language").value = lang;
-        }
-        if (currency) {
-          localStorage.setItem("currency", currency);
-          document.getElementById("currency").value = currency;
-        }
-        aplicarTraduccion();
-      });
-
-      document.getElementById("language").addEventListener("change", (e) => {
-        localStorage.setItem("language", e.target.value);
-        aplicarTraduccion();
-      });
-
-      document.getElementById("currency").addEventListener("change", (e) => {
-        localStorage.setItem("currency", e.target.value);
-      });
-    };
-  </script>
+  <!-- Puedes incluir aquí el script de traducción si ya lo usas globalmente -->
 </body>
 </html>
