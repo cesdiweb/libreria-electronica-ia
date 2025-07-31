@@ -8,73 +8,91 @@
     body {
       font-family: Arial, sans-serif;
       margin: 0;
-      padding: 20px;
       background: #f9f9f9;
       color: #333;
     }
-    header, footer {
-      background: #222;
+    header {
+      background-color: #4a90e2;
       color: white;
+      padding: 1rem;
       text-align: center;
-      padding: 10px;
+    }
+    nav {
+      background: #333;
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 1rem;
+    }
+    nav a:hover {
+      text-decoration: underline;
+    }
+    main {
+      max-width: 800px;
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     h1 {
       text-align: center;
-      margin-bottom: 30px;
+      color: #4a90e2;
     }
-    .contenido {
-      max-width: 800px;
-      margin: auto;
+    footer {
+      text-align: center;
+      background: #f0f0f0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      margin-top: 2rem;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h2>Electronic Bookstore AI</h2>
+    <p>Your smart and international digital bookstore</p>
+  </header>
 
-<header>
-  <h2>Librería Electrónica IA</h2>
-</header>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="reembolso.html">Reembolso</a>
+    <a href="terminos.html">Términos</a>
+  </nav>
 
-<main class="contenido">
-  <h1>Términos y Condiciones</h1>
+  <main>
+    <h1>Términos y Condiciones</h1>
+    <p>Bienvenido a Librería Electrónica IA. Al acceder y utilizar nuestro sitio web, usted acepta cumplir con los siguientes términos y condiciones. Por favor, lea cuidadosamente esta información antes de usar nuestros servicios.</p>
 
-  <p>
-    Bienvenido a Librería Electrónica IA. Al acceder y utilizar nuestro sitio web, usted acepta cumplir con los siguientes términos y condiciones. Por favor, lea cuidadosamente esta información antes de usar nuestros servicios.
-  </p>
+    <h3>1. Uso del sitio</h3>
+    <p>El contenido de este sitio está destinado únicamente para uso personal y no comercial. No está permitido copiar, distribuir ni utilizar el contenido con fines comerciales sin autorización previa.</p>
 
-  <h2>1. Uso del sitio</h2>
-  <p>
-    El contenido de este sitio está destinado únicamente para uso personal y no comercial. No está permitido copiar, distribuir ni utilizar el contenido con fines comerciales sin autorización previa.
-  </p>
+    <h3>2. Registro y cuentas</h3>
+    <p>Los usuarios deben proporcionar información veraz al momento de registrarse. Nos reservamos el derecho de suspender cuentas con información falsa o uso indebido.</p>
 
-  <h2>2. Registro y cuentas</h2>
-  <p>
-    Los usuarios deben proporcionar información veraz al momento de registrarse. Nos reservamos el derecho de suspender cuentas con información falsa o uso indebido.
-  </p>
+    <h3>3. Compras y pagos</h3>
+    <p>Todos los pagos se procesan de forma segura mediante pasarelas como Stripe. Asegúrese de revisar nuestras políticas de reembolso antes de realizar una compra.</p>
 
-  <h2>3. Compras y pagos</h2>
-  <p>
-    Todos los pagos se procesan de forma segura mediante pasarelas como Stripe. Asegúrese de revisar nuestras <a href="reembolso.html">políticas de reembolso</a> antes de realizar una compra.
-  </p>
+    <h3>4. Propiedad intelectual</h3>
+    <p>Todo el contenido (textos, imágenes, libros digitales, etc.) pertenece a Librería Electrónica IA o a sus respectivos autores. Está protegido por leyes de propiedad intelectual.</p>
 
-  <h2>4. Propiedad intelectual</h2>
-  <p>
-    Todo el contenido (textos, imágenes, libros digitales, etc.) pertenece a Librería Electrónica IA o a sus respectivos autores. Está protegido por leyes de propiedad intelectual.
-  </p>
+    <h3>5. Modificaciones</h3>
+    <p>Podemos actualizar estos términos en cualquier momento. Las actualizaciones entrarán en vigor una vez publicadas en el sitio web.</p>
 
-  <h2>5. Modificaciones</h2>
-  <p>
-    Podemos actualizar estos términos en cualquier momento. Las actualizaciones entrarán en vigor una vez publicadas en el sitio web.
-  </p>
+    <h3>6. Contacto</h3>
+    <p>Si tienes preguntas sobre estos términos, escríbenos a: <strong>distribuidoradegafascesdi1@gmail.com</strong></p>
+  </main>
 
-  <h2>6. Contacto</h2>
-  <p>
-    Si tienes preguntas sobre estos términos, escríbenos a: <strong>distribuidoradegafascesdi1@gmail.com</strong>
-  </p>
-</main>
-
-<footer>
-  <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-</footer>
-
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
 </body>
 </html>
