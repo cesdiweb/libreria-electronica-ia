@@ -3,184 +3,92 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Refund Policy - Librería Electrónica IA</title>
+  <title>Política de Reembolso - Librería Electrónica IA</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
       margin: 0;
+      background: #f9f9f9;
       color: #333;
     }
-
     header {
-      background: #1f2937;
-      color: #fff;
-      padding: 15px 20px;
+      background-color: #004080;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #0066cc;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
+      justify-content: center;
+      padding: 0.5rem;
       flex-wrap: wrap;
     }
-
-    header h1 {
-      font-size: 20px;
-      margin: 0;
-    }
-
     nav a {
-      color: #fff;
+      color: white;
       text-decoration: none;
-      margin: 0 10px;
-      font-size: 15px;
+      margin: 0 1rem;
+      font-weight: bold;
     }
-
-    .selector-container {
-      padding: 10px 20px;
-      background: #eee;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
+    nav a:hover {
+      text-decoration: underline;
     }
-
-    .selector-container label {
-      margin-right: 5px;
-    }
-
     main {
-      padding: 30px 20px;
       max-width: 800px;
-      margin: auto;
-      background: #fff;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+      margin: 2rem auto;
+      padding: 1rem;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-    h2 {
-      color: #1f2937;
-      border-bottom: 2px solid #ccc;
-      padding-bottom: 5px;
-      margin-top: 30px;
+    h1 {
+      text-align: center;
+      color: #004080;
     }
-
     footer {
       text-align: center;
-      padding: 15px;
-      background: #1f2937;
-      color: #fff;
-      margin-top: 40px;
+      background: #f0f0f0;
+      padding: 1rem;
+      font-size: 0.9rem;
+      margin-top: 2rem;
+    }
+    ul {
+      padding-left: 1.2rem;
     }
   </style>
 </head>
 <body>
-
   <header>
-    <h1>Librería Electrónica IA</h1>
-    <nav>
-      <a href="index.html">🏠 Inicio</a>
-      <a href="catalogo.html">📚 Catálogo</a>
-      <a href="register.html">📝 Registrarse</a>
-      <a href="login.html">🔐 Iniciar sesión</a>
-      <a href="carrito.html">🛒 Carrito</a>
-      <a href="contacto.html">✉️ Contacto</a>
-    </nav>
+    <h2>Electronic Bookstore AI</h2>
+    <p>Your smart and international digital bookstore</p>
   </header>
 
-  <div class="selector-container">
-    <label for="country">🌍 País:</label>
-    <select id="country"></select>
-
-    <label for="language">🗣️ Idioma:</label>
-    <select id="language"></select>
-
-    <label for="currency">💰 Moneda:</label>
-    <select id="currency"></select>
-  </div>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar sesión</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="carrito.html">🛒 Carrito</a>
+    <a href="terminos.html">Términos</a>
+    <a href="reembolso.html">Reembolso</a>
+  </nav>
 
   <main>
-    <h2>1. Scope</h2>
-    <p>Esta política aplica a todas las compras realizadas en la Librería Electrónica IA desde cualquier país.</p>
-
-    <h2>2. Request Time</h2>
-    <p>Las solicitudes de reembolso deben realizarse dentro de los 3 días calendario posteriores a la compra.</p>
-
-    <h2>3. Valid Reasons</h2>
+    <h1 data-translate="refundTitle">Política de Reembolso</h1>
+    <p data-translate="refund1">En Librería Electrónica IA, tu satisfacción es nuestra prioridad. Si no estás completamente satisfecho con tu compra, ofrecemos reembolsos bajo las siguientes condiciones:</p>
     <ul>
-      <li>Problemas técnicos que impidan la descarga del libro.</li>
-      <li>El libro descargado no coincide con el producto comprado.</li>
-      <li>Errores de facturación comprobables.</li>
+      <li data-translate="refund2">Solicita el reembolso dentro de los 7 días posteriores a la compra.</li>
+      <li data-translate="refund3">El producto debe no haber sido descargado o accedido digitalmente.</li>
+      <li data-translate="refund4">Para productos con acceso inmediato, no se garantiza reembolso.</li>
     </ul>
-
-    <h2>4. Requirements</h2>
-    <p>Para procesar tu solicitud, necesitamos:</p>
-    <ul>
-      <li>Nombre completo</li>
-      <li>Correo electrónico registrado</li>
-      <li>Detalles de la compra (como una copia del comprobante)</li>
-    </ul>
-
-    <h2>5. Refund Method</h2>
-    <p>Si tu solicitud es aprobada:</p>
-    <ul>
-      <li>El monto será reembolsado a través del <strong>mismo método de pago</strong> que utilizaste (tarjeta de crédito, PSE, etc.).</li>
-      <li>El reembolso se realizará en la <strong>misma moneda utilizada</strong> durante la compra.</li>
-      <li>El tiempo de procesamiento puede variar según el país o entidad bancaria, de <strong>5 a 15 días hábiles</strong>.</li>
-    </ul>
-
-    <h2>6. Review and Response</h2>
-    <p>Evaluaremos tu solicitud en un plazo de <strong>3 a 5 días hábiles</strong> y te notificaremos por correo electrónico si el reembolso ha sido aprobado.</p>
-
-    <h2>7. Exceptions</h2>
-    <p>No se otorgarán reembolsos en los siguientes casos:</p>
-    <ul>
-      <li>Descargas completas del libro.</li>
-      <li>Uso indebido del contenido adquirido.</li>
-      <li>Inconformidad sin justificación clara.</li>
-    </ul>
+    <p data-translate="refund5">Para iniciar un reembolso, por favor contáctanos a través del formulario de contacto con tu número de pedido y el motivo de la solicitud.</p>
   </main>
 
   <footer>
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
 
-  <script>
-    const countriesData = [ // Simplificado (usa el array completo que ya tienes)
-      { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
-      { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
-      { code: "BR", name: "Brasil", language: "pt", currency: "BRL R$" },
-    ];
-
-    const languageNames = {
-      es: "Español",
-      en: "English",
-      pt: "Português"
-    };
-
-    const countrySelect = document.getElementById("country");
-    const languageSelect = document.getElementById("language");
-    const currencySelect = document.getElementById("currency");
-
-    countriesData.forEach(c => {
-      countrySelect.innerHTML += `<option value="${c.code}">${c.name}</option>`;
-      currencySelect.innerHTML += `<option value="${c.currency}">${c.currency}</option>`;
-    });
-
-    for (const code in languageNames) {
-      languageSelect.innerHTML += `<option value="${code}">${languageNames[code]}</option>`;
-    }
-
-    window.onload = () => {
-      const savedCountry = localStorage.getItem("country") || "CO";
-      const savedLanguage = localStorage.getItem("language") || "es";
-      const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-      countrySelect.value = savedCountry;
-      languageSelect.value = savedLanguage;
-      currencySelect.value = savedCurrency;
-    };
-
-    countrySelect.onchange = () => localStorage.setItem("country", countrySelect.value);
-    languageSelect.onchange = () => localStorage.setItem("language", languageSelect.value);
-    currencySelect.onchange = () => localStorage.setItem("currency", currencySelect.value);
-  </script>
-
+  <!-- Puedes incluir aquí el script de traducción si ya lo usas globalmente -->
 </body>
 </html>
