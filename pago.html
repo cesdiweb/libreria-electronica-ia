@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout - AI Electronic Bookstore</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f2f2f2;
+    }
+
+    header {
+      background-color: #222;
+      color: white;
+      padding: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 30px;
+    }
+
+    table, th, td {
+      border: 1px solid #ddd;
+    }
+
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .total {
+      text-align: right;
+      font-weight: bold;
+    }
+
+    .pago-btn {
+      text-align: center;
+    }
+
+    .pago-btn button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .pago-btn button:hover {
+      background-color: #45a049;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px;
+      background: #222;
+      color: white;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div><strong>AI Electronic Bookstore</strong></div>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="catalogo.html">Catalog</a>
+      <a href="carrito.html">Cart</a>
+      <a href="contacto.html">Contact</a>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h2>Checkout</h2>
+    <table id="tabla-carrito">
+      <thead>
+        <tr>
+          <th>Book</th>
+          <th>Quantity</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+
+    <p class="total" id="total"></p>
+
+    <div class="pago-btn" id="botonPago">
+      <!-- Aquí se insertará el botón dinámico según el país -->
+    </div>
+  </div>
+
+  <footer>
+    &copy; 2025 AI Electronic Bookstore. All rights reserved.
+  </footer>
+
+  <script>
+    // Obtener país, moneda desde localStorage
+    const country = localStorage.getItem("country") || "US";
+    const currency = localStorage.getItem("currency") || "USD $";
+
+    // Cargar carrito desde localStorage
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    const tbody = document.querySelector("#tabla-carrito tbody");
+    const totalTexto = document.getElementById("total");
+    const botonPago = document.getElementById("botonPago");
+
+    let total = 0;
+    carrito.forEach(item => {
+      const fila = document.createElement("tr");
+      const precio = item.precio || 0;
+      const subtotal = precio * item.cantidad;
+      total += subtotal;
+
+      fila.innerHTML = `
+        <td>${item.titulo}</td>
+        <td>${item.cantidad}</td>
+        <td>${currency} ${subtotal.toFixed(2)}</td>
+      `;
+      tbody.appendChild(fila);
+    });
+
+    totalTexto.textContent = `Total: ${currency} ${total.toFixed(2)}`;
+
+    // Mostrar botón de pago según país
+    if (country === "CO") {
+      botonPago.innerHTML = `<button onclick="pagarWompi()">Pagar con Wompi</button>`;
+    } else {
+      botonPago.innerHTML = `<button onclick="pagarStripe()">Pay with Stripe</button>`;
+    }
+
+    function pagarWompi() {
+      alert("Redirigiendo a Wompi (PSE o Tarjeta de Crédito)...");
+      // Aquí se integraría el enlace real a Wompi
+    }
+
+    function pagarStripe() {
+      alert("Redirecting to Stripe...");
+      // Aquí se integraría el enlace real a Stripe
+    }
+  </script>
+</body>
+</html>
