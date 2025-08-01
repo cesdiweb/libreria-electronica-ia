@@ -1,81 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Checkout - AI Electronic Bookstore</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f9f9f9;
-      padding: 20px;
+      background: #f2f2f2;
       margin: 0;
+      padding: 0;
     }
-    h1 {
+    header {
+      background: #222;
+      color: white;
+      padding: 1em;
       text-align: center;
     }
-    .checkout-container {
+    main {
+      padding: 2em;
       max-width: 600px;
       margin: auto;
       background: white;
-      padding: 30px;
       border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      box-shadow: 0 0 10px #ccc;
     }
-    .total {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    .pay-button {
-      display: block;
-      width: 100%;
-      padding: 15px;
-      background: #007bff;
+    .btn {
+      background-color: #007bff;
       color: white;
       border: none;
-      border-radius: 8px;
-      font-size: 18px;
+      padding: 0.8em 1.5em;
+      font-size: 1em;
       cursor: pointer;
+      border-radius: 5px;
+      display: inline-block;
     }
-    .pay-button:hover {
-      background: #0056b3;
+    .btn:hover {
+      background-color: #0056b3;
     }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Checkout - AI Electronic Bookstore</h1>
+  </header>
 
-  <div class="checkout-container">
-    <h1>Checkout</h1>
-    <div id="total" class="total">Loading...</div>
-    <button class="pay-button" onclick="pagar()">Proceed to Payment</button>
-  </div>
+  <main>
+    <h2>Resumen del pedido</h2>
+    <p><strong>Libro:</strong> Introducción a la Inteligencia Artificial</p>
+    <p><strong>Precio:</strong> <span id="precio">COP $19000</span></p>
 
-  <script>
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    const moneda = localStorage.getItem("currency") || "USD";
-    
-    function calcularTotal() {
-      let total = 0;
-      carrito.forEach(item => {
-        const precio = parseFloat(item.precio.replace(/[^\d.-]/g, ''));
-        total += precio * item.cantidad;
-      });
-      return total.toFixed(2);
-    }
+    <h3>Medio de pago</h3>
+    <p>Al hacer clic en el botón, serás redirigido a la pasarela segura de Wompi.</p>
 
-    function mostrarTotal() {
-      const total = calcularTotal();
-      document.getElementById("total").innerText = `Total: ${moneda} ${total}`;
-    }
-
-    function pagar() {
-      alert("Aquí irá la integración con Wompi o Stripe según la moneda seleccionada.");
-      // En el futuro aquí se redireccionará al formulario de pago real.
-    }
-
-    mostrarTotal();
-  </script>
-
+    <form action="https://sandbox.wompi.co/checkout/" method="GET">
+      <input type="hidden" name="public-key" value="pub_test_OkFjQWtxVjZ5T3ZWdEN6RXcyNGRSblNINWZjUk5PZmpmM3RkWlE2b1pnYzZBNjJt" />
+      <input type="hidden" name="currency" value="COP" />
+      <input type="hidden" name="amount-in-cents" value="1900000" /> <!-- 19000 COP x 100 -->
+      <input type="hidden" name="reference" value="PEDIDO12345" />
+      <input type="hidden" name="redirect-url" value="https://cesdiweb.github.io/libreria-electronica-ia/confirmacion.html" />
+      <button type="submit" class="btn">Pagar con Wompi</button>
+    </form>
+  </main>
 </body>
 </html>
