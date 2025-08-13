@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -84,6 +83,19 @@
       background-color: #cc0000;
       color: white;
     }
+    #payment-button {
+      margin-top: 1.5rem;
+      text-align: center;
+    }
+    #payment-button button {
+      background-color: #28a745;
+      color: white;
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      border: none;
+      cursor: pointer;
+    }
     footer {
       background-color: #003366;
       color: white;
@@ -99,7 +111,6 @@
   <p>Your smart and international digital bookstore</p>
 </header>
 
-
   <nav>
     <a href="index.html">Inicio</a>
     <a href="catalogo.html">Catálogo</a>
@@ -113,6 +124,8 @@
     <div id="carrito-contenido"></div>
     <p class="total" id="total"></p>
     <button id="vaciar-btn">Vaciar carrito</button>
+
+    <div id="payment-button"></div>
   </main>
 
  <footer>
@@ -123,73 +136,53 @@
   </p>
 </footer>
 
+<script>
+  const carritoContenedor = document.getElementById("carrito-contenido");
+  const totalTexto = document.getElementById("total");
+  const vaciarBtn = document.getElementById("vaciar-btn");
+  const paymentButtonDiv = document.getElementById("payment-button");
 
-  <script>
-    const carritoContenedor = document.getElementById("carrito-contenido");
-    const totalTexto = document.getElementById("total");
-    const vaciarBtn = document.getElementById("vaciar-btn");
+  function mostrarCarrito() {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    carritoContenedor.innerHTML = "";
 
-    function mostrarCarrito() {
-      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-      carritoContenedor.innerHTML = "";
-
-      if (carrito.length === 0) {
-        carritoContenedor.innerHTML = "<p class='vacio'>🛒 El carrito está vacío.</p>";
-        totalTexto.textContent = "";
-        return;
-      }
-
-      let total = 0;
-      let monedaActual = "";
-
-      carrito.forEach((item, index) => {
-        const subtotal = item.precio * item.cantidad;
-        total += subtotal;
-        monedaActual = item.moneda;
-
-        const div = document.createElement("div");
-        div.className = "item";
-        div.innerHTML = `
-          <div class="item-info">
-            <strong>${item.titulo}</strong><br>
-            Autor: ${item.autor}<br>
-            Precio: ${item.moneda} ${item.precio} × ${item.cantidad}
-          </div>
-          <div class="acciones">
-            <button onclick="cambiarCantidad(${index}, 1)">＋</button>
-            <button onclick="cambiarCantidad(${index}, -1)">−</button>
-            <button class="eliminar" onclick="eliminarItem(${index})">🗑️</button>
-          </div>
-        `;
-        carritoContenedor.appendChild(div);
-      });
-
-      totalTexto.textContent = `Total: ${monedaActual} ${total.toFixed(2)}`;
+    if (carrito.length === 0) {
+      carritoContenedor.innerHTML = "<p class='vacio'>🛒 El carrito está vacío.</p>";
+      totalTexto.textContent = "";
+      paymentButtonDiv.innerHTML = "";
+      return;
     }
 
-    function cambiarCantidad(index, delta) {
-      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-      carrito[index].cantidad += delta;
-      if (carrito[index].cantidad < 1) carrito[index].cantidad = 1;
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      mostrarCarrito();
-    }
+    let total = 0;
+    let monedaActual = "";
 
-    function eliminarItem(index) {
-      const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-      carrito.splice(index, 1);
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      mostrarCarrito();
-    }
+    carrito.forEach((item, index) => {
+      const subtotal = item.precio * item.cantidad;
+      total += subtotal;
+      monedaActual = item.moneda;
 
-    vaciarBtn.onclick = () => {
-      if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
-        localStorage.removeItem("carrito");
-        mostrarCarrito();
-      }
-    };
+      const div = document.createElement("div");
+      div.className = "item";
+      div.innerHTML = `
+        <div class="item-info">
+          <strong>${item.titulo}</strong><br>
+          Autor: ${item.autor}<br>
+          Precio: ${item.moneda} ${item.precio} × ${item.cantidad}
+        </div>
+        <div class="acciones">
+          <button onclick="cambiarCantidad(${index}, 1)">＋</button>
+          <button onclick="cambiarCantidad(${index}, -1)">−</button>
+          <button class="eliminar" onclick="eliminarItem(${index})">🗑️</button>
+        </div>
+      `;
+      carritoContenedor.appendChild(div);
+    });
 
-    window.onload = mostrarCarrito;
-  </script>
-</body>
-</html>
+    totalTexto.textContent = `Total: ${monedaActual} ${total.toFixed(2)}`;
+  }
+
+  function cambiarCantidad(index, delta) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+    carrito[index].cantidad += delta;
+    if (carrito[index].cantidad < 1) carrito[index].cantidad = 1;
+    localStorage.
