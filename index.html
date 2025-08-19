@@ -337,57 +337,59 @@
      };
     
 
-    const countrySelect = document.getElementById("country");
-    const languageSelect = document.getElementById("language");
-    const currencySelect = document.getElementById("currency");
+  <script>
+const countrySelect = document.getElementById("country");
+const languageSelect = document.getElementById("language");
+const currencySelect = document.getElementById("currency");
 
-    countriesData.forEach(country => {
-      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+// Rellenar selects
+countriesData.forEach(country => {
+  countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
 
-      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
-        const langName = languageNames[country.language] || country.language;
-        languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
-      }
+  if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+    const langName = languageNames[country.language] || country.language;
+    languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
+  }
 
-      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
-      }
-    });
+  if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+    currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+  }
+});
 
-    function updatePrices(symbol) {
-      const prices = document.querySelectorAll(".price");
-      prices.forEach(el => {
-        const base = el.getAttribute("data-base");
-        el.textContent = `${symbol} ${base}`;
-      });
-    }
+// Función para actualizar precios
+function updatePrices(symbol) {
+  document.querySelectorAll(".price").forEach(el => {
+    const base = el.getAttribute("data-base");
+    el.textContent = `${symbol} ${base}`;
+  });
+}
 
-    countrySelect.onchange = () => {
-      const country = countrySelect.value;
-      const selected = countriesData.find(c => c.code === country);
-      languageSelect.value = selected.language;
-      currencySelect.value = selected.currency;
-      localStorage.setItem('country', country);
-      localStorage.setItem('language', selected.language);
-      localStorage.setItem('currency', selected.currency);
-      updatePrices(selected.currency);
-    };
+// Cambios en selects
+countrySelect.onchange = () => {
+  const selected = countriesData.find(c => c.code === countrySelect.value);
+  languageSelect.value = selected.language;
+  currencySelect.value = selected.currency;
+  localStorage.setItem('country', selected.code);
+  localStorage.setItem('language', selected.language);
+  localStorage.setItem('currency', selected.currency);
+  updatePrices(selected.currency);
+};
 
-    languageSelect.onchange = () => {
-      localStorage.setItem('language', languageSelect.value);
-      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-    };
+languageSelect.onchange = () => {
+  localStorage.setItem('language', languageSelect.value);
+  alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+};
 
-    currencySelect.onchange = () => {
-      localStorage.setItem('currency', currencySelect.value);
-      updatePrices(currencySelect.value);
-    };
+currencySelect.onchange = () => {
+  localStorage.setItem('currency', currencySelect.value);
+  updatePrices(currencySelect.value);
+};
+
+// Detectar país por IP
 fetch("https://ipapi.co/json/")
   .then(response => response.json())
   .then(data => {
-    const countryCode = data.country_code || "CO";
-    const countryData = countriesData.find(c => c.code === countryCode);
-
+    const countryData = countriesData.find(c => c.code === (data.country_code || "CO"));
     if (countryData) {
       localStorage.setItem("country", countryData.code);
       localStorage.setItem("language", countryData.language);
@@ -396,19 +398,7 @@ fetch("https://ipapi.co/json/")
   })
   .catch(error => console.error("Error al detectar ubicación por IP:", error));
 
-
-    window.onload = () => {
-      const savedCountry = localStorage.getItem("country") || "CO";
-      const savedLanguage = localStorage.getItem("language") || "es";
-      const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-      countrySelect.value = savedCountry;
-      languageSelect.value = savedLanguage;
-      currencySelect.value = savedCurrency;
-      updatePrices(savedCurrency);
-aplicarTraduccion();
-
-    };
+// Traducciones
 const translations = {
   es: {
     "Inicio": "Inicio",
@@ -436,50 +426,31 @@ const translations = {
     "Contacto": "Contact",
     "Agregar al carrito": "Ajouter au panier",
     "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
-  },
-  // puedes añadir más idiomas después
+  }
 };
 
+// Aplicar traducción
 function aplicarTraduccion() {
-  const lang = localStorage.getItem('language') || 'es';
-  const dict = translations[lang];
+  const dict = translations[localStorage.getItem('language') || 'es'];
   if (!dict) return;
-
   document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-    if (dict[el.textContent]) {
-      el.textContent = dict[el.textContent];
-    }
+    if (dict[el.textContent]) el.textContent = dict[el.textContent];
   });
 }
 
-  </script>
-<script>
-  // ... Todo tu código actual arriba ...
+// Inicializar página
+window.onload = () => {
+  const savedCountry = localStorage.getItem("country") || "CO";
+  const savedLanguage = localStorage.getItem("language") || "es";
+  const savedCurrency = localStorage.getItem("currency") || "COP $";
 
-  // Función para agregar al carrito
-  function agregarAlCarrito(titulo, autor, precio, moneda) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  countrySelect.value = savedCountry;
+  languageSelect.value = savedLanguage;
+  currencySelect.value = savedCurrency;
+  updatePrices(savedCurrency);
+  aplicarTraduccion();
 
-    const producto = {
-      titulo,
-      autor,
-      precio,
-      moneda,
-      cantidad: 1
-    };
-
-    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
-    if (existente) {
-      existente.cantidad += 1;
-    } else {
-      carrito.push(producto);
-    }
-
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    alert(`📚 ${titulo} añadido al carrito.`);
-  }
-
-  // Asignar evento a cada botón del catálogo
+  // Asignar evento a botones del catálogo
   document.querySelectorAll(".carrito-btn").forEach(btn => {
     btn.addEventListener("click", () => {
       const contenedor = btn.closest(".libro");
@@ -487,11 +458,23 @@ function aplicarTraduccion() {
       const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
       const precio = contenedor.querySelector(".price").getAttribute("data-base");
       const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
-
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
-</script>
+};
 
-</body>
-</html>
+// Función para agregar al carrito
+function agregarAlCarrito(titulo, autor, precio, moneda) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+
+  if (existente) {
+    existente.cantidad += 1;
+  } else {
+    carrito.push({ titulo, autor, precio, moneda, cantidad: 1 });
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  alert(`📚 ${titulo} añadido al carrito.`);
+}
+</script>
