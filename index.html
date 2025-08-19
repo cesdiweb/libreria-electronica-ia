@@ -337,155 +337,116 @@
      };
     
 
-  <script>
-  const countrySelect = document.getElementById("country");
-  const languageSelect = document.getElementById("language");
-  const currencySelect = document.getElementById("currency");
+ <script>
+const countrySelect = document.getElementById("country");
+const languageSelect = document.getElementById("language");
+const currencySelect = document.getElementById("currency");
 
-  // Llenado de selects
-  countriesData.forEach(country => {
-    countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+// Llenar selects
+countriesData.forEach(country => {
+  countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+  
+  if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+    const langName = languageNames[country.language] || country.language;
+    languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
+  }
 
-    if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
-      const langName = languageNames[country.language] || country.language;
-      languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
-    }
+  if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+    currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+  }
+});
 
-    if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-      currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
-    }
+// Actualizar precios
+function updatePrices(symbol) {
+  document.querySelectorAll(".price").forEach(el => {
+    const base = el.getAttribute("data-base");
+    el.textContent = `${symbol} ${base}`;
   });
+}
 
-  // Actualizar precios según moneda
-  function updatePrices(symbol) {
-    const prices = document.querySelectorAll(".price");
-    prices.forEach(el => {
-      const base = el.getAttribute("data-base");
-      el.textContent = `${symbol} ${base}`;
-    });
-  }
+// Traducción
+function aplicarTraduccion() {
+  const lang = localStorage.getItem('language') || 'es';
+  const dict = translations[lang];
+  if (!dict) return;
 
-  // Cambios de país, idioma y moneda
-  countrySelect.onchange = () => {
-    const selected = countriesData.find(c => c.code === countrySelect.value);
-    languageSelect.value = selected.language;
-    currencySelect.value = selected.currency;
-    localStorage.setItem('country', selected.code);
-    localStorage.setItem('language', selected.language);
-    localStorage.setItem('currency', selected.currency);
-    updatePrices(selected.currency);
-    aplicarTraduccion();
-  };
-
-  languageSelect.onchange = () => {
-    localStorage.setItem('language', languageSelect.value);
-    aplicarTraduccion();
-    alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-  };
-
-  currencySelect.onchange = () => {
-    localStorage.setItem('currency', currencySelect.value);
-    updatePrices(currencySelect.value);
-  };
-
-  // Detectar país por IP
-  fetch("https://ipapi.co/json/")
-    .then(response => response.json())
-    .then(data => {
-      const countryData = countriesData.find(c => c.code === (data.country_code || "CO"));
-      if (countryData) {
-        localStorage.setItem("country", countryData.code);
-        localStorage.setItem("language", countryData.language);
-        localStorage.setItem("currency", countryData.currency);
-      }
-    })
-    .catch(error => console.error("Error al detectar ubicación por IP:", error));
-
-  // Traducciones
-  const translations = {
-    es: {
-      "Inicio": "Inicio",
-      "Catálogo": "Catálogo",
-      "Registrarse": "Registrarse",
-      "Iniciar Sesión": "Iniciar Sesión",
-      "Contacto": "Contacto",
-      "Agregar al carrito": "Agregar al carrito",
-      "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
-    },
-    en: {
-      "Inicio": "Home",
-      "Catálogo": "Catalog",
-      "Registrarse": "Register",
-      "Iniciar Sesión": "Login",
-      "Contacto": "Contact",
-      "Agregar al carrito": "Add to cart",
-      "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
-    },
-    fr: {
-      "Inicio": "Accueil",
-      "Catálogo": "Catalogue",
-      "Registrarse": "S'inscrire",
-      "Iniciar Sesión": "Connexion",
-      "Contacto": "Contact",
-      "Agregar al carrito": "Ajouter au panier",
-      "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
-    }
-    // puedes añadir más idiomas después
-  };
-
-  function aplicarTraduccion() {
-    const lang = localStorage.getItem('language') || 'es';
-    const dict = translations[lang];
-    if (!dict) return;
-
-    document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-      if (dict[el.textContent]) {
-        el.textContent = dict[el.textContent];
-      }
-    });
-  }
-
-  // Inicialización al cargar la página
-  window.onload = () => {
-    const savedCountry = localStorage.getItem("country") || "CO";
-    const savedLanguage = localStorage.getItem("language") || "es";
-    const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-    countrySelect.value = savedCountry;
-    languageSelect.value = savedLanguage;
-    currencySelect.value = savedCurrency;
-    updatePrices(savedCurrency);
-    aplicarTraduccion();
-  };
-
-  // Función para agregar al carrito
-  function agregarAlCarrito(titulo, autor, precio, moneda) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    const producto = { titulo, autor, precio, moneda, cantidad: 1 };
-
-    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
-    if (existente) {
-      existente.cantidad += 1;
-    } else {
-      carrito.push(producto);
-    }
-
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    alert(`📚 ${titulo} añadido al carrito.`);
-  }
-
-  // Evento de botones "Agregar al carrito"
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const contenedor = btn.closest(".libro");
-      const titulo = contenedor.querySelector("h3").textContent;
-      const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
-      const precio = contenedor.querySelector(".price").getAttribute("data-base");
-      const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
-
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
+  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+    if (dict[el.textContent]) el.textContent = dict[el.textContent];
   });
+}
+
+// Detectar IP y guardar en localStorage
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const countryData = countriesData.find(c => c.code === data.country_code) || countriesData.find(c => c.code === "CO");
+    localStorage.setItem("country", countryData.code);
+    localStorage.setItem("language", countryData.language);
+    localStorage.setItem("currency", countryData.currency);
+  })
+  .catch(error => console.error("Error al detectar ubicación por IP:", error));
+
+// Inicializar selects y traducción al cargar la página
+window.onload = () => {
+  const savedCountry = localStorage.getItem("country") || "CO";
+  const savedLanguage = localStorage.getItem("language") || "es";
+  const savedCurrency = localStorage.getItem("currency") || "COP $";
+
+  countrySelect.value = savedCountry;
+  languageSelect.value = savedLanguage;
+  currencySelect.value = savedCurrency;
+
+  updatePrices(savedCurrency);
+  aplicarTraduccion();
+};
+
+// Eventos para cambios de selects
+countrySelect.onchange = () => {
+  const selected = countriesData.find(c => c.code === countrySelect.value);
+  localStorage.setItem("country", selected.code);
+  localStorage.setItem("language", selected.language);
+  localStorage.setItem("currency", selected.currency);
+  languageSelect.value = selected.language;
+  currencySelect.value = selected.currency;
+  updatePrices(selected.currency);
+  aplicarTraduccion();
+};
+
+languageSelect.onchange = () => {
+  localStorage.setItem("language", languageSelect.value);
+  aplicarTraduccion();
+};
+
+currencySelect.onchange = () => {
+  localStorage.setItem("currency", currencySelect.value);
+  updatePrices(currencySelect.value);
+};
+
+// Función para agregar al carrito
+function agregarAlCarrito(titulo, autor, precio, moneda) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const producto = { titulo, autor, precio, moneda, cantidad: 1 };
+  const existente = carrito.find(p => p.titulo === titulo && p.moneda === moneda);
+
+  if (existente) {
+    existente.cantidad += 1;
+  } else {
+    carrito.push(producto);
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  alert(`📚 ${titulo} añadido al carrito.`);
+}
+
+// Eventos botones carrito
+document.querySelectorAll(".carrito-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const cont = btn.closest(".libro");
+    const titulo = cont.querySelector("h3").textContent;
+    const autor = cont.querySelector("p strong").nextSibling.textContent.trim();
+    const precio = cont.querySelector(".price").getAttribute("data-base");
+    const moneda = cont.querySelector(".price").textContent.split(" ")[0];
+    agregarAlCarrito(titulo, autor, precio, moneda);
+  });
+});
 </script>
-
