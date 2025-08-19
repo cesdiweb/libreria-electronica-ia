@@ -117,12 +117,13 @@
           </form>
         `;
       } else {
+        let usd = (total / 4000).toFixed(2); // aquí puedes mejorar con tasa real
         div.innerHTML = `
           <form action="https://www.paypal.com/cgi-bin/webscr" method="post">
             <input type="hidden" name="cmd" value="_xclick">
             <input type="hidden" name="business" value="TU_CORREO_PAYPAL@dominio.com">
             <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-            <input type="hidden" name="amount" value="${(total / 4000).toFixed(2)}">
+            <input type="hidden" name="amount" value="${usd}">
             <input type="hidden" name="currency_code" value="USD">
             <button type="submit" class="btn-paypal">Pagar con PayPal</button>
           </form>
