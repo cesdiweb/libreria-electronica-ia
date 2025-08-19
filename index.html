@@ -1,163 +1,4 @@
-
-
-
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Librería Electrónica IA</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f3f6fa;
-      color: #222;
-    }
-    header {
-      background-color: #004080;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      background-color: #0066cc;
-      padding: 0.5rem;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .selector-container {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin: 1rem;
-      flex-wrap: wrap;
-    }
-    .selector-container select {
-      padding: 0.5rem;
-      border-radius: 5px;
-    }
-    .catalogo {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1.5rem;
-      padding: 2rem;
-    }
-    .libro {
-      background: white;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      text-align: center;
-    }
-    .libro img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 6px;
-    }
-    .libro h3 {
-      margin: 0.5rem 0 0.3rem;
-    }
-    .libro p {
-      margin: 0.3rem 0;
-    }
-    .carrito-btn {
-      margin-top: 0.5rem;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      padding: 0.5rem 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    footer {
-      background-color: #003366;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-    @media (max-width: 600px) {
-      .selector-container {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
-  </style>
-</head>
-<body>
-  <header>
-  <h1>Electronic Bookstore AI</h1>
-  <p>Your smart and international digital bookstore</p>
-</header>
-
-
- <nav>
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Catálogo</a>
-  <a href="register.html">Registrarse</a>
-  <a href="login.html">Iniciar Sesión</a>
-  <a href="contacto.html">Contacto</a>
-  <a href="carrito.html">🛒 Carrito</a>
-  <a href="terminos.html">Términos</a>
-  <a href="reembolso.html">Reembolso</a>
-
-</nav>
-
-
-  <div class="selector-container">
-    <label>🌎 País:
-      <select id="country"></select>
-    </label>
-    <label>🗣️ Idioma:
-      <select id="language"></select>
-    </label>
-    <label>💰 Moneda:
-      <select id="currency"></select>
-    </label>
-  </div>
-
-  <section class="catalogo">
-    <div class="libro">
-      <img src="https://via.placeholder.com/150" alt="Libro 1">
-      <h3>Introducción a la Inteligencia Artificial</h3>
-      <p><strong>Autor:</strong> Ana Pérez</p>
-      <p class="price" data-base="30000">COP $ 30000</p>
-      <button class="carrito-btn">Agregar al carrito</button>
-    </div>
-    <div class="libro">
-      <img src="https://via.placeholder.com/150" alt="Libro 2">
-      <h3>Machine Learning Avanzado</h3>
-      <p><strong>Autor:</strong> John Smith</p>
-      <p class="price" data-base="20">USD $ 20</p>
-      <button class="carrito-btn">Agregar al carrito</button>
-    </div>
-    <div class="libro">
-      <img src="https://via.placeholder.com/150" alt="Libro 3">
-      <h3>Redes Neuronales con Python</h3>
-      <p><strong>Autor:</strong> María López</p>
-      <p class="price" data-base="18">EUR € 18</p>
-      <button class="carrito-btn">Agregar al carrito</button>
-    </div>
-  </section>
-
-  <footer>
-  <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-  <p>
-    <a href="terminos.html">Términos y Condiciones</a> | 
-    <a href="reembolso.html">Política de Reembolso</a>
-  </p>
-</footer>
-
-
-  <script>
+ <script>
     const countriesData = [
       { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
       { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
@@ -396,31 +237,77 @@ fetch("https://ipapi.co/json/")
   })
   .catch(error => console.error("Error al detectar ubicación por IP:", error));
 
-window.onload = () => {
-  const savedCountry = localStorage.getItem("country") || "CO";
-  const savedLanguage = localStorage.getItem("language") || "es";
-  const savedCurrency = localStorage.getItem("currency") || "COP $";
 
-  countrySelect.value = savedCountry;
-  languageSelect.value = savedLanguage;
-  currencySelect.value = savedCurrency;
-  updatePrices(savedCurrency);
-  aplicarTraduccion();
+    window.onload = () => {
+      const savedCountry = localStorage.getItem("country") || "CO";
+      const savedLanguage = localStorage.getItem("language") || "es";
+      const savedCurrency = localStorage.getItem("currency") || "COP $";
 
-  // Asignar evento a cada botón del catálogo
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const contenedor = btn.closest(".libro");
-      const titulo = contenedor.querySelector("h3").textContent;
-      const autor = contenedor.querySelector("p strong").parentElement.textContent.replace("Autor:", "").trim();
-      const priceEl = contenedor.querySelector(".price");
-      const precio = priceEl.getAttribute("data-base");
-      const moneda = priceEl.getAttribute("data-currency");
+      countrySelect.value = savedCountry;
+      languageSelect.value = savedLanguage;
+      currencySelect.value = savedCurrency;
+      updatePrices(savedCurrency);
+aplicarTraduccion();
 
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
-  });
+    };
+const translations = {
+  es: {
+    "Inicio": "Inicio",
+    "Catálogo": "Catálogo",
+    "Registrarse": "Registrarse",
+    "Iniciar Sesión": "Iniciar Sesión",
+    "Contacto": "Contacto",
+    "Agregar al carrito": "Agregar al carrito",
+    "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
+  },
+  en: {
+    "Inicio": "Home",
+    "Catálogo": "Catalog",
+    "Registrarse": "Register",
+    "Iniciar Sesión": "Login",
+    "Contacto": "Contact",
+    "Agregar al carrito": "Add to cart",
+    "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
+  },
+  fr: {
+    "Inicio": "Accueil",
+    "Catálogo": "Catalogue",
+    "Registrarse": "S'inscrire",
+    "Iniciar Sesión": "Connexion",
+    "Contacto": "Contact",
+    "Agregar al carrito": "Ajouter au panier",
+    "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
+  },
+  // puedes añadir más idiomas después
 };
+
+function aplicarTraduccion() {
+  const lang = localStorage.getItem('language') || 'es';
+  const dict = translations[lang];
+  if (!dict) return;
+
+  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+    if (dict[el.textContent]) {
+      el.textContent = dict[el.textContent];
+    }
+  });
+}
+
+  </script>
+<script>
+  // ... Todo tu código actual arriba ...
+
+  // Función para agregar al carrito
+  function agregarAlCarrito(titulo, autor, precio, moneda) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const producto = {
+      titulo,
+      autor,
+      precio,
+      moneda,
+      cantidad: 1
+    };
 
     const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
     if (existente) {
@@ -449,4 +336,3 @@ window.onload = () => {
 
 </body>
 </html>
-
