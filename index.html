@@ -396,77 +396,31 @@ fetch("https://ipapi.co/json/")
   })
   .catch(error => console.error("Error al detectar ubicación por IP:", error));
 
+window.onload = () => {
+  const savedCountry = localStorage.getItem("country") || "CO";
+  const savedLanguage = localStorage.getItem("language") || "es";
+  const savedCurrency = localStorage.getItem("currency") || "COP $";
 
-    window.onload = () => {
-      const savedCountry = localStorage.getItem("country") || "CO";
-      const savedLanguage = localStorage.getItem("language") || "es";
-      const savedCurrency = localStorage.getItem("currency") || "COP $";
+  countrySelect.value = savedCountry;
+  languageSelect.value = savedLanguage;
+  currencySelect.value = savedCurrency;
+  updatePrices(savedCurrency);
+  aplicarTraduccion();
 
-      countrySelect.value = savedCountry;
-      languageSelect.value = savedLanguage;
-      currencySelect.value = savedCurrency;
-      updatePrices(savedCurrency);
-aplicarTraduccion();
+  // Asignar evento a cada botón del catálogo
+  document.querySelectorAll(".carrito-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const contenedor = btn.closest(".libro");
+      const titulo = contenedor.querySelector("h3").textContent;
+      const autor = contenedor.querySelector("p strong").parentElement.textContent.replace("Autor:", "").trim();
+      const priceEl = contenedor.querySelector(".price");
+      const precio = priceEl.getAttribute("data-base");
+      const moneda = priceEl.getAttribute("data-currency");
 
-    };
-const translations = {
-  es: {
-    "Inicio": "Inicio",
-    "Catálogo": "Catálogo",
-    "Registrarse": "Registrarse",
-    "Iniciar Sesión": "Iniciar Sesión",
-    "Contacto": "Contacto",
-    "Agregar al carrito": "Agregar al carrito",
-    "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
-  },
-  en: {
-    "Inicio": "Home",
-    "Catálogo": "Catalog",
-    "Registrarse": "Register",
-    "Iniciar Sesión": "Login",
-    "Contacto": "Contact",
-    "Agregar al carrito": "Add to cart",
-    "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
-  },
-  fr: {
-    "Inicio": "Accueil",
-    "Catálogo": "Catalogue",
-    "Registrarse": "S'inscrire",
-    "Iniciar Sesión": "Connexion",
-    "Contacto": "Contact",
-    "Agregar al carrito": "Ajouter au panier",
-    "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
-  },
-  // puedes añadir más idiomas después
-};
-
-function aplicarTraduccion() {
-  const lang = localStorage.getItem('language') || 'es';
-  const dict = translations[lang];
-  if (!dict) return;
-
-  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-    if (dict[el.textContent]) {
-      el.textContent = dict[el.textContent];
-    }
+      agregarAlCarrito(titulo, autor, precio, moneda);
+    });
   });
-}
-
-  </script>
-<script>
-  // ... Todo tu código actual arriba ...
-
-  // Función para agregar al carrito
-  function agregarAlCarrito(titulo, autor, precio, moneda) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    const producto = {
-      titulo,
-      autor,
-      precio,
-      moneda,
-      cantidad: 1
-    };
+};
 
     const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
     if (existente) {
@@ -495,3 +449,4 @@ function aplicarTraduccion() {
 
 </body>
 </html>
+
