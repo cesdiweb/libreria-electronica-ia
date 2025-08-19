@@ -63,10 +63,8 @@
 </head>
 <body>
   <header>
-    <div style="text-align: center;">
-      <h1 style="margin: 0;">Electronic Bookstore AI</h1>
-      <p style="margin: 0;">Your smart and international digital bookstore</p>
-    </div>
+    <h1>Electronic Bookstore AI</h1>
+    <p>Your smart and international digital bookstore</p>
   </header>
 
   <nav>
@@ -76,25 +74,23 @@
     <a href="login.html" data-translate="iniciar_sesion">Iniciar Sesión</a>
     <a href="carrito.html" data-translate="carrito">Carrito</a>
     <a href="contacto.html" data-translate="contacto">Contacto</a>
-    <a href="terminos.html">Términos</a>
-    <a href="reembolso.html">Reembolso</a>
   </nav>
 
   <div class="catalogo">
     <div class="libro">
-      <h3 data-translate="libro1">Introducción a la IA</h3>
+      <h3>Introducción a la IA</h3>
       <p><span class="precio" data-precio="20">20</span></p>
-      <button onclick="agregarAlCarrito('Introducción a la IA', 20)" data-translate="agregar_carrito">Agregar al carrito</button>
+      <button onclick="agregarAlCarrito('Introducción a la IA', 20, 'Autor A')">Agregar al carrito</button>
     </div>
     <div class="libro">
-      <h3 data-translate="libro2">Aprendizaje Automático</h3>
+      <h3>Aprendizaje Automático</h3>
       <p><span class="precio" data-precio="25">25</span></p>
-      <button onclick="agregarAlCarrito('Aprendizaje Automático', 25)" data-translate="agregar_carrito">Agregar al carrito</button>
+      <button onclick="agregarAlCarrito('Aprendizaje Automático', 25, 'Autor B')">Agregar al carrito</button>
     </div>
     <div class="libro">
-      <h3 data-translate="libro3">Redes Neuronales</h3>
+      <h3>Redes Neuronales</h3>
       <p><span class="precio" data-precio="30">30</span></p>
-      <button onclick="agregarAlCarrito('Redes Neuronales', 30)" data-translate="agregar_carrito">Agregar al carrito</button>
+      <button onclick="agregarAlCarrito('Redes Neuronales', 30, 'Autor C')">Agregar al carrito</button>
     </div>
   </div>
 
@@ -107,25 +103,25 @@
   </footer>
 
   <script>
-    // Usar traducción y moneda guardadas desde index.html
+    // Actualiza la visualización de precios según la moneda seleccionada
     function actualizarMoneda() {
-      const moneda = localStorage.getItem("currency") || "COP $";
+      const moneda = localStorage.getItem("selectedCurrency") || "COP";
       document.querySelectorAll(".precio").forEach(span => {
         const precio = span.getAttribute("data-precio");
         span.textContent = `${moneda} ${precio}`;
       });
     }
 
-    // Misma función que en index.html
-    function agregarAlCarrito(titulo, precio) {
-      const moneda = localStorage.getItem("currency") || "COP $";
+    // Agregar libro al carrito
+    function agregarAlCarrito(titulo, precio, autor="Desconocido") {
+      const moneda = localStorage.getItem("selectedCurrency") || "COP";
       let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
       let producto = carrito.find(item => item.titulo === titulo);
 
       if (producto) {
         producto.cantidad++;
       } else {
-        carrito.push({ titulo, precio, cantidad: 1, moneda });
+        carrito.push({ titulo, autor, precio, cantidad: 1, moneda });
       }
 
       localStorage.setItem("carrito", JSON.stringify(carrito));
@@ -133,9 +129,6 @@
     }
 
     window.onload = () => {
-      if (typeof aplicarTraduccion === "function") {
-        aplicarTraduccion(); // Usar traducción si está definida globalmente
-      }
       actualizarMoneda();
     };
   </script>
