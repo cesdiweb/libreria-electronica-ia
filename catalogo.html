@@ -3,102 +3,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo - AI Electronic Bookstore</title>
+  <title>Catálogo - Librería Electrónica IA</title>
   <style>
-    body { font-family: Arial; margin:0; background:#f9f9f9; color:#333; }
-    header { background:#1e88e5; color:white; padding:1rem; text-align:center; }
-    nav { background:#1565c0; display:flex; justify-content:center; gap:1rem; padding:0.5rem; }
-    nav a { color:white; text-decoration:none; font-weight:bold; }
-    .catalogo { padding:2rem; display:grid; grid-template-columns:repeat(auto-fit, minmax(250px, 1fr)); gap:2rem; }
-    .libro { border:1px solid #ccc; padding:1rem; background:white; border-radius:10px; text-align:center; }
-    .libro h3 { margin-top:0; }
-    .price { font-weight:bold; margin:0.5rem 0; }
-    .carrito-btn { background:#43a047; color:white; border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; }
-    footer { text-align:center; padding:1rem; background:#eee; margin-top:2rem; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      background: #1e88e5;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+    nav {
+      background: #1565c0;
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      padding: 0.5rem;
+    }
+    nav a {
+      color: white;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .catalogo {
+      padding: 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+    }
+    .libro {
+      border: 1px solid #ccc;
+      padding: 1rem;
+      background: white;
+      border-radius: 10px;
+      text-align: center;
+    }
+    .libro h3 {
+      margin-top: 0;
+    }
+    .carrito-btn {
+      background: #43a047;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background: #eee;
+      margin-top: 2rem;
+    }
   </style>
 </head>
 <body>
+  <header>
+    <h1>Electronic Bookstore AI</h1>
+    <p>Your smart and international digital bookstore</p>
+  </header>
 
-<header>
-  <h1>Electronic Bookstore AI</h1>
-  <p>Your smart and international digital bookstore</p>
-</header>
+  <nav>
+    <a href="index.html">Inicio</a>
+    <a href="catalogo.html">Catálogo</a>
+    <a href="register.html">Registrarse</a>
+    <a href="login.html">Iniciar Sesión</a>
+    <a href="carrito.html">Carrito</a>
+    <a href="contacto.html">Contacto</a>
+  </nav>
 
-<nav>
-  <a href="index.html">Inicio</a>
-  <a href="catalogo.html">Catálogo</a>
-  <a href="register.html">Registrarse</a>
-  <a href="login.html">Iniciar Sesión</a>
-  <a href="carrito.html">Carrito</a>
-  <a href="contacto.html">Contacto</a>
-</nav>
+  <section class="catalogo">
+    <div class="libro" data-titulo="Introducción a la Inteligencia Artificial" data-autor="Ana Pérez" data-precio="30000">
+      <img src="https://via.placeholder.com/150" alt="Libro 1">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p><strong>Autor:</strong> Ana Pérez</p>
+      <p class="price">COP $ 30,000</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
 
-<section class="catalogo">
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 1">
-    <h3>Introducción a la Inteligencia Artificial</h3>
-    <p><strong>Autor:</strong> Ana Pérez</p>
-    <p class="price" data-base="30000">COP $ 30000</p>
-    <button class="carrito-btn">Agregar al carrito</button>
-  </div>
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 2">
-    <h3>Machine Learning Avanzado</h3>
-    <p><strong>Autor:</strong> John Smith</p>
-    <p class="price" data-base="20">USD $ 20</p>
-    <button class="carrito-btn">Agregar al carrito</button>
-  </div>
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 3">
-    <h3>Redes Neuronales con Python</h3>
-    <p><strong>Autor:</strong> María López</p>
-    <p class="price" data-base="18">EUR € 18</p>
-    <button class="carrito-btn">Agregar al carrito</button>
-  </div>
-</section>
+    <div class="libro" data-titulo="Machine Learning Avanzado" data-autor="John Smith" data-precio="20">
+      <img src="https://via.placeholder.com/150" alt="Libro 2">
+      <h3>Machine Learning Avanzado</h3>
+      <p><strong>Autor:</strong> John Smith</p>
+      <p class="price">USD $ 20</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
 
-<footer>
-  <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-  <p>
-    <a href="terminos.html">Términos y Condiciones</a> | 
-    <a href="reembolso.html">Política de Reembolso</a>
-  </p>
-</footer>
+    <div class="libro" data-titulo="Redes Neuronales con Python" data-autor="María López" data-precio="18">
+      <img src="https://via.placeholder.com/150" alt="Libro 3">
+      <h3>Redes Neuronales con Python</h3>
+      <p><strong>Autor:</strong> María López</p>
+      <p class="price">EUR € 18</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+  </section>
 
-<script>
-  // Función para actualizar moneda según localStorage
-  function actualizarMoneda() {
-    const moneda = localStorage.getItem("selectedCurrency") || "COP $";
-    document.querySelectorAll(".price").forEach(span => {
-      const base = span.getAttribute("data-base");
-      span.textContent = `${moneda} ${base}`;
+  <footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+    <p>
+      <a href="terminos.html">Términos y Condiciones</a> | 
+      <a href="reembolso.html">Política de Reembolso</a>
+    </p>
+  </footer>
+
+  <script>
+    // Función para agregar libros al carrito
+    function agregarAlCarrito(titulo, precio, autor = "Desconocido") {
+      const moneda = localStorage.getItem("selectedCurrency") || "COP";
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      let producto = carrito.find(item => item.titulo === titulo);
+
+      if (producto) {
+        producto.cantidad++;
+      } else {
+        carrito.push({ titulo, autor, precio, cantidad: 1, moneda });
+      }
+
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      alert(`${titulo} agregado al carrito`);
+    }
+
+    // Asignar evento a todos los botones
+    document.querySelectorAll(".carrito-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const libro = btn.closest(".libro");
+        const titulo = libro.dataset.titulo;
+        const autor = libro.dataset.autor;
+        const precio = parseFloat(libro.dataset.precio);
+        agregarAlCarrito(titulo, precio, autor);
+      });
     });
-  }
-
-  // Agregar al carrito
-  function agregarAlCarrito(titulo, precio, autor="Desconocido") {
-    const moneda = localStorage.getItem("selectedCurrency") || "COP $";
-    let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-    let producto = carrito.find(p => p.titulo === titulo);
-    if(producto) { producto.cantidad++; } 
-    else { carrito.push({titulo, autor, precio, cantidad:1, moneda}); }
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    alert("Producto agregado al carrito");
-  }
-
-  // Vincular botones
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const libro = btn.closest(".libro");
-      const titulo = libro.querySelector("h3").innerText;
-      const autor = libro.querySelector("p strong").nextSibling.textContent.trim() || "Desconocido";
-      const precio = parseFloat(libro.querySelector(".price").getAttribute("data-base"));
-      agregarAlCarrito(titulo, precio, autor);
-    });
-  });
-
-  window.onload = actualizarMoneda;
-</script>
-
+  </script>
 </body>
 </html>
