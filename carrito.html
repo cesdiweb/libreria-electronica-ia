@@ -2,155 +2,110 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Carrito - Librería Electrónica IA</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f3f6fa; }
-    header { background-color: #004080; color: white; padding: 1rem; text-align: center; }
-    nav { display: flex; justify-content: center; background-color: #0066cc; gap: 1rem; padding: 0.5rem; }
-    nav a { color: white; text-decoration: none; font-weight: bold; }
-    main { max-width: 800px; margin: auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    h2 { text-align: center; }
-    .item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding: 0.5rem 0; }
-    .item-info { flex: 1; }
-    .acciones { display: flex; gap: 0.5rem; align-items: center; }
-    button { padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; }
-    .acciones button { background-color: #007bff; color: white; }
-    .acciones .eliminar { background-color: #cc0000; }
-    #vaciar-btn { margin-top: 1rem; background-color: #cc0000; color: white; }
-    #botonesPago { margin-top: 1rem; text-align: center; }
-    .btn-wompi { background: #00a859; color: white; padding: 10px 20px; border-radius: 6px; }
-    .btn-paypal { background: #0070ba; color: white; padding: 10px 20px; border-radius: 6px; }
-    footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      color: #004080;
+      text-align: center;
+    }
+    #carrito div {
+      background: white;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    button {
+      margin: 2px;
+      padding: 5px 10px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .plus { background: #4CAF50; color: white; }
+    .minus { background: #FF9800; color: white; }
+    .delete { background: #F44336; color: white; }
+    .clear { background: #555; color: white; display: block; margin: 10px auto; }
+    .pagar { background: #004080; color: white; display: block; margin: 10px auto; }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Electronic Bookstore AI</h1>
-    <p>Your smart and international digital bookstore</p>
-  </header>
+  <h1>🛒 Carrito de Compras</h1>
+  <div id="carrito"></div>
+  <h2 id="total">Total: COP 0</h2>
+  <button class="clear" onclick="vaciarCarrito()">Vaciar carrito</button>
+  <button class="pagar" onclick="pagarWompi()">Pagar con Wompi (Prueba)</button>
 
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="catalogo.html">Catálogo</a>
-    <a href="register.html">Registrarse</a>
-    <a href="login.html">Iniciar Sesión</a>
-    <a href="contacto.html">Contacto</a>
-  </nav>
+  <script>
+    // Tasas de conversión (ejemplo estático)
+    const tasas = {
+      COP: 1,
+      USD: 0.00025,
+      EUR: 0.00023,
+      MXN: 0.0044
+    };
 
-  <main>
-    <h2>Carrito de Compras</h2>
-    <div id="carrito-contenido"></div>
-    <p class="total" id="total"></p>
-    <button id="vaciar-btn">Vaciar carrito</button>
-    <div id="botonesPago"></div>
-  </main>
+    function mostrarCarrito() {
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      let moneda = localStorage.getItem("moneda") || "COP";
 
-  <footer>
-    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-    <p>
-      <a href="terminos.html">Términos y Condiciones</a> | 
-      <a href="reembolso.html">Política de Reembolso</a>
-    </p>
-  </footer>
+      let carritoDiv = document.getElementById("carrito");
+      carritoDiv.innerHTML = "";
 
-<script>
-const carritoContenedor = document.getElementById("carrito-contenido");
-const totalTexto = document.getElementById("total");
-const vaciarBtn = document.getElementById("vaciar-btn");
-const botonesPago = document.getElementById("botonesPago");
+      let total = 0;
 
-function mostrarCarrito() {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const pais = localStorage.getItem("selectedCountry") || "CO"; 
-  const moneda = localStorage.getItem("selectedCurrency") || "COP";
+      carrito.forEach((item, index) => {
+        let precioConvertido = item.precio * tasas[moneda];
+        let subtotal = precioConvertido * item.cantidad;
+        total += subtotal;
 
-  carritoContenedor.innerHTML = "";
-  botonesPago.innerHTML = "";
+        carritoDiv.innerHTML += `
+          <div>
+            <p><b>${item.nombre}</b></p>
+            <p>Precio: ${moneda} ${precioConvertido.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })} × ${item.cantidad}</p>
+            <button class="plus" onclick="cambiarCantidad(${index}, 1)">＋</button>
+            <button class="minus" onclick="cambiarCantidad(${index}, -1)">−</button>
+            <button class="delete" onclick="eliminarDelCarrito(${index})">🗑️</button>
+          </div>
+        `;
+      });
 
-  if (carrito.length === 0) {
-    carritoContenedor.innerHTML = "<p class='vacio'>🛒 El carrito está vacío.</p>";
-    totalTexto.textContent = "";
-    return;
-  }
+      document.getElementById("total").textContent =
+        "Total: " + moneda + " " + total.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
 
-  let total = 0;
-  carrito.forEach((item, index) => {
-    const subtotal = item.precio * item.cantidad;
-    total += subtotal;
+    function cambiarCantidad(index, cambio) {
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      carrito[index].cantidad += cambio;
+      if (carrito[index].cantidad <= 0) carrito.splice(index, 1);
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      mostrarCarrito();
+    }
 
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
-      <div class="item-info">
-        <strong>${item.titulo}</strong><br>
-        Autor: ${item.autor}<br>
-        Precio: ${item.moneda} ${item.precio} × ${item.cantidad}
-      </div>
-      <div class="acciones">
-        <button onclick="cambiarCantidad(${index}, 1)">＋</button>
-        <button onclick="cambiarCantidad(${index}, -1)">−</button>
-        <button class="eliminar" onclick="eliminarItem(${index})">🗑️</button>
-      </div>
-    `;
-    carritoContenedor.appendChild(div);
-  });
+    function eliminarDelCarrito(index) {
+      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+      carrito.splice(index, 1);
+      localStorage.setItem("carrito", JSON.stringify(carrito));
+      mostrarCarrito();
+    }
 
-  totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
-  mostrarBotonesPago(pais, moneda, total);
-}
+    function vaciarCarrito() {
+      localStorage.removeItem("carrito");
+      mostrarCarrito();
+    }
 
-function cambiarCantidad(index, delta) {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito[index].cantidad += delta;
-  if (carrito[index].cantidad < 1) carrito[index].cantidad = 1;
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
-}
+    function pagarWompi() {
+      alert("Aquí se integrará el pago con Wompi en modo prueba 🚀");
+    }
 
-function eliminarItem(index) {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.splice(index, 1);
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
-}
-
-vaciarBtn.onclick = () => {
-  if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
-    localStorage.removeItem("carrito");
-    mostrarCarrito();
-  }
-};
-
-// BOTONES DE PAGO SEGÚN PAÍS
-function mostrarBotonesPago(pais, moneda, total) {
-  if (pais === "CO") {
-    // Wompi modo prueba (COP)
-    botonesPago.innerHTML = `
-      <form action="https://checkout.wompi.co/p/" method="GET">
-        <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
-        <input type="hidden" name="currency" value="COP" />
-        <input type="hidden" name="amount-in-cents" value="${Math.round(total * 100)}" />
-        <input type="hidden" name="reference" value="ORD-${Date.now()}" />
-        <button type="submit" class="btn-wompi">Pagar con Wompi (Prueba)</button>
-      </form>
-    `;
-  } else {
-    // PayPal sandbox (internacional)
-    botonesPago.innerHTML = `
-      <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="TU_EMAIL_SANDBOX@paypal.com">
-        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-        <input type="hidden" name="amount" value="${total.toFixed(2)}">
-        <input type="hidden" name="currency_code" value="${moneda}">
-        <button type="submit" class="btn-paypal">Pagar con PayPal</button>
-      </form>
-    `;
-  }
-}
-
-window.onload = mostrarCarrito;
-</script>
+    window.onload = mostrarCarrito;
+  </script>
 </body>
 </html>
