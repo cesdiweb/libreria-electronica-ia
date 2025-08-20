@@ -456,47 +456,64 @@ function aplicarTraduccion() {
 
   </script>
 <script>
-  // ... Todo tu código actual arriba ...
-
-  // Función para agregar al carrito
-  function agregarAlCarrito(titulo, autor, precio, moneda) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    const producto = {
-      titulo,
-      autor,
-      precio,
-      moneda,
-      cantidad: 1
-    };
-
-    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
-    if (existente) {
-      existente.cantidad += 1;
-    } else {
-      carrito.push(producto);
+// ================== TRADUCCIÓN ==================
+function aplicarTraduccion(lang) {
+  const dict = translations[lang] || translations["es"];
+  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+    if (dict[el.textContent]) {
+      el.textContent = dict[el.textContent];
     }
+  });
+}
 
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    alert(`📚 ${titulo} añadido al carrito.`);
+// ================== CARRITO ==================
+function agregarAlCarrito(titulo, autor, precio, moneda) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const libroExistente = carrito.find(item => item.titulo === titulo);
+
+  if (libroExistente) {
+    libroExistente.cantidad += 1;
+  } else {
+    carrito.push({ titulo, autor, precio, moneda, cantidad: 1 });
   }
 
-  // Asignar evento a cada botón del catálogo
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const contenedor = btn.closest(".libro");
-      const titulo = contenedor.querySelector("h3").textContent;
-      const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
-      const precio = contenedor.querySelector(".price").getAttribute("data-base");
-      const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  alert("✅ Libro agregado al carrito");
+}
 
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
+// ================== ACTUALIZAR PRECIOS SEGÚN MONEDA ==================
+function actualizarPrecios(moneda) {
+  const tasas = {
+    COP: 1,
+    USD: 0.00026,
+    EUR: 0.00024,
+    GBP: 0.00021,
+    BRL: 0.0013,
+    MXN: 0.0044
+  };
+
+  document.querySelectorAll(".precio").forEach(el => {
+    const precioCOP = el.getAttribute("data-precio-cop");
+    if (precioCOP && tasas[moneda]) {
+      const convertido = (precioCOP * tasas[moneda]).toFixed(2);
+      el.textContent = `${convertido} ${moneda}`;
+    }
   });
+}
+
+// ================== INICIALIZAR ==================
+window.onload = function() {
+  const userLang = localStorage.getItem("lang") || "es";
+  aplicarTraduccion(userLang);
+
+  const moneda = localStorage.getItem("moneda") || "COP";
+  actualizarPrecios(moneda);
+};
 </script>
 
 </body>
 </html>
+
 
 
 
