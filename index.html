@@ -518,93 +518,10 @@ function aplicarTraduccion() {
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
-<script>
-const tasas = {
-  COP: 1,
-  USD: 0.0026,
-  MXN: 0.053,
-  EUR: 0.0024,
-  BRL: 0.013,
-  ARS: 0.062,
-  JPY: 0.36,
-  KRW: 3.46,
-  INR: 0.22,
-  CNY: 0.018,
-  GBP: 0.0021,
-  CAD: 0.0034,
-  AUD: 0.0039
-  // Añadir más monedas si es necesario
-};
-
-// Función para actualizar precios según la moneda
-function actualizarPrecios() {
-  const monedaActual = localStorage.getItem('currency') || 'COP $';
-  const simbolo = monedaActual.split(' ')[0];
-  const clave = simbolo.toUpperCase();
-  const factor = tasas[clave] || 1;
-
-  document.querySelectorAll(".libro").forEach(libro => {
-    const baseCOP = parseFloat(libro.dataset.precio);
-    const precioConvertido = baseCOP * factor;
-    libro.querySelector(".precio").textContent = `${simbolo} ${precioConvertido.toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2})}`;
-  });
-}
-
-// Inicializar precios al cargar
-window.addEventListener('load', actualizarPrecios);
-
-// Función para agregar al carrito con moneda actual
-function agregarAlCarrito(titulo, autor, precioCOP) {
-  const monedaActual = localStorage.getItem('currency') || 'COP $';
-  const simbolo = monedaActual.split(' ')[0];
-  const clave = simbolo.toUpperCase();
-  const factor = tasas[clave] || 1;
-  const precioConvertido = precioCOP * factor;
-
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const producto = {
-    titulo,
-    autor,
-    precio: precioConvertido,
-    moneda: monedaActual,
-    cantidad: 1
-  };
-
-  const existente = carrito.find(item => item.titulo === titulo && item.moneda === monedaActual);
-  if (existente) {
-    existente.cantidad += 1;
-  } else {
-    carrito.push(producto);
-  }
-
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  alert(`📚 ${titulo} añadido al carrito.`);
-}
-
-// Asignar evento a cada botón del catálogo
-document.querySelectorAll(".carrito-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const contenedor = btn.closest(".libro");
-    const titulo = contenedor.dataset.titulo;
-    const autor = contenedor.dataset.autor;
-    const precioCOP = parseFloat(contenedor.dataset.precio);
-
-    agregarAlCarrito(titulo, autor, precioCOP);
-  });
-});
-
-// Actualizar precios cuando el usuario cambia moneda manualmente
-const currencySelect = document.getElementById("currency");
-currencySelect.onchange = () => {
-  localStorage.setItem('currency', currencySelect.value);
-  actualizarPrecios();
-};
 </script>
-
 
 </body>
 </html>
-
 
 
 
