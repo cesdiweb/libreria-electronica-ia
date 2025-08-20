@@ -518,10 +518,85 @@ function aplicarTraduccion() {
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
+<script>
+const monedaBase = "COP"; // Tus precios base están en COP
+const apiTasas = "https://api.exchangerate.host/latest?base=COP"; // API gratuita para tasas de cambio
+
+async function actualizarPreciosMoneda() {
+  const monedaUsuario = localStorage.getItem("currency") || "COP $";
+  const simbolo = monedaUsuario.split(" ")[0];
+
+  try {
+    const respuesta = await fetch(apiTasas);
+    const datos = await respuesta.json();
+    const tasas = datos.rates;
+
+    // Obtener código de moneda del usuario
+    const codigoMoneda = monedaUsuario.split(" ")[0];
+
+    document.querySelectorAll(".libro").forEach(libro => {
+      const precioBase = parseFloat(libro.dataset.precio);
+      let precioConvertido = precioBase;
+
+      if (codigoMoneda !== monedaBase && tasas[codigoMoneda]) {
+        precioConvertido = precioBase * tasas[codigoMoneda];
+      }
+
+      // Mostrar precio con símbolo y miles
+      libro.querySelector(".precio").textContent = `${simbolo} ${precioConvertido.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+
+      // Guardar el precio convertido en data-base para el carrito
+      libro.dataset.precioConvertido = precioConvertido.toFixed(2);
+    });
+  } catch (error) {
+    console.error("Error al obtener tasas de cambio:", error);
+  }
+}
+
+// Actualizar precios al cargar y al cambiar moneda
+window.addEventListener("load", actualizarPreciosMoneda);
+currencySelect.addEventListener("change", actualizarPreciosMoneda);
+
+// Modificar función agregar al carrito para usar precio convertido
+function agregarAlCarrito(titulo, autor, precio, moneda) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const producto = {
+    titulo,
+    autor,
+    precio, // precio ya convertido
+    moneda,
+    cantidad: 1
+  };
+
+  const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+  if (existente) {
+    existente.cantidad += 1;
+  } else {
+    carrito.push(producto);
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  alert(`📚 ${titulo} añadido al carrito.`);
+}
+
+// Reasignar evento a cada botón del catálogo
+document.querySelectorAll(".carrito-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const contenedor = btn.closest(".libro");
+    const titulo = contenedor.dataset.titulo;
+    const autor = contenedor.dataset.autor;
+    const precio = parseFloat(contenedor.dataset.precioConvertido || contenedor.dataset.precio);
+    const moneda = localStorage.getItem("currency") || "COP $";
+
+    agregarAlCarrito(titulo, autor, precio, moneda);
+  });
+});
 </script>
+
 
 </body>
 </html>
+
 
 
 
