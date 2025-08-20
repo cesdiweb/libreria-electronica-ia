@@ -518,51 +518,10 @@ function aplicarTraduccion() {
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
-<script>
-const tasasCambio = {
-  "COP": 1,
-  "USD": 0.00025,
-  "EUR": 0.00023,
-  "MXN": 0.005,
-  "BRL": 0.0012,
-  "ARS": 0.032,
-  "JPY": 0.034,
-  "GBP": 0.00020,
-  "CAD": 0.00033,
-  "AUD": 0.00036,
-  "CHF": 0.00021,
-  "CNY": 0.0017,
-  "KRW": 0.34,
-  "INR": 0.020,
-  // agrega todas las demás monedas que tengas en tu countriesData
-};
-
-function actualizarPreciosGlobal() {
-  const monedaCompleta = localStorage.getItem("currency") || "COP $";
-  const [codigo, simbolo] = monedaCompleta.split(" ");
-  
-  document.querySelectorAll(".libro").forEach(libro => {
-    const baseCOP = parseFloat(libro.dataset.precio); // siempre en COP
-    const tasa = tasasCambio[codigo] || 1;
-    const precioConvertido = (baseCOP * tasa).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-    libro.querySelector(".precio").textContent = `${simbolo} ${precioConvertido}`;
-  });
-}
-
-// Actualizar cuando cambia la moneda
-currencySelect.addEventListener("change", () => {
-  localStorage.setItem("currency", currencySelect.value);
-  actualizarPreciosGlobal();
-});
-
-// Inicializar precios al cargar la página
-window.addEventListener("load", actualizarPreciosGlobal);
 </script>
-
 
 </body>
 </html>
-
 
 
 
