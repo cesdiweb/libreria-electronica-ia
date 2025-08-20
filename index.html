@@ -518,10 +518,89 @@ function aplicarTraduccion() {
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
+<script>
+// --- Tasas de conversión COP -> otras monedas ---
+const tasas = {
+  "COP $": 1,
+  "USD $": 0.00022,
+  "EUR €": 0.00020,
+  "MXN $": 0.0044,
+  "BRL R$": 0.0011,
+  "ARS $": 0.024,
+  "JPY ¥": 30,
+  "GBP £": 0.00017,
+  "CAD $": 0.00029,
+  "AUD $": 0.00033,
+  "CHF Fr": 0.00020,
+  "CNY ¥": 0.0015,
+  // Añade aquí todas las monedas que tengas en countriesData
+};
+
+// --- Función para actualizar precios ---
+function actualizarPrecios() {
+  const moneda = localStorage.getItem('currency') || 'COP $';
+  const simbolo = moneda;
+  document.querySelectorAll(".libro").forEach(libro => {
+    const baseCOP = parseFloat(libro.dataset.precio);
+    const precioConvertido = (baseCOP * (tasas[moneda] || 1)).toFixed(2);
+    libro.querySelector(".precio").textContent = `${simbolo} ${precioConvertido}`;
+    libro.querySelector(".precio").setAttribute("data-convertido", precioConvertido);
+  });
+}
+
+// --- Inicializar precios al cargar ---
+window.addEventListener('load', () => {
+  actualizarPrecios();
+});
+
+// --- Función para agregar al carrito ---
+function agregarAlCarrito(titulo, autor, precio, moneda) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  const producto = {
+    titulo,
+    autor,
+    precio,
+    moneda,
+    cantidad: 1
+  };
+
+  const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+  if (existente) {
+    existente.cantidad += 1;
+  } else {
+    carrito.push(producto);
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  alert(`📚 ${titulo} añadido al carrito.`);
+}
+
+// --- Asignar evento a cada botón del catálogo ---
+document.querySelectorAll(".carrito-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const contenedor = btn.closest(".libro");
+    const titulo = contenedor.dataset.titulo;
+    const autor = contenedor.dataset.autor;
+    const precio = contenedor.querySelector(".precio").getAttribute("data-convertido");
+    const moneda = localStorage.getItem('currency') || 'COP $';
+
+    agregarAlCarrito(titulo, autor, precio, moneda);
+  });
+});
+
+// --- Actualizar precios cuando cambia el selector de moneda ---
+document.getElementById("currency").addEventListener("change", (e) => {
+  const moneda = e.target.value;
+  localStorage.setItem("currency", moneda);
+  actualizarPrecios();
+});
 </script>
+
 
 </body>
 </html>
+
 
 
 
