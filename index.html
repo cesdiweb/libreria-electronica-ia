@@ -1,6 +1,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -517,56 +518,10 @@ function aplicarTraduccion() {
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
-<script>
-  // 🔹 Definir tasas de conversión desde COP a otras monedas
-  const tasas = {
-    "COP $": 1,
-    "USD $": 0.00025,
-    "EUR €": 0.00023,
-    "MXN $": 0.0051,
-    "BRL R$": 0.0011,
-    "ARS $": 0.028,
-    "JPY ¥": 36,
-    "KRW ₩": 327,
-    // puedes añadir más monedas según countriesData
-  };
-
-  // 🔹 Guardar precio base si no existe
-  document.querySelectorAll(".precio").forEach(el => {
-    if (!el.getAttribute("data-precio-base")) {
-      el.setAttribute("data-precio-base", el.getAttribute("data-precio"));
-    }
-  });
-
-  // 🔹 Función para actualizar precios de todos los libros según moneda
-  function actualizarPrecios(moneda) {
-    const tasa = tasas[moneda] || 1;
-    document.querySelectorAll(".precio").forEach(el => {
-      const precioBase = parseFloat(el.getAttribute("data-precio-base"));
-      const precioConvertido = Math.round(precioBase * tasa);
-      el.textContent = `${moneda} ${precioConvertido.toLocaleString()}`;
-    });
-  }
-
-  // 🔹 Inicializar precios al cargar la página
-  window.addEventListener("load", () => {
-    const monedaGuardada = localStorage.getItem("currency") || "COP $";
-    actualizarPrecios(monedaGuardada);
-  });
-
-  // 🔹 Actualizar precios al cambiar país o moneda
-  countrySelect.addEventListener("change", () => {
-    actualizarPrecios(currencySelect.value);
-  });
-  currencySelect.addEventListener("change", () => {
-    actualizarPrecios(currencySelect.value);
-  });
 </script>
 
 </body>
 </html>
-
-
 
 
 
