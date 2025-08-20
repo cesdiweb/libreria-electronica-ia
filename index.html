@@ -148,36 +148,30 @@
 </section>
 
 <script>
-  // Función para agregar libros al carrito con moneda dinámica
-  function agregarAlCarrito(titulo, autor, precio, moneda) {
-    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-    const producto = { titulo, autor, precio, moneda, cantidad: 1 };
-    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
-
-    if (existente) {
-      existente.cantidad += 1;
-    } else {
-      carrito.push(producto);
-    }
-
-    localStorage.setItem("carrito", JSON.stringify(carrito));
-    alert(`${titulo} (${autor}) agregado al carrito`);
-  }
-
-  // Asignar evento a todos los botones del catálogo
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const libro = btn.closest(".libro");
-      const titulo = libro.dataset.titulo;
-      const autor = libro.dataset.autor;
-      const precio = parseFloat(libro.dataset.precio);
-      const moneda = localStorage.getItem("selectedCurrency") || "COP";
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
+function actualizarPrecios() {
+  const moneda = localStorage.getItem('currency') || 'COP $';
+  const simbolo = moneda.split(' ')[0];
+  document.querySelectorAll(".libro").forEach(libro => {
+    const base = parseFloat(libro.dataset.precio);
+    libro.querySelector(".precio").textContent = `${simbolo} ${base.toLocaleString()}`;
   });
-</script>
+}
 
+// Inicializar precios al cargar
+window.addEventListener('load', actualizarPrecios);
+
+// Agregar al carrito usando moneda actual
+document.querySelectorAll(".carrito-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const contenedor = btn.closest(".libro");
+    const titulo = contenedor.dataset.titulo;
+    const autor = contenedor.dataset.autor;
+    const precio = parseFloat(contenedor.dataset.precio);
+    const moneda = localStorage.getItem('currency') || 'COP $';
+    agregarAlCarrito(titulo, autor, precio, moneda);
+  });
+});
+</script>
 
 
   <footer>
@@ -486,64 +480,47 @@ function aplicarTraduccion() {
 
   </script>
 <script>
-// ================== TRADUCCIÓN ==================
-function aplicarTraduccion(lang) {
-  const dict = translations[lang] || translations["es"];
-  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-    if (dict[el.textContent]) {
-      el.textContent = dict[el.textContent];
+  // ... Todo tu código actual arriba ...
+
+  // Función para agregar al carrito
+  function agregarAlCarrito(titulo, autor, precio, moneda) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+    const producto = {
+      titulo,
+      autor,
+      precio,
+      moneda,
+      cantidad: 1
+    };
+
+    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+    if (existente) {
+      existente.cantidad += 1;
+    } else {
+      carrito.push(producto);
     }
-  });
-}
 
-// ================== CARRITO ==================
-function agregarAlCarrito(titulo, autor, precio, moneda) {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const libroExistente = carrito.find(item => item.titulo === titulo);
-
-  if (libroExistente) {
-    libroExistente.cantidad += 1;
-  } else {
-    carrito.push({ titulo, autor, precio, moneda, cantidad: 1 });
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    alert(`📚 ${titulo} añadido al carrito.`);
   }
 
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  alert("✅ Libro agregado al carrito");
-}
+  // Asignar evento a cada botón del catálogo
+  document.querySelectorAll(".carrito-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const contenedor = btn.closest(".libro");
+      const titulo = contenedor.querySelector("h3").textContent;
+      const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
+      const precio = contenedor.querySelector(".price").getAttribute("data-base");
+      const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
 
-// ================== ACTUALIZAR PRECIOS SEGÚN MONEDA ==================
-function actualizarPrecios(moneda) {
-  const tasas = {
-    COP: 1,
-    USD: 0.00026,
-    EUR: 0.00024,
-    GBP: 0.00021,
-    BRL: 0.0013,
-    MXN: 0.0044
-  };
-
-  document.querySelectorAll(".precio").forEach(el => {
-    const precioCOP = el.getAttribute("data-precio-cop");
-    if (precioCOP && tasas[moneda]) {
-      const convertido = (precioCOP * tasas[moneda]).toFixed(2);
-      el.textContent = `${convertido} ${moneda}`;
-    }
+      agregarAlCarrito(titulo, autor, precio, moneda);
+    });
   });
-}
-
-// ================== INICIALIZAR ==================
-window.onload = function() {
-  const userLang = localStorage.getItem("lang") || "es";
-  aplicarTraduccion(userLang);
-
-  const moneda = localStorage.getItem("moneda") || "COP";
-  actualizarPrecios(moneda);
-};
 </script>
 
 </body>
 </html>
-
 
 
 
