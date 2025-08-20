@@ -517,10 +517,64 @@ function aplicarTraduccion() {
       agregarAlCarrito(titulo, autor, precio, moneda);
     });
   });
+<script>
+  // 🔹 Crear objeto de tasas automáticamente desde countriesData
+  // Aquí usamos una tasa de ejemplo: 1 COP = 1 para COP, y otras tasas aproximadas
+  const tasasPorMoneda = {};
+
+  countriesData.forEach(c => {
+    if (!tasasPorMoneda[c.currency]) {
+      // Puedes personalizar cada tasa real aquí
+      switch(c.currency) {
+        case "COP $": tasasPorMoneda[c.currency] = 1; break;
+        case "USD $": tasasPorMoneda[c.currency] = 0.00025; break;
+        case "EUR €": tasasPorMoneda[c.currency] = 0.00023; break;
+        case "MXN $": tasasPorMoneda[c.currency] = 0.0051; break;
+        case "BRL R$": tasasPorMoneda[c.currency] = 0.0011; break;
+        case "ARS $": tasasPorMoneda[c.currency] = 0.028; break;
+        case "JPY ¥": tasasPorMoneda[c.currency] = 36; break;
+        case "KRW ₩": tasasPorMoneda[c.currency] = 327; break;
+        default: tasasPorMoneda[c.currency] = 1; // si no está definida, se toma 1
+      }
+    }
+  });
+
+  // 🔹 Guardar precio base si no existe
+  document.querySelectorAll(".precio").forEach(el => {
+    if (!el.getAttribute("data-precio-base")) {
+      el.setAttribute("data-precio-base", el.getAttribute("data-precio"));
+    }
+  });
+
+  // 🔹 Función para actualizar precios
+  function actualizarPrecios(monedaSeleccionada) {
+    const tasa = tasasPorMoneda[monedaSeleccionada] || 1;
+    document.querySelectorAll(".precio").forEach(el => {
+      const precioBase = parseFloat(el.getAttribute("data-precio-base"));
+      const precioConvertido = Math.round(precioBase * tasa);
+      el.textContent = `${monedaSeleccionada} ${precioConvertido.toLocaleString()}`;
+    });
+  }
+
+  // 🔹 Inicializar precios al cargar la página
+  window.addEventListener("load", () => {
+    const monedaGuardada = localStorage.getItem("currency") || "COP $";
+    actualizarPrecios(monedaGuardada);
+  });
+
+  // 🔹 Actualizar precios al cambiar país o moneda
+  countrySelect.addEventListener("change", () => {
+    actualizarPrecios(currencySelect.value);
+  });
+  currencySelect.addEventListener("change", () => {
+    actualizarPrecios(currencySelect.value);
+  });
 </script>
+
 
 </body>
 </html>
+
 
 
 
