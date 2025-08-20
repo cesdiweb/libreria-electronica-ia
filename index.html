@@ -518,26 +518,18 @@ function aplicarTraduccion() {
     });
   });
 <script>
-  // 🔹 Crear objeto de tasas automáticamente desde countriesData
-  // Aquí usamos una tasa de ejemplo: 1 COP = 1 para COP, y otras tasas aproximadas
-  const tasasPorMoneda = {};
-
-  countriesData.forEach(c => {
-    if (!tasasPorMoneda[c.currency]) {
-      // Puedes personalizar cada tasa real aquí
-      switch(c.currency) {
-        case "COP $": tasasPorMoneda[c.currency] = 1; break;
-        case "USD $": tasasPorMoneda[c.currency] = 0.00025; break;
-        case "EUR €": tasasPorMoneda[c.currency] = 0.00023; break;
-        case "MXN $": tasasPorMoneda[c.currency] = 0.0051; break;
-        case "BRL R$": tasasPorMoneda[c.currency] = 0.0011; break;
-        case "ARS $": tasasPorMoneda[c.currency] = 0.028; break;
-        case "JPY ¥": tasasPorMoneda[c.currency] = 36; break;
-        case "KRW ₩": tasasPorMoneda[c.currency] = 327; break;
-        default: tasasPorMoneda[c.currency] = 1; // si no está definida, se toma 1
-      }
-    }
-  });
+  // 🔹 Definir tasas de conversión desde COP a otras monedas
+  const tasas = {
+    "COP $": 1,
+    "USD $": 0.00025,
+    "EUR €": 0.00023,
+    "MXN $": 0.0051,
+    "BRL R$": 0.0011,
+    "ARS $": 0.028,
+    "JPY ¥": 36,
+    "KRW ₩": 327,
+    // puedes añadir más monedas según countriesData
+  };
 
   // 🔹 Guardar precio base si no existe
   document.querySelectorAll(".precio").forEach(el => {
@@ -546,13 +538,13 @@ function aplicarTraduccion() {
     }
   });
 
-  // 🔹 Función para actualizar precios
-  function actualizarPrecios(monedaSeleccionada) {
-    const tasa = tasasPorMoneda[monedaSeleccionada] || 1;
+  // 🔹 Función para actualizar precios de todos los libros según moneda
+  function actualizarPrecios(moneda) {
+    const tasa = tasas[moneda] || 1;
     document.querySelectorAll(".precio").forEach(el => {
       const precioBase = parseFloat(el.getAttribute("data-precio-base"));
       const precioConvertido = Math.round(precioBase * tasa);
-      el.textContent = `${monedaSeleccionada} ${precioConvertido.toLocaleString()}`;
+      el.textContent = `${moneda} ${precioConvertido.toLocaleString()}`;
     });
   }
 
@@ -571,9 +563,9 @@ function aplicarTraduccion() {
   });
 </script>
 
-
 </body>
 </html>
+
 
 
 
