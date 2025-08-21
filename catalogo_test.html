@@ -1,64 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Catálogo Test</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo Test - Librería Electrónica IA</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 20px; }
-    h1 { text-align: center; }
-    .catalogo { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
-    .libro { background: #fff; padding: 15px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); text-align: center; }
-    .precio { font-weight: bold; color: #004080; margin-top: 10px; }
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .libro { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
+    .precio { font-weight: bold; }
   </style>
 </head>
 <body>
-  <h1>Catálogo de Prueba</h1>
+  <h1>Catálogo Test - Librería Electrónica IA</h1>
 
-  <label for="currency">Selecciona moneda: </label>
+  <label for="currency">Moneda:</label>
   <select id="currency">
-    <option value="COP">COP (Peso Colombiano)</option>
-    <option value="USD">USD (Dólar)</option>
-    <option value="EUR">EUR (Euro)</option>
-    <option value="MXN">MXN (Peso Mexicano)</option>
+    <option value="COP">COP - Peso Colombiano</option>
+    <option value="USD">USD - Dólar</option>
+    <option value="EUR">EUR - Euro</option>
+    <option value="JPY">JPY - Yen Japonés</option>
   </select>
 
-  <div class="catalogo">
-    <div class="libro" data-precio="48000">
-      <h3>Redes Neuronales con Python</h3>
-      <p>Autor: María López</p>
-      <p class="precio"></p>
-    </div>
-    <div class="libro" data-precio="55000">
-      <h3>Introducción a la IA</h3>
-      <p>Autor: Juan Pérez</p>
-      <p class="precio"></p>
-    </div>
-    <div class="libro" data-precio="32000">
-      <h3>Machine Learning Básico</h3>
-      <p>Autor: Ana Torres</p>
-      <p class="precio"></p>
-    </div>
+  <div class="libro" data-precio-cop="30000">
+    <h3>Introducción a la Inteligencia Artificial</h3>
+    <p>Autor: Ana Pérez</p>
+    <p class="precio"></p>
+    <button>Agregar al carrito</button>
+  </div>
+
+  <div class="libro" data-precio-cop="48000">
+    <h3>Redes Neuronales con Python</h3>
+    <p>Autor: María López</p>
+    <p class="precio"></p>
+    <button>Agregar al carrito</button>
   </div>
 
   <script>
+    // Tasas de ejemplo (1 COP como base)
     const tasas = {
       COP: 1,
-      USD: 0.00025, // 1 COP = 0.00025 USD
+      USD: 0.00025, // 1 COP = 0.00025 USD (ejemplo)
       EUR: 0.00023, // 1 COP = 0.00023 EUR
-      MXN: 0.0043   // 1 COP = 0.0043 MXN
-    };
-
-    const simbolos = {
-      COP: "$",
-      USD: "$",
-      EUR: "€",
-      MXN: "$"
+      JPY: 0.036    // 1 COP = 0.036 JPY
     };
 
     function actualizarPrecios() {
-      const moneda = document.getElementById("currency").value;
+      const currency = document.getElementById("currency").value;
       document.querySelectorAll(".libro").forEach(libro => {
-        const precioCOP = parseFloat(libro.dataset.precio);
-        const precioConvertido = (precioCOP * tasas[moneda]).toFixed(2);
-        libro.querySelector(
+        const precioCOP = parseFloat(libro.dataset.precioCop);
+        const precioConvertido = precioCOP * tasas[currency];
+        libro.querySelector(".precio").textContent =
+          currency + " " + precioConvertido.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+      });
+    }
+
+    document.getElementById("currency").addEventListener("change", actualizarPrecios);
+    window.onload = actualizarPrecios;
+  </script>
+</body>
+</html>
