@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de prueba - Librería Electrónica IA</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 20px; background: #f4f6f9; }
+    h1 { text-align: center; color: #004080; }
+    .catalogo { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; margin-top: 20px; }
+    .libro { background: #fff; padding: 15px; border-radius: 12px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
+    .libro h3 { margin: 0; font-size: 18px; color: #222; }
+    .libro p { margin: 6px 0; font-size: 14px; color: #555; }
+    .precio { font-weight: bold; color: #007b00; margin-top: 8px; }
+    button { background: #004080; color: white; border: none; padding: 8px 12px; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+    button:hover { background: #0066cc; }
+    .selector { text-align: center; margin-bottom: 20px; }
+  </style>
+</head>
+<body>
+  <h1>AI Electronic Bookstore (Prueba)</h1>
+
+  <!-- Selector de moneda -->
+  <div class="selector">
+    <label for="currency">Moneda: </label>
+    <select id="currency">
+      <option value="COP">COP - Peso Colombiano</option>
+      <option value="USD">USD - Dólar Estadounidense</option>
+      <option value="EUR">EUR - Euro</option>
+      <option value="MXN">MXN - Peso Mexicano</option>
+      <option value="BRL">BRL - Real Brasileño</option>
+      <option value="CLP">CLP - Peso Chileno</option>
+      <option value="ARS">ARS - Peso Argentino</option>
+      <option value="GBP">GBP - Libra Esterlina</option>
+      <option value="JPY">JPY - Yen Japonés</option>
+      <option value="CNY">CNY - Yuan Chino</option>
+    </select>
+  </div>
+
+  <!-- Catálogo de libros -->
+  <div class="catalogo">
+    <div class="libro" data-preciocop="30000">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p>Autor: Ana Pérez</p>
+      <p class="precio"></p>
+      <button>Agregar al carrito</button>
+    </div>
+    <div class="libro" data-preciocop="48000">
+      <h3>Redes Neuronales con Python</h3>
+      <p>Autor: María López</p>
+      <p class="precio"></p>
+      <button>Agregar al carrito</button>
+    </div>
+    <div class="libro" data-preciocop="25000">
+      <h3>Fundamentos de Machine Learning</h3>
+      <p>Autor: Juan Gómez</p>
+      <p class="precio"></p>
+      <button>Agregar al carrito</button>
+    </div>
+  </div>
+
+  <script>
+    let tasas = {};
+
+    // Obtener tasas en tiempo real
+    async function cargarTasas() {
+      try {
+        const res = await fetch("https://api.exchangerate.host/latest?base=COP");
+        const data = await res.json();
+        tasas = data.rates;
+        actualizarPrecios();
+      } catch (error) {
+        console.error("Error cargando tasas:", error);
+      }
+    }
+
+    // Convertir desde COP
+    function convertirPrecio(precioCOP, moneda) {
+      const tasa = tasas[moneda] || 1;
+      return (precioCOP * tasa).toFixed(2);
+    }
+
+    // Actualizar todos los precios
+    function actualizarPrecios() {
+      const monedaSeleccionada = document.getElementById("currency").value;
+      document.querySelectorAll(".libro").forEach(libro => {
+        const precioCOP = parseFloat(libro.getAttribute("data-preciocop"));
+        const precioConvertido = convertirPrecio(precioCOP, monedaSeleccionada);
+        libro.querySelector(".precio").textContent =
+          `${monedaSeleccionada} ${precioConvertido}`;
+      });
+    }
+
+    document.getElementById("currency").addEventListener("change", actualizarPrecios);
+    window.onload = cargarTasas;
+  </script>
+</body>
+</html>
