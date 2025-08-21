@@ -136,52 +136,7 @@
         agregarAlCarrito(titulo, precio, autor);
       });
     });
- <script>
-// Tasas de cambio simuladas (estas luego se pueden conectar a una API real)
-const exchangeRates = {
-  "COP": 1,
-  "USD": 0.00025, // ejemplo: 1 COP = 0.00025 USD
-  "EUR": 0.00023,
-  "JPY": 0.037,
-  "BRL": 0.0012
-};
 
-// Moneda seleccionada (por defecto COP)
-function getSelectedCurrency() {
-  return localStorage.getItem("selectedCurrency") || "COP";
-}
-
-// Actualizar precios en la página
-function actualizarPrecios() {
-  const moneda = getSelectedCurrency();
-  const rate = exchangeRates[moneda];
-  document.querySelectorAll(".precio").forEach(p => {
-    const baseCOP = parseFloat(p.dataset.precio);
-    const convertido = baseCOP * rate;
-    p.textContent = `${moneda} ${convertido.toLocaleString(undefined, {maximumFractionDigits:2})}`;
-  });
-}
-
-// Guardar selección de moneda
-function setCurrency(moneda) {
-  localStorage.setItem("selectedCurrency", moneda);
-  actualizarPrecios();
-}
-
-// Ejecutar al cargar
-window.addEventListener("load", actualizarPrecios);
-
-// Ejemplo de cambio de moneda (puedes hacer que se active desde un <select>)
-document.addEventListener("DOMContentLoaded", () => {
-  // Simulación: cada 5 segundos cambia de moneda (para probar)
-  // ⚠️ Luego esto lo conectamos al <select> real
-  setInterval(() => {
-    const monedas = Object.keys(exchangeRates);
-    const random = monedas[Math.floor(Math.random() * monedas.length)];
-    setCurrency(random);
-    console.log("Moneda cambiada a:", random);
-  }, 5000);
-});
 </script>
 
 </body>
