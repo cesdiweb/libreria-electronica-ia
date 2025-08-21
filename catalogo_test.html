@@ -5,57 +5,115 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Catálogo Test - Librería Electrónica IA</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 20px; }
-    .libro { border: 1px solid #ccc; padding: 10px; margin: 10px 0; }
-    .precio { font-weight: bold; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f4f6f9;
+    }
+    header {
+      background: #004080;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      border-radius: 8px;
+    }
+    .selector {
+      margin: 20px 0;
+      text-align: center;
+    }
+    .libros {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 20px;
+    }
+    .libro {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      padding: 15px;
+      text-align: center;
+    }
+    .libro h3 {
+      margin: 10px 0;
+      color: #004080;
+    }
+    .precio {
+      font-weight: bold;
+      margin: 10px 0;
+      font-size: 18px;
+      color: green;
+    }
   </style>
 </head>
 <body>
-  <h1>Catálogo Test - Librería Electrónica IA</h1>
 
-  <label for="currency">Moneda:</label>
-  <select id="currency">
-    <option value="COP">COP - Peso Colombiano</option>
-    <option value="USD">USD - Dólar</option>
-    <option value="EUR">EUR - Euro</option>
-    <option value="JPY">JPY - Yen Japonés</option>
-  </select>
+  <header>
+    <h1>Catálogo Test - Librería Electrónica IA</h1>
+  </header>
 
-  <div class="libro" data-precio-cop="30000">
-    <h3>Introducción a la Inteligencia Artificial</h3>
-    <p>Autor: Ana Pérez</p>
-    <p class="precio"></p>
-    <button>Agregar al carrito</button>
+  <div class="selector">
+    <label for="currency">Selecciona Moneda: </label>
+    <select id="currency">
+      <option value="COP">COP - Peso Colombiano</option>
+      <option value="USD">USD - Dólar Estadounidense</option>
+      <option value="EUR">EUR - Euro</option>
+      <option value="JPY">JPY - Yen Japonés</option>
+    </select>
   </div>
 
-  <div class="libro" data-precio-cop="48000">
-    <h3>Redes Neuronales con Python</h3>
-    <p>Autor: María López</p>
-    <p class="precio"></p>
-    <button>Agregar al carrito</button>
+  <div class="libros">
+    <div class="libro" data-preciocop="48000">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p>Autor: Juan Pérez</p>
+      <p class="precio"></p>
+    </div>
+
+    <div class="libro" data-preciocop="65000">
+      <h3>Redes Neuronales con Python</h3>
+      <p>Autor: María López</p>
+      <p class="precio"></p>
+    </div>
+
+    <div class="libro" data-preciocop="52000">
+      <h3>Machine Learning Avanzado</h3>
+      <p>Autor: Carlos Gómez</p>
+      <p class="precio"></p>
+    </div>
   </div>
 
   <script>
-    // Tasas de ejemplo (1 COP como base)
+    // Tasas de cambio simples (ejemplo fijo, en producción se conecta a API de divisas)
     const tasas = {
       COP: 1,
-      USD: 0.00025, // 1 COP = 0.00025 USD (ejemplo)
-      EUR: 0.00023, // 1 COP = 0.00023 EUR
-      JPY: 0.036    // 1 COP = 0.036 JPY
+      USD: 0.00025,   // 1 COP = 0.00025 USD
+      EUR: 0.00023,   // 1 COP = 0.00023 EUR
+      JPY: 0.038      // 1 COP = 0.038 JPY
     };
 
+    const simbolos = {
+      COP: "$",
+      USD: "$",
+      EUR: "€",
+      JPY: "¥"
+    };
+
+    const currencySelect = document.getElementById("currency");
+    const libros = document.querySelectorAll(".libro");
+
     function actualizarPrecios() {
-      const currency = document.getElementById("currency").value;
-      document.querySelectorAll(".libro").forEach(libro => {
-        const precioCOP = parseFloat(libro.dataset.precioCop);
-        const precioConvertido = precioCOP * tasas[currency];
+      const moneda = currencySelect.value;
+      libros.forEach(libro => {
+        const precioCOP = parseFloat(libro.getAttribute("data-preciocop"));
+        const precioConvertido = precioCOP * tasas[moneda];
         libro.querySelector(".precio").textContent =
-          currency + " " + precioConvertido.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+          `${simbolos[moneda]} ${precioConvertido.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} ${moneda}`;
       });
     }
 
-    document.getElementById("currency").addEventListener("change", actualizarPrecios);
+    // Al cargar la página y cuando cambie la moneda
+    currencySelect.addEventListener("change", actualizarPrecios);
     window.onload = actualizarPrecios;
   </script>
+
 </body>
 </html>
