@@ -110,34 +110,44 @@
   </footer>
 
   <script>
-    // Función para agregar libros al carrito
-    function agregarAlCarrito(titulo, precio, autor = "Desconocido") {
-      const moneda = localStorage.getItem("selectedCurrency") || "COP";
-      let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-      let producto = carrito.find(item => item.titulo === titulo);
+    // Función para agregar al carrito
+  function agregarAlCarrito(titulo, autor, precio, moneda) {
+    const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-      if (producto) {
-        producto.cantidad++;
-      } else {
-        carrito.push({ titulo, autor, precio, cantidad: 1, moneda });
-      }
+    const producto = {
+      titulo,
+      autor,
+      precio,
+      moneda,
+      cantidad: 1
+    };
 
-      localStorage.setItem("carrito", JSON.stringify(carrito));
-      alert(`${titulo} agregado al carrito`);
+    const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
+    if (existente) {
+      existente.cantidad += 1;
+    } else {
+      carrito.push(producto);
     }
 
-    // Asignar evento a todos los botones
-    document.querySelectorAll(".carrito-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        const libro = btn.closest(".libro");
-        const titulo = libro.dataset.titulo;
-        const autor = libro.dataset.autor;
-        const precio = parseFloat(libro.dataset.precio);
-        agregarAlCarrito(titulo, precio, autor);
-      });
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    alert(`📚 ${titulo} añadido al carrito.`);
+  }
+
+  // Asignar evento a cada botón del catálogo
+  document.querySelectorAll(".carrito-btn").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const contenedor = btn.closest(".libro");
+      const titulo = contenedor.querySelector("h3").textContent;
+      const autor = contenedor.querySelector("p strong").nextSibling.textContent.trim();
+      const precio = contenedor.querySelector(".price").getAttribute("data-base");
+      const moneda = contenedor.querySelector(".price").textContent.split(" ")[0];
+
+      agregarAlCarrito(titulo, autor, precio, moneda);
     });
+  });
 
 </script>
+
 
 </body>
 </html>
