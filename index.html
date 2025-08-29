@@ -361,7 +361,32 @@ document.querySelectorAll(".carrito-btn").forEach(btn => {
 
 
      };
-    
+    const languageNames = {
+  es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
+  ko: "Coreano", hi: "Hindi", zh: "Chino",
+  de: "Alemán", it: "Italiano", ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili"
+};
+
+// --- NUEVO BLOQUE: Tasas de conversión respecto a COP ---
+const tasas = {
+  "COP": 1,        // Peso colombiano (base)
+  "USD": 0.00025,  // Dólar
+  "EUR": 0.00023,  // Euro
+  "GBP": 0.00020,  // Libra
+  "MXN": 0.0043,   // Peso mexicano
+  "BRL": 0.0013,   // Real brasileño
+  "ARS": 0.23,     // Peso argentino
+  "CLP": 0.23,     // Peso chileno
+  "PEN": 0.001,    // Sol peruano
+  "JPY": 0.037,    // Yen
+  "CNY": 0.0018,   // Yuan
+  "KRW": 0.34,     // Won surcoreano
+  "INR": 0.021,    // Rupia india
+  "AUD": 0.00038,  // Dólar australiano
+  "CAD": 0.00034,  // Dólar canadiense
+  "CHF": 0.00022   // Franco suizo
+};
+
 
     const countrySelect = document.getElementById("country");
     const languageSelect = document.getElementById("language");
@@ -523,6 +548,7 @@ function aplicarTraduccion() {
 
 </body>
 </html>
+
 
 
 
