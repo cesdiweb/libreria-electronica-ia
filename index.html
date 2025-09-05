@@ -479,6 +479,38 @@ function aplicarTraduccion() {
 }
 
   </script>
+  // ===== TASAS DE CONVERSIÓN DESDE COP =====
+const exchangeRates = {
+  COP: 1,
+  USD: 0.00025,   // 1 COP ≈ 0.00025 USD (ejemplo)
+  EUR: 0.00023,   // 1 COP ≈ 0.00023 EUR
+  MXN: 0.0044,    // 1 COP ≈ 0.0044 MXN
+  BRL: 0.0013,    // Real brasileño
+  GBP: 0.00020,   // Libra esterlina
+  JPY: 0.037      // Yen japonés
+  // 👉 después podemos agregar más monedas
+};
+
+// ===== FUNCIÓN PARA CONVERTIR PRECIOS =====
+function convertirPrecio(baseCOP, currency) {
+  const rate = exchangeRates[currency] || 1;
+  return (baseCOP * rate).toFixed(2);
+}
+
+// ===== FUNCIÓN PARA OBTENER SÍMBOLO =====
+function getCurrencySymbol(code) {
+  const symbols = {
+    COP: "$",
+    USD: "$",
+    EUR: "€",
+    MXN: "$",
+    BRL: "R$",
+    GBP: "£",
+    JPY: "¥"
+  };
+  return symbols[code] || code;
+}
+
 <script>
   // ... Todo tu código actual arriba ...
 
@@ -523,6 +555,7 @@ function aplicarTraduccion() {
 
 </body>
 </html>
+
 
 
 
