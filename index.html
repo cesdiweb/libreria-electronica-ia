@@ -479,6 +479,30 @@ function aplicarTraduccion() {
 }
 
   </script>
+  function aplicarTraduccion() {
+  const lang = localStorage.getItem('language') || 'es';
+  const dict = translations[lang];
+  if (!dict) return;
+
+  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+    if (dict[el.textContent]) {
+      el.textContent = dict[el.textContent];
+    }
+  });
+}
+
+// 👇 Aquí pegas la función nueva
+function updatePrices(currencyCode) {
+  const prices = document.querySelectorAll(".price");
+  prices.forEach(el => {
+    const baseCOP = parseFloat(el.getAttribute("data-base"));
+    const convertido = convertirPrecio(baseCOP, currencyCode);
+    const symbol = getCurrencySymbol(currencyCode);
+    el.textContent = `${symbol} ${convertido}`;
+  });
+}
+</script>
+
   // ===== TASAS DE CONVERSIÓN DESDE COP =====
 const exchangeRates = {
   COP: 1,
@@ -555,6 +579,7 @@ function getCurrencySymbol(code) {
 
 </body>
 </html>
+
 
 
 
