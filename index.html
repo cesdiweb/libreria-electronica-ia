@@ -3,6 +3,7 @@
 
 
 
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -100,6 +101,7 @@
   <p>Your smart and international digital bookstore</p>
 </header>
 
+
  <nav>
   <a href="index.html">Inicio</a>
    <a href="register.html">Registrarse</a>
@@ -110,7 +112,8 @@
   <a href="reembolso.html">Reembolso</a>
 
 </nav>
- 
+
+
   <div class="selector-container">
     <label>🌎 País:
       <select id="country"></select>
@@ -144,6 +147,7 @@
     <button class="carrito-btn">Agregar al carrito</button>
   </div>
 </section>
+
 <script>
 function actualizarPrecios() {
   const moneda = localStorage.getItem('currency') || 'COP $';
@@ -171,7 +175,7 @@ document.querySelectorAll(".carrito-btn").forEach(btn => {
 </script>
 
 
-<footer>
+  <footer>
   <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   <p>
     <a href="terminos.html">Términos y Condiciones</a> | 
@@ -179,7 +183,8 @@ document.querySelectorAll(".carrito-btn").forEach(btn => {
   </p>
 </footer>
 
- 
+
+  <script>
     const countriesData = [
       { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
       { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
@@ -359,27 +364,123 @@ document.querySelectorAll(".carrito-btn").forEach(btn => {
      };
     
 
-   
-// ===== FUNCIÓN PARA CONVERTIR PRECIOS =====
-function convertirPrecio(baseCOP, currency) {
-  const rate = exchangeRates[currency] || 1;
-  return (baseCOP * rate).toFixed(2);
+    const countrySelect = document.getElementById("country");
+    const languageSelect = document.getElementById("language");
+    const currencySelect = document.getElementById("currency");
+
+    countriesData.forEach(country => {
+      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+
+      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+        const langName = languageNames[country.language] || country.language;
+        languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
+      }
+
+      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+      }
+    });
+
+    function updatePrices(symbol) {
+      const prices = document.querySelectorAll(".price");
+      prices.forEach(el => {
+        const base = el.getAttribute("data-base");
+        el.textContent = `${symbol} ${base}`;
+      });
+    }
+
+    countrySelect.onchange = () => {
+      const country = countrySelect.value;
+      const selected = countriesData.find(c => c.code === country);
+      languageSelect.value = selected.language;
+      currencySelect.value = selected.currency;
+      localStorage.setItem('country', country);
+      localStorage.setItem('language', selected.language);
+      localStorage.setItem('currency', selected.currency);
+      updatePrices(selected.currency);
+    };
+
+    languageSelect.onchange = () => {
+      localStorage.setItem('language', languageSelect.value);
+      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+    };
+
+    currencySelect.onchange = () => {
+      localStorage.setItem('currency', currencySelect.value);
+      updatePrices(currencySelect.value);
+    };
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const countryCode = data.country_code || "CO";
+    const countryData = countriesData.find(c => c.code === countryCode);
+
+    if (countryData) {
+      localStorage.setItem("country", countryData.code);
+      localStorage.setItem("language", countryData.language);
+      localStorage.setItem("currency", countryData.currency);
+    }
+  })
+  .catch(error => console.error("Error al detectar ubicación por IP:", error));
+
+
+    window.onload = () => {
+      const savedCountry = localStorage.getItem("country") || "CO";
+      const savedLanguage = localStorage.getItem("language") || "es";
+      const savedCurrency = localStorage.getItem("currency") || "COP $";
+
+      countrySelect.value = savedCountry;
+      languageSelect.value = savedLanguage;
+      currencySelect.value = savedCurrency;
+      updatePrices(savedCurrency);
+aplicarTraduccion();
+
+    };
+const translations = {
+  es: {
+    "Inicio": "Inicio",
+    "Catálogo": "Catálogo",
+    "Registrarse": "Registrarse",
+    "Iniciar Sesión": "Iniciar Sesión",
+    "Contacto": "Contacto",
+    "Agregar al carrito": "Agregar al carrito",
+    "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
+  },
+  en: {
+    "Inicio": "Home",
+    "Catálogo": "Catalog",
+    "Registrarse": "Register",
+    "Iniciar Sesión": "Login",
+    "Contacto": "Contact",
+    "Agregar al carrito": "Add to cart",
+    "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
+  },
+  fr: {
+    "Inicio": "Accueil",
+    "Catálogo": "Catalogue",
+    "Registrarse": "S'inscrire",
+    "Iniciar Sesión": "Connexion",
+    "Contacto": "Contact",
+    "Agregar al carrito": "Ajouter au panier",
+    "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
+  },
+  // puedes añadir más idiomas después
+};
+
+function aplicarTraduccion() {
+  const lang = localStorage.getItem('language') || 'es';
+  const dict = translations[lang];
+  if (!dict) return;
+
+  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+    if (dict[el.textContent]) {
+      el.textContent = dict[el.textContent];
+    }
+  });
 }
 
-// ===== FUNCIÓN PARA OBTENER SÍMBOLO =====
-function getCurrencySymbol(code) {
-  const symbols = {
-    COP: "$",
-    USD: "$",
-    EUR: "€",
-    MXN: "$",
-    BRL: "R$",
-    GBP: "£",
-    JPY: "¥"
-  };
-  return symbols[code] || code;
-}
-
+  </script>
+<script>
   // ... Todo tu código actual arriba ...
 
   // Función para agregar al carrito
@@ -419,14 +520,10 @@ function getCurrencySymbol(code) {
   });
 
 </script>
+
+
 </body>
 </html>
-
-
-
-
-
-
 
 
 
