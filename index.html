@@ -150,14 +150,17 @@
 
 <script>
 function actualizarPrecios() {
-  const moneda = localStorage.getItem('currency') || 'COP $';
-  const simbolo = moneda.split(' ')[0];
+  const monedaCompleta = localStorage.getItem('currency') || 'COP $';
+  const monedaCodigo = monedaCompleta.split(' ')[0];
+  const simbolo = monedaCompleta.split(' ')[1] || '$';
+  
   document.querySelectorAll(".libro").forEach(libro => {
-    const base = parseFloat(libro.dataset.precio);
-    libro.querySelector(".precio").textContent = `${simbolo} ${base.toLocaleString()}`;
+    const precioBaseCOP = parseFloat(libro.dataset.precio);
+    const rate = exchangeRates[monedaCodigo] || 1;
+    const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
+    libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
   });
 }
-
 // Inicializar precios al cargar
 window.addEventListener('load', actualizarPrecios);
 
@@ -185,6 +188,16 @@ document.querySelectorAll(".carrito-btn").forEach(btn => {
 
 
   <script>
+    // Tipos de cambio fijos
+const exchangeRates = {
+  "COP": 1,
+  "USD": 0.00024,
+  "EUR": 0.00022, 
+  "MXN": 0.0043,
+  "BRL": 0.0012,
+  "ARS": 0.23,
+  "GBP": 0.00019
+};
     const countriesData = [
       { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
       { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
@@ -524,6 +537,7 @@ function aplicarTraduccion() {
 
 </body>
 </html>
+
 
 
 
