@@ -188,16 +188,24 @@ document.querySelectorAll(".carrito-btn").forEach(btn => {
 
 
   <script>
-    // Tipos de cambio fijos
+    // Tasas de cambio aproximadas respecto a COP
 const exchangeRates = {
-  "COP": 1,
-  "USD": 0.00024,
-  "EUR": 0.00022, 
-  "MXN": 0.0043,
-  "BRL": 0.0012,
-  "ARS": 0.23,
-  "GBP": 0.00019
+  COP: 1,
+  USD: 0.00024,
+  EUR: 0.00022,
+  MXN: 0.0042,
+  BRL: 0.0012,
+  ARS: 0.22,
+  GBP: 0.00019,
+  CNY: 0.0017,
+  JPY: 0.035,
+  KRW: 0.32,
+  INR: 0.02,
+  CAD: 0.00033,
+  AUD: 0.00036
+  // puedes seguir añadiendo más monedas
 };
+
     const countriesData = [
       { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
       { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
@@ -394,13 +402,17 @@ const exchangeRates = {
       }
     });
 
-    function updatePrices(symbol) {
-      const prices = document.querySelectorAll(".price");
-      prices.forEach(el => {
-        const base = el.getAttribute("data-base");
-        el.textContent = `${symbol} ${base}`;
-      });
-    }
+   function updatePrices(selectedCurrency) {
+  const [currencyCode, symbol] = selectedCurrency.split(" ");
+  const tasa = exchangeRates[currencyCode] || 1;
+
+  document.querySelectorAll(".price").forEach(el => {
+    const baseCOP = parseFloat(el.getAttribute("data-base"));
+    const convertido = (baseCOP * tasa).toFixed(2);
+    el.textContent = `${currencyCode} ${symbol}${convertido}`;
+  });
+}
+
 
     countrySelect.onchange = () => {
       const country = countrySelect.value;
@@ -537,6 +549,7 @@ function aplicarTraduccion() {
 
 </body>
 </html>
+
 
 
 
