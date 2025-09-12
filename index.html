@@ -457,6 +457,8 @@ const exchangeRates = {
     const countrySelect = document.getElementById("country");
     const languageSelect = document.getElementById("language");
     const currencySelect = document.getElementById("currency");
+    countriesData.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
+
 
     countriesData.forEach(country => {
       countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
@@ -618,6 +620,7 @@ function aplicarTraduccion() {
 
 </body>
 </html>
+
 
 
 
