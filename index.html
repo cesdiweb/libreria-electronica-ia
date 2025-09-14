@@ -512,19 +512,29 @@ const exchangeRates = {
   };
 
   // 6️⃣ Detección automática de país por IP
-  fetch("https://ipapi.co/json/")
-    .then(response => response.json())
-    .then(data => {
-      const countryCode = data.country_code || "CO";
-      const countryData = countriesData.find(c => c.code === countryCode);
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const countryCode = data.country_code || "CO";
+    const countryData = countriesData.find(c => c.code === countryCode);
 
-      if (countryData) {
-        localStorage.setItem("country", countryData.code);
-        localStorage.setItem("language", countryData.language);
-        localStorage.setItem("currency", countryData.currency);
-      }
-    })
-    .catch(error => console.error("Error al detectar ubicación por IP:", error));
+    if (countryData) {
+      // Guardar en localStorage
+      localStorage.setItem("country", countryData.code);
+      localStorage.setItem("language", countryData.language);
+      localStorage.setItem("currency", countryData.currency);
+
+      // 🔧 ACTUALIZAR selects en pantalla de inmediato
+      countrySelect.value = countryData.code;
+      languageSelect.value = countryData.language;
+      currencySelect.value = countryData.currency;
+
+      // 🔧 Actualizar precios y traducción inmediatamente
+      updatePrices(countryData.currency);
+      aplicarTraduccion();
+    }
+  })
+  .catch(error => console.error("Error al detectar ubicación por IP:", error));
 
   // 7️⃣ Cargar valores guardados al iniciar
   window.onload = () => {
@@ -588,6 +598,7 @@ const exchangeRates = {
 
 </body>
 </html>
+
 
 
 
