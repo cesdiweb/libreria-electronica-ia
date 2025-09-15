@@ -431,7 +431,7 @@ const exchangeRates = {
   { code: "ZW", name: "Zimbabue", language: "en", currency: "ZWL $" }
 ];
     
-   // 🔹 4️⃣ Inicializar selects y detectar país por IP
+  // 🔹 4️⃣ Inicializar selects y detectar país por IP
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
@@ -525,11 +525,12 @@ currencySelect.addEventListener("change", ()=>{
   const selected=currencySelect.value;
   localStorage.setItem("selectedCurrency",selected);
   updatePrices(selected);
-}); 
+});
  </script>
 
 </body>
 </html>
+
 
 
 
