@@ -431,51 +431,50 @@ const exchangeRates = {
   { code: "ZW", name: "Zimbabue", language: "en", currency: "ZWL $" }
 ];
     
-    const languageNames = {
-      es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
-      ko: "Coreano", hi: "Hindi", zh: "Chino",
-      de: "Alemán", it: "Italiano", ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili",
-      ur: "Urdu", bn: "Bengalí", id: "Indonesio", tl: "Tagalo", vi: "Vietnamita",
-      th: "Tailandés", ms: "Malayo", nl: "Neerlandés", sv: "Sueco", no: "Noruego",
-      fi: "Finlandés", da: "Danés", pl: "Polaco", cs: "Checo", el: "Griego",
-      hu: "Húngaro", ro: "Rumano", uk: "Ucraniano", he: "Hebreo", fa: "Persa",   sq: "Albanés",
-      hy: "Armenio", az: "Azerí", be: "Bielorruso", dz: "Dzongkha", km: "Jemer", et: "Estonio",
-      ka: "Georgiano", is: "Islandés", kk: "Kazajo", lo: "Lao", lv: "Letón",   lt: "Lituano",
-      bg: "Búlgaro", hr: "Croata", et: "Estonio", mt: "Maltés", sk: "Eslovaco", sl: "Esloveno",
-      cs: "Checo", sr: "Serbio", 
-      // Al final de tu languageNames:
-      ps: "Pashto", ti: "Tigriña", bi: "Bislama", dv: "Divehi", ne: "Nepalí", my: "Birmano",
-      zh: "Chino", ca: "Catalán", hr: "Croata", sl: "Esloveno", sk: "Eslovaco", bg: "Búlgaro",
-      bs: "Bosnio", mk: "Macedonio", sq: "Albanés", sr: "Serbio", et: "Estonio", ka: "Georgiano",
-      lo: "Laosiano", km: "Jemer", az: "Azerí", hy: "Armenio", et: "Estonio", tl: "Tagalo",
-      dv: "Divehi", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí", en: "Inglés", pt: "Portugués"
+   <script>
+// 🔹 1️⃣ Nombres de idiomas
+const languageNames = {
+  es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
+  ko: "Coreano", hi: "Hindi", zh: "Chino", de: "Alemán", it: "Italiano",
+  ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili", ur: "Urdu", bn: "Bengalí",
+  id: "Indonesio", tl: "Tagalo", vi: "Vietnamita", th: "Tailandés", ms: "Malayo",
+  nl: "Neerlandés", sv: "Sueco", no: "Noruego", fi: "Finlandés", da: "Danés",
+  pl: "Polaco", cs: "Checo", el: "Griego", hu: "Húngaro", ro: "Rumano",
+  uk: "Ucraniano", he: "Hebreo", fa: "Persa", sq: "Albanés", hy: "Armenio",
+  az: "Azerí", be: "Bielorruso", dz: "Dzongkha", km: "Jemer", et: "Estonio",
+  ka: "Georgiano", is: "Islandés", kk: "Kazajo", lo: "Lao", lv: "Letón",
+  lt: "Lituano", bg: "Búlgaro", hr: "Croata", mt: "Maltés", sk: "Eslovaco",
+  sl: "Esloveno", sr: "Serbio", ps: "Pashto", ti: "Tigriña", bi: "Bislama",
+  dv: "Divehi", ne: "Nepalí", my: "Birmano", ca: "Catalán", bs: "Bosnio",
+  mk: "Macedonio", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí"
+};
 
-
-      };
-    
-// 1️⃣ Referencias de selects
+// 🔹 2️⃣ Referencias de selects
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
-// 2️⃣ Ordenar países alfabéticamente
+// 🔹 3️⃣ Ordenar países alfabéticamente
 countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
-// 3️⃣ Llenar selects dinámicamente sin duplicados
+// 🔹 4️⃣ Llenar selects sin duplicados
 countriesData.forEach(country => {
+  // País
   countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
 
+  // Idioma
   if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
     const langName = languageNames[country.language] || country.language;
     languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
   }
 
+  // Moneda
   if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
     currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
   }
 });
 
-// 4️⃣ Función para actualizar precios según moneda
+// 🔹 5️⃣ Función para actualizar precios según moneda
 function updatePrices(selectedCurrency) {
   const [currencyCode, symbol] = selectedCurrency.split(" ");
   const tasa = exchangeRates[currencyCode] || 1;
@@ -487,15 +486,29 @@ function updatePrices(selectedCurrency) {
   });
 }
 
-// 5️⃣ Eventos para selects
+// 🔹 6️⃣ Función de traducción
+function aplicarTraduccion() {
+  const lang = localStorage.getItem("language") || "es";
+  const dict = translations[lang];
+  if (!dict) return;
+
+  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+    if (dict[el.textContent]) el.textContent = dict[el.textContent];
+  });
+}
+
+// 🔹 7️⃣ Eventos de cambio
 countrySelect.onchange = () => {
-  const country = countrySelect.value;
-  const selected = countriesData.find(c => c.code === country);
+  const selected = countriesData.find(c => c.code === countrySelect.value);
+  if (!selected) return;
+
   languageSelect.value = selected.language;
   currencySelect.value = selected.currency;
-  localStorage.setItem("country", country);
+
+  localStorage.setItem("country", selected.code);
   localStorage.setItem("language", selected.language);
   localStorage.setItem("currency", selected.currency);
+
   updatePrices(selected.currency);
   aplicarTraduccion();
 };
@@ -510,21 +523,26 @@ currencySelect.onchange = () => {
   updatePrices(currencySelect.value);
 };
 
-// 6️⃣ Detección automática de país por IP
+// 🔹 8️⃣ Detección automática de país por IP
 fetch("https://ipapi.co/json/")
-  .then(response => response.json())
+  .then(res => res.json())
   .then(data => {
-    const countryCode = data.country_code || "CO";
-    const countryData = countriesData.find(c => c.code === countryCode);
-    if (countryData) {
-      localStorage.setItem("country", countryData.code);
-      localStorage.setItem("language", countryData.language);
-      localStorage.setItem("currency", countryData.currency);
-    }
-  })
-  .catch(error => console.error("Error al detectar ubicación por IP:", error));
+    const countryData = countriesData.find(c => c.code === data.country_code) || countriesData.find(c => c.code === "CO");
+    localStorage.setItem("country", countryData.code);
+    localStorage.setItem("language", countryData.language);
+    localStorage.setItem("currency", countryData.currency);
 
-// 7️⃣ Cargar valores guardados al iniciar
+    // Reflejar en selects
+    countrySelect.value = countryData.code;
+    languageSelect.value = countryData.language;
+    currencySelect.value = countryData.currency;
+
+    updatePrices(countryData.currency);
+    aplicarTraduccion();
+  })
+  .catch(err => console.error("No se pudo detectar país por IP:", err));
+
+// 🔹 9️⃣ Cargar valores guardados al iniciar
 window.onload = () => {
   const savedCountry = localStorage.getItem("country") || "CO";
   const savedLanguage = localStorage.getItem("language") || "es";
@@ -541,6 +559,7 @@ window.onload = () => {
 
 </body>
 </html>
+
 
 
 
