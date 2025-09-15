@@ -453,12 +453,18 @@ const exchangeRates = {
 
      };
 
-// Esperar a que el DOM esté listo
-document.addEventListener('DOMContentLoaded', function() {
+// Mover TODO dentro del window.onload
+window.onload = function() {
     
     const countrySelect = document.getElementById("country");
     const languageSelect = document.getElementById("language");
     const currencySelect = document.getElementById("currency");
+    
+    // Verificar que los elementos existan
+    if (!countrySelect || !languageSelect || !currencySelect) {
+        console.error("No se encontraron los elementos select");
+        return;
+    }
     
     // Ordenar países alfabéticamente
     countriesData.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
@@ -477,7 +483,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     });
 
-    // Función updatePrices corregida
+    // Función updatePrices CORREGIDA
     function updatePrices(selectedCurrency) {
       const [currencyCode, symbol] = selectedCurrency.split(" ");
       const tasa = exchangeRates[currencyCode] || 1;
@@ -514,75 +520,28 @@ document.addEventListener('DOMContentLoaded', function() {
       updatePrices(this.value);
     });
 
-    // Detección IP y carga inicial
-    fetch("https://ipapi.co/json/")
-      .then(response => response.json())
-      .then(data => {
-        const countryCode = data.country_code || "CO";
-        const countryData = countriesData.find(c => c.code === countryCode);
-
-        if (countryData) {
-          localStorage.setItem("country", countryData.code);
-          localStorage.setItem("language", countryData.language);
-          localStorage.setItem("currency", countryData.currency);
-        }
-
-        // Cargar valores guardados
-        const savedCountry = localStorage.getItem("country") || "CO";
-        const savedLanguage = localStorage.getItem("language") || "es";
-        const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-        countrySelect.value = savedCountry;
-        languageSelect.value = savedLanguage;
-        currencySelect.value = savedCurrency;
-        
-        updatePrices(savedCurrency);
-        aplicarTraduccion();
-      })
-      .catch(error => {
-        console.error("Error al detectar ubicación por IP:", error);
-        
-        // Valores por defecto si falla IP
-        const savedCountry = localStorage.getItem("country") || "CO";
-        const savedLanguage = localStorage.getItem("language") || "es";
-        const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-        countrySelect.value = savedCountry;
-        languageSelect.value = savedLanguage;
-        currencySelect.value = savedCurrency;
-        
-        updatePrices(savedCurrency);
-        aplicarTraduccion();
-      });
-
     // Traducciones
     const translations = {
       es: {
         "Inicio": "Inicio",
-        "Catálogo": "Catálogo", 
         "Registrarse": "Registrarse",
         "Iniciar Sesión": "Iniciar Sesión",
         "Contacto": "Contacto",
-        "Agregar al carrito": "Agregar al carrito",
-        "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
+        "Agregar al carrito": "Agregar al carrito"
       },
       en: {
         "Inicio": "Home",
-        "Catálogo": "Catalog",
         "Registrarse": "Register", 
         "Iniciar Sesión": "Login",
         "Contacto": "Contact",
-        "Agregar al carrito": "Add to cart",
-        "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
+        "Agregar al carrito": "Add to cart"
       },
       fr: {
         "Inicio": "Accueil",
-        "Catálogo": "Catalogue",
         "Registrarse": "S'inscrire",
         "Iniciar Sesión": "Connexion", 
         "Contacto": "Contact",
-        "Agregar al carrito": "Ajouter au panier",
-        "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
+        "Agregar al carrito": "Ajouter au panier"
       }
     };
 
@@ -591,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
       const dict = translations[lang];
       if (!dict) return;
 
-      document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
+      document.querySelectorAll("nav a, .carrito-btn").forEach(el => {
         if (dict[el.textContent]) {
           el.textContent = dict[el.textContent];
         }
@@ -601,27 +560,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Función para agregar al carrito
     function agregarAlCarrito(titulo, autor, precio, moneda) {
       const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-
-      const producto = {
-        titulo,
-        autor,
-        precio,
-        moneda,
-        cantidad: 1
-      };
-
+      const producto = { titulo, autor, precio, moneda, cantidad: 1 };
+      
       const existente = carrito.find(item => item.titulo === titulo && item.moneda === moneda);
       if (existente) {
         existente.cantidad += 1;
       } else {
         carrito.push(producto);
       }
-
+      
       localStorage.setItem("carrito", JSON.stringify(carrito));
       alert(`📚 ${titulo} añadido al carrito.`);
     }
 
-    // Asignar evento a cada botón del carrito
+    // Asignar evento a botones de carrito
     document.querySelectorAll(".carrito-btn").forEach(btn => {
       btn.addEventListener("click", function() {
         const contenedor = this.closest(".libro");
@@ -633,40 +585,39 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-});
+    // DETECCIÓN IP - AL FINAL
+    fetch("https://ipapi.co/json/")
+      .then(response => response.json())
+      .then(data => {
+        console.log("IP detectada:", data.country_code);
+        const countryCode = data.country_code || "CO";
+        const countryData = countriesData.find(c => c.code === countryCode);
+
+        if (countryData) {
+          countrySelect.value = countryData.code;
+          languageSelect.value = countryData.language;
+          currencySelect.value = countryData.currency;
+          
+          localStorage.setItem("country", countryData.code);
+          localStorage.setItem("language", countryData.language);
+          localStorage.setItem("currency", countryData.currency);
+          
+          updatePrices(countryData.currency);
+          aplicarTraduccion();
+        }
+      })
+      .catch(error => {
+        console.error("Error IP:", error);
+        
+        // Valores por defecto
+        countrySelect.value = "CO";
+        languageSelect.value = "es";
+        currencySelect.value = "COP $";
+        updatePrices("COP $");
+      });
+
+};
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
