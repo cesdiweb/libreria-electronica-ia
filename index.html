@@ -453,23 +453,6 @@ const exchangeRates = {
 
       };
     
-// 📌 Lista de idiomas
-const languageNames = {
-  es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
-  ko: "Coreano", hi: "Hindi", zh: "Chino", de: "Alemán", it: "Italiano",
-  ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili", ur: "Urdu", bn: "Bengalí",
-  id: "Indonesio", tl: "Tagalo", vi: "Vietnamita", th: "Tailandés", ms: "Malayo",
-  nl: "Neerlandés", sv: "Sueco", no: "Noruego", fi: "Finlandés", da: "Danés",
-  pl: "Polaco", cs: "Checo", el: "Griego", hu: "Húngaro", ro: "Rumano",
-  uk: "Ucraniano", he: "Hebreo", fa: "Persa", sq: "Albanés", hy: "Armenio",
-  az: "Azerí", be: "Bielorruso", dz: "Dzongkha", km: "Jemer", et: "Estonio",
-  ka: "Georgiano", is: "Islandés", kk: "Kazajo", lo: "Lao", lv: "Letón",
-  lt: "Lituano", bg: "Búlgaro", hr: "Croata", mt: "Maltés", sk: "Eslovaco",
-  sl: "Esloveno", sr: "Serbio", ps: "Pashto", ti: "Tigriña", bi: "Bislama",
-  dv: "Divehi", ne: "Nepalí", my: "Birmano", ca: "Catalán", bs: "Bosnio",
-  mk: "Macedonio", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí"
-};
-
 // 1️⃣ Referencias de selects
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
@@ -554,52 +537,10 @@ window.onload = () => {
   updatePrices(savedCurrency);
   aplicarTraduccion();
 };
-
-// 8️⃣ Traducciones
-const translations = {
-  es: {
-    "Inicio": "Inicio",
-    "Catálogo": "Catálogo",
-    "Registrarse": "Registrarse",
-    "Iniciar Sesión": "Iniciar Sesión",
-    "Contacto": "Contacto",
-    "Agregar al carrito": "Agregar al carrito",
-    "Tu librería digital inteligente e internacional": "Tu librería digital inteligente e internacional"
-  },
-  en: {
-    "Inicio": "Home",
-    "Catálogo": "Catalog",
-    "Registrarse": "Register",
-    "Iniciar Sesión": "Login",
-    "Contacto": "Contact",
-    "Agregar al carrito": "Add to cart",
-    "Tu librería digital inteligente e internacional": "Your smart and international digital bookstore"
-  },
-  fr: {
-    "Inicio": "Accueil",
-    "Catálogo": "Catalogue",
-    "Registrarse": "S'inscrire",
-    "Iniciar Sesión": "Connexion",
-    "Contacto": "Contact",
-    "Agregar al carrito": "Ajouter au panier",
-    "Tu librería digital inteligente e internacional": "Votre librairie numérique intelligente et internationale"
-  }
-  // puedes añadir más idiomas después
-};
-
-function aplicarTraduccion() {
-  const lang = localStorage.getItem("language") || "es";
-  const dict = translations[lang];
-  if (!dict) return;
-
-  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-    if (dict[el.textContent]) {
-      el.textContent = dict[el.textContent];
-    }
-  });
-}
 </script>
+
 </body>
 </html>
+
 
 
