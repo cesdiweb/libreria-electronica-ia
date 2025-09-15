@@ -454,12 +454,14 @@ const exchangeRates = {
      };
     
    
-  // Reemplaza toda tu segunda parte con esto:
-document.addEventListener('DOMContentLoaded', function() {
+  document.addEventListener('DOMContentLoaded', function() {
   
   const countrySelect = document.getElementById("country");
   const languageSelect = document.getElementById("language");
   const currencySelect = document.getElementById("currency");
+
+  // Ordenar países alfabéticamente
+  countriesData.sort((a, b) => a.name.localeCompare(b.name, "es"));
 
   // Llenar países
   countriesData.forEach(country => {
@@ -479,35 +481,74 @@ document.addEventListener('DOMContentLoaded', function() {
     currencySelect.innerHTML += `<option value="${currency}">${currency}</option>`;
   });
 
-  // Eventos
+  // Función actualizar precios corregida
+  function actualizarPreciosCorregida() {
+    const monedaCompleta = currencySelect.value || 'COP $';
+    const monedaCodigo = monedaCompleta.split(' ')[0];
+    const simbolo = monedaCompleta.split(' ')[1] || '$';
+    
+    document.querySelectorAll(".libro").forEach(libro => {
+      const precioBaseCOP = parseFloat(libro.dataset.precio);
+      const rate = exchangeRates[monedaCodigo] || 1;
+      const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
+      libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
+    });
+  }
+
+  // Eventos para todos los selects
   countrySelect.addEventListener('change', function() {
     const selected = countriesData.find(c => c.code === this.value);
-    languageSelect.value = selected.language;
-    currencySelect.value = selected.currency;
-    localStorage.setItem("country", this.value);
-    localStorage.setItem("language", selected.language);
-    localStorage.setItem("currency", selected.currency);
-    actualizarPrecios();
+    if (selected) {
+      languageSelect.value = selected.language;
+      currencySelect.value = selected.currency;
+      localStorage.setItem("country", this.value);
+      localStorage.setItem("language", selected.language);
+      localStorage.setItem("currency", selected.currency);
+      actualizarPreciosCorregida();
+    }
   });
 
-  // Detectar IP
+  languageSelect.addEventListener('change', function() {
+    localStorage.setItem("language", this.value);
+  });
+
+  currencySelect.addEventListener('change', function() {
+    localStorage.setItem("currency", this.value);
+    actualizarPreciosCorregida();
+  });
+
+  // Detectar IP y establecer valores
   fetch("https://ipapi.co/json/")
     .then(response => response.json())
     .then(data => {
       const countryCode = data.country_code || "CO";
-      countrySelect.value = countryCode;
-      const selected = countriesData.find(c => c.code === countryCode);
+      
+      // Buscar si el país existe en tu lista
+      const countryExists = countriesData.find(c => c.code === countryCode);
+      const finalCountry = countryExists ? countryCode : "CO";
+      
+      countrySelect.value = finalCountry;
+      const selected = countriesData.find(c => c.code === finalCountry);
+      
       if (selected) {
         languageSelect.value = selected.language;
         currencySelect.value = selected.currency;
+        localStorage.setItem("country", finalCountry);
+        localStorage.setItem("language", selected.language);
+        localStorage.setItem("currency", selected.currency);
       }
-      actualizarPrecios();
+      
+      actualizarPreciosCorregida();
     })
     .catch(() => {
+      // Si falla, usar Colombia por defecto
       countrySelect.value = "CO";
       languageSelect.value = "es";
       currencySelect.value = "COP $";
-      actualizarPrecios();
+      localStorage.setItem("country", "CO");
+      localStorage.setItem("language", "es");
+      localStorage.setItem("currency", "COP $");
+      actualizarPreciosCorregida();
     });
 });
 </script>
@@ -515,6 +556,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+
 
 
 
