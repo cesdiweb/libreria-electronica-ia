@@ -477,19 +477,18 @@ document.addEventListener('DOMContentLoaded', function() {
     currencySelect.innerHTML += `<option value="${currency}">${currency}</option>`;
   });
 
-  // Función actualizar precios corregida
-  function actualizarPreciosCorregida() {
-    const monedaCompleta = currencySelect.value || 'COP $';
-    const monedaCodigo = monedaCompleta.split(' ')[0];
-    const simbolo = monedaCompleta.split(' ')[1] || '$';
-    
-    document.querySelectorAll(".libro").forEach(libro => {
-      const precioBaseCOP = parseFloat(libro.dataset.precio);
-      const rate = exchangeRates[monedaCodigo] || 1;
-      const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
-      libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
-    });
-  }
+  function actualizarPrecios() {
+  const monedaCompleta = currencySelect.value || 'COP $';
+  const monedaCodigo = monedaCompleta.split(' ')[0];
+  const simbolo = monedaCompleta.split(' ')[1] || '$';
+  
+  document.querySelectorAll(".libro").forEach(libro => {
+    const precioBaseCOP = parseFloat(libro.dataset.precio);
+    const rate = exchangeRates[monedaCodigo] || 1;
+    const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
+    libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
+  });
+}
 
   // Eventos para todos los selects
   countrySelect.addEventListener('change', function() {
@@ -504,14 +503,14 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
-  languageSelect.addEventListener('change', function() {
-    localStorage.setItem("language", this.value);
-  });
+ languageSelect.addEventListener('change', function() {
+  localStorage.setItem("language", this.value);
+});
 
-  currencySelect.addEventListener('change', function() {
-    localStorage.setItem("currency", this.value);
-    actualizarPreciosCorregida();
-  });
+currencySelect.addEventListener('change', function() {
+  localStorage.setItem("currency", this.value);
+  actualizarPrecios();
+});
 
   // Detectar IP y establecer valores
   fetch("https://ipapi.co/json/")
@@ -551,6 +550,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </body>
 </html>
+
 
 
 
