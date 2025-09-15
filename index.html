@@ -472,13 +472,15 @@ countriesData.forEach(country => {
 
 // 🔹 Función para actualizar precios según moneda
 function updatePrices(selectedCurrency) {
-  const [currencyCode, symbol] = selectedCurrency.split(" ");
-  const tasa = exchangeRates[currencyCode] || 1;
-
-  document.querySelectorAll(".precio").forEach(el => {
-    const baseCOP = parseFloat(el.getAttribute("data-base"));
-    const convertido = (baseCOP * tasa).toFixed(2);
-    el.textContent = `${currencyCode} ${symbol}${Number(convertido).toLocaleString()}`;
+  const monedaCompleta = selectedCurrency;
+  const monedaCodigo = monedaCompleta.split(' ')[0];
+  const simbolo = monedaCompleta.split(' ')[1] || '$';
+  
+  document.querySelectorAll(".libro").forEach(libro => {
+    const precioBaseCOP = parseFloat(libro.dataset.precio);
+    const rate = exchangeRates[monedaCodigo] || 1;
+    const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
+    libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
   });
 }
 
@@ -488,19 +490,20 @@ countrySelect.onchange = () => {
   if (!selected) return;
   languageSelect.value = selected.language;
   currencySelect.value = selected.currency;
-  localStorage.setItem('country', selected.code);
-  localStorage.setItem('language', selected.language);
-  localStorage.setItem('currency', selected.currency);
+  localStorage.setItem('selectedCountry', selected.code);
+  localStorage.setItem('selectedLanguage', selected.language);
+  localStorage.setItem('selectedCurrency', selected.currency);
   updatePrices(selected.currency);
+  aplicarTraduccion();
 };
 
 languageSelect.onchange = () => {
-  localStorage.setItem('language', languageSelect.value);
-  alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+  localStorage.setItem('selectedLanguage', languageSelect.value);
+  aplicarTraduccion();
 };
 
 currencySelect.onchange = () => {
-  localStorage.setItem('currency', currencySelect.value);
+  localStorage.setItem('selectedCurrency', currencySelect.value);
   updatePrices(currencySelect.value);
 };
 
@@ -508,66 +511,54 @@ currencySelect.onchange = () => {
 fetch("https://ipapi.co/json/")
   .then(resp => resp.json())
   .then(data => {
-    const countryData = countriesData.find(c => c.code === data.country_code) || countriesData.find(c => c.code === "CO");
-    localStorage.setItem('country', countryData.code);
-    localStorage.setItem('language', countryData.language);
-    localStorage.setItem('currency', countryData.currency);
+    const savedCountry = localStorage.getItem("selectedCountry") || data.country_code || "CO";
+    const savedLanguage = localStorage.getItem("selectedLanguage") || (data.languages?.split(",")[0]) || "es";
+    const savedCurrency = localStorage.getItem("selectedCurrency") || (countriesData.find(c=>c.code===savedCountry)?.currency) || "COP $";
     
-    countrySelect.value = countryData.code;
-    languageSelect.value = countryData.language;
-    currencySelect.value = countryData.currency;
-    updatePrices(countryData.currency);
+    countrySelect.value = savedCountry;
+    languageSelect.value = savedLanguage;
+    currencySelect.value = savedCurrency;
+    
+    localStorage.setItem("selectedCountry", savedCountry);
+    localStorage.setItem("selectedLanguage", savedLanguage);
+    localStorage.setItem("selectedCurrency", savedCurrency);
+    
+    updatePrices(savedCurrency);
+    aplicarTraduccion();
   })
   .catch(() => {
-    // Por si falla la IP
-    const defaultCountry = countriesData.find(c => c.code === "CO");
-    countrySelect.value = defaultCountry.code;
-    languageSelect.value = defaultCountry.language;
-    currencySelect.value = defaultCountry.currency;
-    updatePrices(defaultCountry.currency);
+    // Por si falla la IP, usar Colombia como predeterminado
+    const savedCountry = localStorage.getItem("selectedCountry") || "CO";
+    const savedLanguage = localStorage.getItem("selectedLanguage") || "es";
+    const savedCurrency = localStorage.getItem("selectedCurrency") || "COP $";
+    
+    countrySelect.value = savedCountry;
+    languageSelect.value = savedLanguage;
+    currencySelect.value = savedCurrency;
+    
+    localStorage.setItem("selectedCountry", savedCountry);
+    localStorage.setItem("selectedLanguage", savedLanguage);
+    localStorage.setItem("selectedCurrency", savedCurrency);
+    
+    updatePrices(savedCurrency);
+    aplicarTraduccion();
   });
 
-// 🔹 Inicializar al cargar la página
-window.addEventListener('load', () => {
-  const savedCountry = localStorage.getItem("country") || "CO";
-  const savedLanguage = localStorage.getItem("language") || "es";
-  const savedCurrency = localStorage.getItem("currency") || "COP $";
-
-  countrySelect.value = savedCountry;
-  languageSelect.value = savedLanguage;
-  currencySelect.value = savedCurrency;
-  updatePrices(savedCurrency);
-  aplicarTraduccion(); // Si ya tienes esta función de traducción
-
-  // 🔹 Configurar botones del carrito
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const contenedor = btn.closest(".libro");
-      const titulo = contenedor.dataset.titulo;
-      const autor = contenedor.dataset.autor;
-      const precio = parseFloat(contenedor.dataset.precio);
-      const moneda = localStorage.getItem('currency') || 'COP $';
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
+// 🔹 Configurar botones del carrito al cargar
+document.querySelectorAll(".carrito-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const contenedor = btn.closest(".libro");
+    const titulo = contenedor.dataset.titulo;
+    const autor = contenedor.dataset.autor;
+    const precio = parseFloat(contenedor.dataset.precio);
+    const moneda = localStorage.getItem('selectedCurrency') || 'COP $';
+    agregarAlCarrito(titulo, autor, precio, moneda);
   });
 });
 </script>
 
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
