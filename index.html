@@ -451,25 +451,24 @@ const exchangeRates = {
       dv: "Divehi", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí", en: "Inglés", pt: "Portugués"
 
 
-     };
+    };
 
-// Mover TODO dentro del window.onload
 window.onload = function() {
     
     const countrySelect = document.getElementById("country");
     const languageSelect = document.getElementById("language");
     const currencySelect = document.getElementById("currency");
     
-    // Verificar que los elementos existan
-    if (!countrySelect || !languageSelect || !currencySelect) {
-        console.error("No se encontraron los elementos select");
-        return;
-    }
+    console.log("Elementos encontrados:", countrySelect, languageSelect, currencySelect);
     
     // Ordenar países alfabéticamente
     countriesData.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
 
-    // Llenar selects
+    // Llenar selects CON OPCIÓN VACÍA INICIAL
+    countrySelect.innerHTML = '<option value="">Seleccionar país...</option>';
+    languageSelect.innerHTML = '<option value="">Seleccionar idioma...</option>';
+    currencySelect.innerHTML = '<option value="">Seleccionar moneda...</option>';
+
     countriesData.forEach(country => {
       countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
 
@@ -485,79 +484,54 @@ window.onload = function() {
 
     // Función updatePrices CORREGIDA
     function updatePrices(selectedCurrency) {
+      if (!selectedCurrency || selectedCurrency === "") return;
+      
       const [currencyCode, symbol] = selectedCurrency.split(" ");
       const tasa = exchangeRates[currencyCode] || 1;
+      
+      console.log("Actualizando precios:", currencyCode, symbol, tasa);
 
       document.querySelectorAll(".libro").forEach(libro => {
-        const precioBaseCOP = parseFloat(libro.dataset.precio);
-        const convertido = Math.round(precioBaseCOP * tasa * 100) / 100;
-        libro.querySelector(".precio").textContent = `${currencyCode} ${symbol}${convertido.toLocaleString()}`;
+        const precioElement = libro.querySelector(".precio");
+        if (precioElement) {
+          const precioBaseCOP = parseFloat(libro.dataset.precio);
+          const convertido = Math.round(precioBaseCOP * tasa * 100) / 100;
+          precioElement.textContent = `${currencyCode} ${symbol}${convertido.toLocaleString()}`;
+          console.log("Precio actualizado:", precioElement.textContent);
+        }
       });
     }
 
     // Event listeners
     countrySelect.addEventListener('change', function() {
       const country = this.value;
-      const selected = countriesData.find(c => c.code === country);
-      if (selected) {
-        languageSelect.value = selected.language;
-        currencySelect.value = selected.currency;
-        localStorage.setItem('country', country);
-        localStorage.setItem('language', selected.language);
-        localStorage.setItem('currency', selected.currency);
-        updatePrices(selected.currency);
-        aplicarTraduccion();
+      console.log("País seleccionado:", country);
+      
+      if (country) {
+        const selected = countriesData.find(c => c.code === country);
+        if (selected) {
+          languageSelect.value = selected.language;
+          currencySelect.value = selected.currency;
+          localStorage.setItem('country', country);
+          localStorage.setItem('language', selected.language);
+          localStorage.setItem('currency', selected.currency);
+          updatePrices(selected.currency);
+        }
       }
     });
 
     languageSelect.addEventListener('change', function() {
+      console.log("Idioma seleccionado:", this.value);
       localStorage.setItem('language', this.value);
-      aplicarTraduccion();
     });
 
     currencySelect.addEventListener('change', function() {
+      console.log("Moneda seleccionada:", this.value);
       localStorage.setItem('currency', this.value);
       updatePrices(this.value);
     });
 
-    // Traducciones
-    const translations = {
-      es: {
-        "Inicio": "Inicio",
-        "Registrarse": "Registrarse",
-        "Iniciar Sesión": "Iniciar Sesión",
-        "Contacto": "Contacto",
-        "Agregar al carrito": "Agregar al carrito"
-      },
-      en: {
-        "Inicio": "Home",
-        "Registrarse": "Register", 
-        "Iniciar Sesión": "Login",
-        "Contacto": "Contact",
-        "Agregar al carrito": "Add to cart"
-      },
-      fr: {
-        "Inicio": "Accueil",
-        "Registrarse": "S'inscrire",
-        "Iniciar Sesión": "Connexion", 
-        "Contacto": "Contact",
-        "Agregar al carrito": "Ajouter au panier"
-      }
-    };
-
-    function aplicarTraduccion() {
-      const lang = localStorage.getItem('language') || 'es';
-      const dict = translations[lang];
-      if (!dict) return;
-
-      document.querySelectorAll("nav a, .carrito-btn").forEach(el => {
-        if (dict[el.textContent]) {
-          el.textContent = dict[el.textContent];
-        }
-      });
-    }
-
-    // Función para agregar al carrito
+    // CARRITO
     function agregarAlCarrito(titulo, autor, precio, moneda) {
       const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
       const producto = { titulo, autor, precio, moneda, cantidad: 1 };
@@ -573,7 +547,6 @@ window.onload = function() {
       alert(`📚 ${titulo} añadido al carrito.`);
     }
 
-    // Asignar evento a botones de carrito
     document.querySelectorAll(".carrito-btn").forEach(btn => {
       btn.addEventListener("click", function() {
         const contenedor = this.closest(".libro");
@@ -585,36 +558,44 @@ window.onload = function() {
       });
     });
 
-    // DETECCIÓN IP - AL FINAL
-    fetch("https://ipapi.co/json/")
-      .then(response => response.json())
-      .then(data => {
-        console.log("IP detectada:", data.country_code);
-        const countryCode = data.country_code || "CO";
-        const countryData = countriesData.find(c => c.code === countryCode);
+    // DETECCIÓN IP con delay
+    setTimeout(() => {
+      fetch("https://ipapi.co/json/")
+        .then(response => response.json())
+        .then(data => {
+          console.log("Respuesta IP:", data);
+          const countryCode = data.country_code || "CO";
+          const countryData = countriesData.find(c => c.code === countryCode);
 
-        if (countryData) {
-          countrySelect.value = countryData.code;
-          languageSelect.value = countryData.language;
-          currencySelect.value = countryData.currency;
-          
-          localStorage.setItem("country", countryData.code);
-          localStorage.setItem("language", countryData.language);
-          localStorage.setItem("currency", countryData.currency);
-          
-          updatePrices(countryData.currency);
-          aplicarTraduccion();
-        }
-      })
-      .catch(error => {
-        console.error("Error IP:", error);
-        
-        // Valores por defecto
-        countrySelect.value = "CO";
-        languageSelect.value = "es";
-        currencySelect.value = "COP $";
-        updatePrices("COP $");
-      });
+          if (countryData) {
+            console.log("País detectado:", countryData);
+            countrySelect.value = countryData.code;
+            languageSelect.value = countryData.language;
+            currencySelect.value = countryData.currency;
+            
+            localStorage.setItem("country", countryData.code);
+            localStorage.setItem("language", countryData.language);
+            localStorage.setItem("currency", countryData.currency);
+            
+            updatePrices(countryData.currency);
+          } else {
+            // Colombia por defecto
+            console.log("Usando Colombia por defecto");
+            countrySelect.value = "CO";
+            languageSelect.value = "es";
+            currencySelect.value = "COP $";
+            updatePrices("COP $");
+          }
+        })
+        .catch(error => {
+          console.error("Error IP:", error);
+          // Colombia por defecto
+          countrySelect.value = "CO";
+          languageSelect.value = "es";
+          currencySelect.value = "COP $";
+          updatePrices("COP $");
+        });
+    }, 500);
 
 };
 </script>
