@@ -450,9 +450,6 @@ const exchangeRates = {
       lo: "Laosiano", km: "Jemer", az: "Azerí", hy: "Armenio", et: "Estonio", tl: "Tagalo",
       dv: "Divehi", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí", en: "Inglés", pt: "Portugués"
 
-
-     };
-    
 document.addEventListener('DOMContentLoaded', function() {
   
   const countrySelect = document.getElementById("country");
@@ -549,24 +546,12 @@ document.addEventListener('DOMContentLoaded', function() {
       localStorage.setItem("currency", "COP $");
       actualizarPreciosCorregida();
     });
-
-  // Funcionalidad del carrito
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", function() {
-      const contenedor = this.closest(".libro");
-      const titulo = contenedor.dataset.titulo;
-      const autor = contenedor.dataset.autor;
-      const precio = parseFloat(contenedor.dataset.precio);
-      const moneda = currencySelect.value || 'COP $';
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
-  });
-
 });
-</script>
+    </script>
 
 </body>
 </html>
+
 
 
 
