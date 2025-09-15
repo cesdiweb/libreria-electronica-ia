@@ -431,7 +431,7 @@ const exchangeRates = {
   { code: "ZW", name: "Zimbabue", language: "en", currency: "ZWL $" }
 ];
     
- // 🔹 4️⃣ Inicializar selects y detectar país por IP
+// 🔹 4️⃣ Inicializar selects y detectar país por IP
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
@@ -486,7 +486,9 @@ countrySelect.addEventListener("change", ()=>{
   localStorage.setItem("selectedCountry",selected);
   const country=countriesData.find(c=>c.code===selected);
   if(country){
+    languageSelect.value=country.language;
     currencySelect.value=country.currency;
+    localStorage.setItem("selectedLanguage",country.language);
     localStorage.setItem("selectedCurrency",country.currency);
   }
   aplicarTraduccion();
@@ -508,6 +510,7 @@ currencySelect.addEventListener("change", ()=>{
 
 </body>
 </html>
+
 
 
 
