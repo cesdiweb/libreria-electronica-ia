@@ -448,32 +448,28 @@ const languageNames = {
   mk: "Macedonio", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí"
 };
 
-// 🔹 2️⃣ Referencias de selects
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
-// 🔹 3️⃣ Ordenar países alfabéticamente
-countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+// Ordenar países alfabéticamente
+countriesData.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
 
-// 🔹 4️⃣ Llenar selects sin duplicados
+// Llenar los selects sin duplicados
 countriesData.forEach(country => {
-  // País
   countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
 
-  // Idioma
   if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
     const langName = languageNames[country.language] || country.language;
     languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
   }
 
-  // Moneda
   if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
     currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
   }
 });
 
-// 🔹 5️⃣ Función para actualizar precios según moneda
+// Función para actualizar precios según moneda
 function updatePrices(selectedCurrency) {
   const [currencyCode, symbol] = selectedCurrency.split(" ");
   const tasa = exchangeRates[currencyCode] || 1;
@@ -485,63 +481,44 @@ function updatePrices(selectedCurrency) {
   });
 }
 
-// 🔹 6️⃣ Función de traducción
-function aplicarTraduccion() {
-  const lang = localStorage.getItem("language") || "es";
-  const dict = translations[lang];
-  if (!dict) return;
-
-  document.querySelectorAll("nav a, .carrito-btn, header p").forEach(el => {
-    if (dict[el.textContent]) el.textContent = dict[el.textContent];
-  });
-}
-
-// 🔹 7️⃣ Eventos de cambio
+// Eventos para cambios de selects
 countrySelect.onchange = () => {
-  const selected = countriesData.find(c => c.code === countrySelect.value);
-  if (!selected) return;
-
+  const country = countrySelect.value;
+  const selected = countriesData.find(c => c.code === country);
   languageSelect.value = selected.language;
   currencySelect.value = selected.currency;
-
-  localStorage.setItem("country", selected.code);
-  localStorage.setItem("language", selected.language);
-  localStorage.setItem("currency", selected.currency);
-
+  localStorage.setItem('country', country);
+  localStorage.setItem('language', selected.language);
+  localStorage.setItem('currency', selected.currency);
   updatePrices(selected.currency);
-  aplicarTraduccion();
 };
 
 languageSelect.onchange = () => {
-  localStorage.setItem("language", languageSelect.value);
-  aplicarTraduccion();
+  localStorage.setItem('language', languageSelect.value);
+  alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
 };
 
 currencySelect.onchange = () => {
-  localStorage.setItem("currency", currencySelect.value);
+  localStorage.setItem('currency', currencySelect.value);
   updatePrices(currencySelect.value);
 };
 
-// 🔹 8️⃣ Detección automática de país por IP
+// Detección automática por IP
 fetch("https://ipapi.co/json/")
-  .then(res => res.json())
+  .then(response => response.json())
   .then(data => {
-    const countryData = countriesData.find(c => c.code === data.country_code) || countriesData.find(c => c.code === "CO");
-    localStorage.setItem("country", countryData.code);
-    localStorage.setItem("language", countryData.language);
-    localStorage.setItem("currency", countryData.currency);
+    const countryCode = data.country_code || "CO";
+    const countryData = countriesData.find(c => c.code === countryCode);
 
-    // Reflejar en selects
-    countrySelect.value = countryData.code;
-    languageSelect.value = countryData.language;
-    currencySelect.value = countryData.currency;
-
-    updatePrices(countryData.currency);
-    aplicarTraduccion();
+    if (countryData) {
+      localStorage.setItem("country", countryData.code);
+      localStorage.setItem("language", countryData.language);
+      localStorage.setItem("currency", countryData.currency);
+    }
   })
-  .catch(err => console.error("No se pudo detectar país por IP:", err));
+  .catch(error => console.error("Error al detectar ubicación por IP:", error));
 
-// 🔹 9️⃣ Cargar valores guardados al iniciar
+// Al cargar la página
 window.onload = () => {
   const savedCountry = localStorage.getItem("country") || "CO";
   const savedLanguage = localStorage.getItem("language") || "es";
@@ -550,14 +527,15 @@ window.onload = () => {
   countrySelect.value = savedCountry;
   languageSelect.value = savedLanguage;
   currencySelect.value = savedCurrency;
-
   updatePrices(savedCurrency);
   aplicarTraduccion();
 };
 </script>
 
+
 </body>
 </html>
+
 
 
 
