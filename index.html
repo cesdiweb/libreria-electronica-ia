@@ -451,6 +451,7 @@ const languageNames = {
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
+countriesData.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
 
 // Ordenar países alfabéticamente
 countriesData.sort((a, b) => a.name.localeCompare(b.name, 'es', { sensitivity: 'base' }));
@@ -535,6 +536,7 @@ window.onload = () => {
 
 </body>
 </html>
+
 
 
 
