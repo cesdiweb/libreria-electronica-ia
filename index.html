@@ -431,32 +431,6 @@ const exchangeRates = {
   { code: "ZW", name: "Zimbabue", language: "en", currency: "ZWL $" }
 ];
     
-// 🔹 1️⃣ Nombres de idiomas
-const languageNames = {
-  es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
-  ko: "Coreano", hi: "Hindi", zh: "Chino", de: "Alemán", it: "Italiano",
-  ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili", ur: "Urdu", bn: "Bengalí",
-  id: "Indonesio", tl: "Tagalo", vi: "Vietnamita", th: "Tailandés", ms: "Malayo",
-  nl: "Neerlandés", sv: "Sueco", no: "Noruego", fi: "Finlandés", da: "Danés",
-  pl: "Polaco", cs: "Checo", el: "Griego", hu: "Húngaro", ro: "Rumano",
-  uk: "Ucraniano", he: "Hebreo", fa: "Persa", sq: "Albanés", hy: "Armenio",
-  az: "Azerí", be: "Bielorruso", dz: "Dzongkha", km: "Jemer", et: "Estonio",
-  ka: "Georgiano", is: "Islandés", kk: "Kazajo", lo: "Lao", lv: "Letón",
-  lt: "Lituano", bg: "Búlgaro", hr: "Croata", mt: "Maltés", sk: "Eslovaco",
-  sl: "Esloveno", sr: "Serbio", ps: "Pashto", ti: "Tigriña", bi: "Bislama",
-  dv: "Divehi", ne: "Nepalí", my: "Birmano", ca: "Catalán", bs: "Bosnio",
-  mk: "Macedonio", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí"
-};
-    const translations = {
-  es: { "Inicio": "Inicio", "Catálogo": "Catálogo", "Agregar al carrito": "Agregar al carrito" },
-  en: { "Inicio": "Home", "Catálogo": "Catalog", "Agregar al carrito": "Add to cart" },
-  fr: { "Inicio": "Accueil", "Catálogo": "Catalogue", "Agregar al carrito": "Ajouter au panier" },
-  pt: { "Inicio": "Início", "Catálogo": "Catálogo", "Agregar al carrito": "Adicionar ao carrinho" },
-  de: { "Inicio": "Startseite", "Catálogo": "Katalog", "Agregar al carrito": "In den Warenkorb" },
-  zh: { "Inicio": "首页", "Catálogo": "目录", "Agregar al carrito": "加入购物车" }
-};
-
-
 // 🔹 4️⃣ Inicializar selects y detectar país por IP
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
@@ -490,19 +464,40 @@ countriesData.forEach(c=>{
 
 // Detectar país por IP
 fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
-  const savedCountry = localStorage.getItem("selectedCountry") || data.country_code || "CO";
-  const savedLanguage = localStorage.getItem("selectedLanguage") || (data.languages?.split(",")[0]) || "es";
-  const savedCurrency = localStorage.getItem("selectedCurrency") || (countriesData.find(c=>c.code===savedCountry)?.currency) || "COP $";
-
-  countrySelect.value=savedCountry;
-  languageSelect.value=savedLanguage;
-  currencySelect.value=savedCurrency;
-
-  localStorage.setItem("selectedCountry",savedCountry);
-  localStorage.setItem("selectedLanguage",savedLanguage);
-  localStorage.setItem("selectedCurrency",savedCurrency);
-
-  updatePrices(savedCurrency);
+  // Colombia como país principal por defecto
+  const savedCountry = localStorage.getItem("selectedCountry") || "CO";
+  const savedLanguage = localStorage.getItem("selectedLanguage") || "es";
+  const savedCurrency = localStorage.getItem("selectedCurrency") || "COP $";
+  
+  // Si no hay datos guardados y la IP detecta otro país, usar esos datos
+  if (!localStorage.getItem("selectedCountry") && data.country_code && data.country_code !== "CO") {
+    const detectedCountry = data.country_code;
+    const detectedLanguage = data.languages?.split(",")[0] || "es";
+    const countryData = countriesData.find(c=>c.code===detectedCountry);
+    const detectedCurrency = countryData?.currency || "COP $";
+    
+    countrySelect.value = detectedCountry;
+    languageSelect.value = detectedLanguage;
+    currencySelect.value = detectedCurrency;
+    
+    localStorage.setItem("selectedCountry", detectedCountry);
+    localStorage.setItem("selectedLanguage", detectedLanguage);
+    localStorage.setItem("selectedCurrency", detectedCurrency);
+    
+    updatePrices(detectedCurrency);
+  } else {
+    // Usar Colombia como predeterminado
+    countrySelect.value = savedCountry;
+    languageSelect.value = savedLanguage;
+    currencySelect.value = savedCurrency;
+    
+    localStorage.setItem("selectedCountry", savedCountry);
+    localStorage.setItem("selectedLanguage", savedLanguage);
+    localStorage.setItem("selectedCurrency", savedCurrency);
+    
+    updatePrices(savedCurrency);
+  }
+  
   aplicarTraduccion();
 });
 
@@ -529,11 +524,11 @@ currencySelect.addEventListener("change", ()=>{
   const selected=currencySelect.value;
   localStorage.setItem("selectedCurrency",selected);
   updatePrices(selected);
-});
-</script>
+});</script>
 
 </body>
 </html>
+
 
 
 
