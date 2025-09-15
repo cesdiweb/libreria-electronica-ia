@@ -464,8 +464,8 @@ countriesData.forEach(c=>{
 
 // Detectar país por IP
 fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
-  const savedCountry = localStorage.getItem("selectedCountry") || data.country_code || "CO";
-  const savedLanguage = localStorage.getItem("selectedLanguage") || (data.languages?.split(",")[0]) || "es";
+  const savedCountry = localStorage.getItem("selectedCountry") || "CO";
+  const savedLanguage = localStorage.getItem("selectedLanguage") || (countriesData.find(c=>c.code===data.country_code)?.language) || "es";
   const savedCurrency = localStorage.getItem("selectedCurrency") || (countriesData.find(c=>c.code===savedCountry)?.currency) || "COP $";
   
   countrySelect.value=savedCountry;
@@ -526,6 +526,7 @@ currencySelect.addEventListener("change", ()=>{
 
 </body>
 </html>
+
 
 
 
