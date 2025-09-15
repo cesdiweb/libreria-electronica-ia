@@ -431,7 +431,7 @@ const exchangeRates = {
   { code: "ZW", name: "Zimbabue", language: "en", currency: "ZWL $" }
 ];
     
-  // 🔹 4️⃣ Inicializar selects y detectar país por IP
+ // 🔹 4️⃣ Inicializar selects y detectar país por IP
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
@@ -464,39 +464,19 @@ countriesData.forEach(c=>{
 
 // Detectar país por IP
 fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
-  // Si no hay datos guardados y la IP detecta otro país, usar esos datos
-  if (!localStorage.getItem("selectedCountry") && data.country_code && data.country_code !== "CO") {
-    const detectedCountry = data.country_code;
-    const countryData = countriesData.find(c=>c.code===detectedCountry);
-    const detectedLanguage = countryData?.language || "es";
-    const detectedCurrency = countryData?.currency || "COP $";
-    
-    countrySelect.value = detectedCountry;
-    languageSelect.value = detectedLanguage;
-    currencySelect.value = detectedCurrency;
-    
-    localStorage.setItem("selectedCountry", detectedCountry);
-    localStorage.setItem("selectedLanguage", detectedLanguage);
-    localStorage.setItem("selectedCurrency", detectedCurrency);
-    
-    updatePrices(detectedCurrency);
-  } else {
-    // Usar Colombia como predeterminado
-    const savedCountry = localStorage.getItem("selectedCountry") || "CO";
-    const savedLanguage = localStorage.getItem("selectedLanguage") || "es";
-    const savedCurrency = localStorage.getItem("selectedCurrency") || "COP $";
-    
-    countrySelect.value = savedCountry;
-    languageSelect.value = savedLanguage;
-    currencySelect.value = savedCurrency;
-    
-    localStorage.setItem("selectedCountry", savedCountry);
-    localStorage.setItem("selectedLanguage", savedLanguage);
-    localStorage.setItem("selectedCurrency", savedCurrency);
-    
-    updatePrices(savedCurrency);
-  }
+  const savedCountry = localStorage.getItem("selectedCountry") || data.country_code || "CO";
+  const savedLanguage = localStorage.getItem("selectedLanguage") || (data.languages?.split(",")[0]) || "es";
+  const savedCurrency = localStorage.getItem("selectedCurrency") || (countriesData.find(c=>c.code===savedCountry)?.currency) || "COP $";
   
+  countrySelect.value=savedCountry;
+  languageSelect.value=savedLanguage;
+  currencySelect.value=savedCurrency;
+  
+  localStorage.setItem("selectedCountry",savedCountry);
+  localStorage.setItem("selectedLanguage",savedLanguage);
+  localStorage.setItem("selectedCurrency",savedCurrency);
+  
+  updatePrices(savedCurrency);
   aplicarTraduccion();
 });
 
@@ -506,9 +486,7 @@ countrySelect.addEventListener("change", ()=>{
   localStorage.setItem("selectedCountry",selected);
   const country=countriesData.find(c=>c.code===selected);
   if(country){
-    languageSelect.value=country.language;
     currencySelect.value=country.currency;
-    localStorage.setItem("selectedLanguage",country.language);
     localStorage.setItem("selectedCurrency",country.currency);
   }
   aplicarTraduccion();
@@ -530,6 +508,7 @@ currencySelect.addEventListener("change", ()=>{
 
 </body>
 </html>
+
 
 
 
