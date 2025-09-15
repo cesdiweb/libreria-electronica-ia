@@ -486,7 +486,9 @@ countrySelect.addEventListener("change", ()=>{
   localStorage.setItem("selectedCountry",selected);
   const country=countriesData.find(c=>c.code===selected);
   if(country){
+    languageSelect.value=country.language;
     currencySelect.value=country.currency;
+    localStorage.setItem("selectedLanguage",country.language);
     localStorage.setItem("selectedCurrency",country.currency);
   }
   aplicarTraduccion();
@@ -508,6 +510,7 @@ currencySelect.addEventListener("change", ()=>{
 
 </body>
 </html>
+
 
 
 
