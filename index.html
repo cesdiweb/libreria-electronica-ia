@@ -1,9 +1,3 @@
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -97,22 +91,17 @@
 </head>
 <body>
   <header>
-  <h1>Electronic Bookstore AI</h1>
-  <p>Your smart and international digital bookstore</p>
-</header>
+    <h1>Librería Electrónica IA</h1>
+    <p>Tu librería digital inteligente e internacional</p>
+  </header>
 
-
- <nav>
-  <a href="index.html">Inicio</a>
-   <a href="register.html">Registrarse</a>
-  <a href="login.html">Iniciar Sesión</a>
-  <a href="contacto.html">Contacto</a>
-  <a href="carrito.html">🛒 Carrito</a>
-  <a href="terminos.html">Términos</a>
-  <a href="reembolso.html">Reembolso</a>
-
-</nav>
-
+  <nav>
+    <a href="#">Inicio</a>
+    <a href="#">Catálogo</a>
+    <a href="#">Registrarse</a>
+    <a href="#">Iniciar Sesión</a>
+    <a href="#">Contacto</a>
+  </nav>
 
   <div class="selector-container">
     <label>🌎 País:
@@ -126,420 +115,261 @@
     </label>
   </div>
 
-<section class="catalogo">
- <div class="libro" data-titulo="Introducción a la Inteligencia Artificial" data-autor="Ana Pérez" data-precio="30000">
-   <h3>Introducción a la Inteligencia Artificial</h3>
-   <p>Autor: Ana Pérez</p>
-   <p class="precio">COP $30,000</p>
-   <button class="carrito-btn">Agregar al carrito</button>
-  </div>
-  <div class="libro" data-titulo="Machine Learning Avanzado" data-autor="John Smith" data-precio="20000">
-    <h3>Machine Learning Avanzado</h3>
-    <p>Autor: John Smith</p>
-    <p class="precio">COP $20,000</p>
-    <button class="carrito-btn">Agregar al carrito</button>
-  </div>
-
-  <div class="libro" data-titulo="Redes Neuronales con Python" data-autor="María López" data-precio="18000">
-    <h3>Redes Neuronales con Python</h3>
-    <p>Autor: María López</p>
-    <p class="precio">COP $18,000</p>
-    <button class="carrito-btn">Agregar al carrito</button>
-  </div>
-</section>
-
-<script>
-function actualizarPrecios() {
-  const monedaCompleta = localStorage.getItem('currency') || 'COP $';
-  const monedaCodigo = monedaCompleta.split(' ')[0];
-  const simbolo = monedaCompleta.split(' ')[1] || '$';
-  
-  document.querySelectorAll(".libro").forEach(libro => {
-    const precioBaseCOP = parseFloat(libro.dataset.precio);
-    const rate = exchangeRates[monedaCodigo] || 1;
-    const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
-    libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
-  });
-}
-// Inicializar precios al cargar
-window.addEventListener('load', actualizarPrecios);
-
-// Agregar al carrito usando moneda actual
-document.querySelectorAll(".carrito-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const contenedor = btn.closest(".libro");
-    const titulo = contenedor.dataset.titulo;
-    const autor = contenedor.dataset.autor;
-    const precio = parseFloat(contenedor.dataset.precio);
-    const moneda = localStorage.getItem('currency') || 'COP $';
-    agregarAlCarrito(titulo, autor, precio, moneda);
-  });
-});
-</script>
-
+  <section class="catalogo">
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 1">
+      <h3>Introducción a la Inteligencia Artificial</h3>
+      <p><strong>Autor:</strong> Ana Pérez</p>
+      <p class="price" data-base="30000">COP $ 30000</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 2">
+      <h3>Machine Learning Avanzado</h3>
+      <p><strong>Autor:</strong> John Smith</p>
+      <p class="price" data-base="20">USD $ 20</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+    <div class="libro">
+      <img src="https://via.placeholder.com/150" alt="Libro 3">
+      <h3>Redes Neuronales con Python</h3>
+      <p><strong>Autor:</strong> María López</p>
+      <p class="price" data-base="18">EUR € 18</p>
+      <button class="carrito-btn">Agregar al carrito</button>
+    </div>
+  </section>
 
   <footer>
-  <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-  <p>
-    <a href="terminos.html">Términos y Condiciones</a> | 
-    <a href="reembolso.html">Política de Reembolso</a>
-  </p>
-</footer>
+    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  </footer>
 
-
-  <script>
-    // Reemplaza tu exchangeRates por este bloque (valores aproximados)
-const exchangeRates = {
-  "COP": 1,
-  "USD": 0.000255,
-  "EUR": 0.000223,
-  "MXN": 0.0042,
-  "BRL": 0.0011,
-  "ARS": 0.22,
-  "GBP": 0.00020,
-  "CNY": 0.0017,
-  "JPY": 0.037,
-  "KRW": 0.32,
-  "INR": 0.022,
-  "CAD": 0.00033,
-  "AUD": 0.00036,
-  "CHF": 0.00024,
-  "SEK": 0.0027,
-  "DKK": 0.0017,
-  "NOK": 0.00025,
-  "PLN": 0.00095,
-  "CZK": 0.0055,
-  "HUF": 0.056,
-  "RON": 0.0011,
-  "BGN": 0.00043,
-  "UAH": 0.009,
-  "ILS": 0.00088,
-  "IRR": 0.107,    // Rial iraní (valor aproximado)
-  "IQD": 0.35,     // Dinar iraquí (aprox)
-  "RUB": 0.010,    // Rublo ruso (aprox)
-  "TRY": 0.0071,
-  "SAR": 0.00090,
-  "AED": 0.00091,
-  "EGP": 0.012,
-  "ZAR": 0.0042,
-  "NGN": 0.34,
-  "GHS": 0.0036,
-  "KES": 0.031,
-  "PKR": 0.067,
-  "BDT": 0.027,
-  "IDR": 3.8,
-  "PHP": 0.014,
-  "VND": 5.9,
-  "THB": 0.0089,
-  "MYR": 0.0011,
-  "SGD": 0.00033,
-  "NZD": 0.00038,
-  "CLP": 0.00030,
-  "PEN": 0.00026,
-  "VES": 0.00918,
-  "BOB": 0.00014,
-  "PYG": 0.00037,
-  "UYU": 0.00024,
-  "CRC": 0.00045,
-  "GTQ": 0.00033,
-  "DOP": 0.0046,
-  "CUP": 0.0090,
-  "HNL": 0.0039,
-  "HRK": 0.00030,
-  "RSD": 0.0025,
-  "AFN": 0.0028,
-  "AOA": 0.21,
-  "AWG": 0.00043,
-  "BBD": 0.00048,
-  "BND": 0.00032,
-  "BTN": 0.020,
-  "CVE": 0.024,
-  "DJF": 0.043,
-  "XCD": 0.00065,
-  "ERN": 0.0036,
-  "FJD": 0.00054,
-  "GNF": 2.1,
-  "HTG": 0.032,
-  "KMF": 0.11,
-  "LSL": 0.0042,
-  "MRU": 0.0091,
-  "MUR": 0.011,
-  "PAB": 0.000255,
-  "WST": 0.00065,
-  "STN": 0.0053,
-  "TOP": 0.00057,
-  "VUV": 0.029,
-  "XOF": 0.14,
-  "XAF": 0.14,
-  "KZT": 0.00062,
-  "GEL": 0.00064,
-  "KWD": 0.000074,
-  "LAK": 0.0090,
-  "BYN": 0.00064,
-  "ALL": 0.023,
-  "DZD": 0.033,
-  "AMD": 0.096,
-  "AZN": 0.00041,
-  "BHD": 0.00009,
-  "KHR": 1.0,
-  "GHS": 0.0036,
-  "KMF": 0.11,
-  "XAF": 0.14,
-  "KHR": 0.00097,  // ✔ Corregido Camboya  
-  "ISK": 0.033,
-
-};
-
-    const countriesData = [
-  { code: "AF", name: "Afganistán", language: "ps", currency: "AFN ؋" },
-  { code: "AL", name: "Albania", language: "sq", currency: "ALL L" },
-  { code: "DE", name: "Alemania", language: "de", currency: "EUR €" },
-  { code: "DZ", name: "Argelia", language: "ar", currency: "DZD دج" },
-  { code: "AO", name: "Angola", language: "pt", currency: "AOA Kz" },
-  { code: "SA", name: "Arabia Saudita", language: "ar", currency: "SAR ﷼" },
-  { code: "AR", name: "Argentina", language: "es", currency: "ARS $" },
-  { code: "AM", name: "Armenia", language: "hy", currency: "AMD ֏" },
-  { code: "AW", name: "Aruba", language: "nl", currency: "AWG ƒ" },
-  { code: "AU", name: "Australia", language: "en", currency: "AUD $" },
-  { code: "AT", name: "Austria", language: "de", currency: "EUR €" },
-  { code: "AZ", name: "Azerbaiyán", language: "az", currency: "AZN ₼" },
-  { code: "BS", name: "Bahamas", language: "en", currency: "BSD $" },
-  { code: "BH", name: "Baréin", language: "ar", currency: "BHD .د.ب" },
-  { code: "BD", name: "Bangladés", language: "bn", currency: "BDT ৳" },
-  { code: "BB", name: "Barbados", language: "en", currency: "BBD $" },
-  { code: "BY", name: "Bielorrusia", language: "be", currency: "BYN Br" },
-  { code: "BE", name: "Bélgica", language: "fr", currency: "EUR €" },
-  { code: "BO", name: "Bolivia", language: "es", currency: "BOB Bs." },
-  { code: "BR", name: "Brasil", language: "pt", currency: "BRL R$" },
-  { code: "BN", name: "Brunéi", language: "ms", currency: "BND $" },
-  { code: "BG", name: "Bulgaria", language: "bg", currency: "BGN лв" },
-  { code: "CV", name: "Cabo Verde", language: "pt", currency: "CVE $" },
-  { code: "KH", name: "Camboya", language: "km", currency: "KHR ៛" },
-  { code: "CM", name: "Camerún", language: "fr", currency: "XAF FCFA" },
-  { code: "CA", name: "Canadá", language: "en", currency: "CAD $" },
-  { code: "QA", name: "Catar", language: "ar", currency: "QAR ﷼" },
-  { code: "CL", name: "Chile", language: "es", currency: "CLP $" },
-  { code: "CN", name: "China", language: "zh", currency: "CNY ¥" },
-  { code: "CY", name: "Chipre", language: "el", currency: "EUR €" },
-  { code: "CZ", name: "Chequia", language: "cs", currency: "CZK Kč" },
-  { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
-  { code: "KR", name: "Corea del Sur", language: "ko", currency: "KRW ₩" },
-  { code: "DK", name: "Dinamarca", language: "da", currency: "DKK kr" },
-  { code: "EC", name: "Ecuador", language: "es", currency: "USD $" },
-  { code: "EG", name: "Egipto", language: "ar", currency: "EGP £" },
-  { code: "AE", name: "Emiratos Árabes Unidos", language: "ar", currency: "AED د.إ" },
-  { code: "ER", name: "Eritrea", language: "ti", currency: "ERN ₨" },
-  { code: "SK", name: "Eslovaquia", language: "sk", currency: "EUR €" },
-  { code: "SI", name: "Eslovenia", language: "sl", currency: "EUR €" },
-  { code: "ES", name: "España", language: "es", currency: "EUR €" },
-  { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
-  { code: "EE", name: "Estonia", language: "et", currency: "EUR €" },
-  { code: "PH", name: "Filipinas", language: "tl", currency: "PHP ₱" },
-  { code: "FJ", name: "Fiyi", language: "en", currency: "FJD $" },
-  { code: "FI", name: "Finlandia", language: "fi", currency: "EUR €" },
-  { code: "FR", name: "Francia", language: "fr", currency: "EUR €" },
-  { code: "GE", name: "Georgia", language: "ka", currency: "GEL ₾" },
+ <script>
+  const countriesData = [
+    { code: "CO", name: "Colombia", language: "es", currency: "COP $" },
+    { code: "US", name: "Estados Unidos", language: "en", currency: "USD $" },
+    { code: "MX", name: "México", language: "es", currency: "MXN $" },
+    { code: "ES", name: "España", language: "es", currency: "EUR €" },
+    { code: "FR", name: "Francia", language: "fr", currency: "EUR €" },
+    { code: "BR", name: "Brasil", language: "pt", currency: "BRL R$" },
+    { code: "AR", name: "Argentina", language: "es", currency: "ARS $" },
+    { code: "JP", name: "Japón", language: "ja", currency: "JPY ¥" },
+    { code: "KR", name: "Corea del Sur", language: "ko", currency: "KRW ₩" },
+    { code: "IN", name: "India", language: "hi", currency: "INR ₹" },
+    { code: "CN", name: "China", language: "zh", currency: "CNY ¥" },
+    { code: "GB", name: "Reino Unido", language: "en", currency: "GBP £" },
+    { code: "CA", name: "Canadá", language: "en", currency: "CAD $" },
+    { code: "AU", name: "Australia", language: "en", currency: "AUD $" },
+    { code: "AL", name: "Albania", language: "sq", currency: "ALL L" },
+    { code: "DZ", name: "Argelia", language: "ar", currency: "DZD دج" },
+    { code: "AM", name: "Armenia", language: "hy", currency: "AMD ֏" },
+    { code: "AZ", name: "Azerbaiyán", language: "az", currency: "AZN ₼" },
+    { code: "BH", name: "Baréin", language: "ar", currency: "BHD .د.ب" },
+    { code: "BY", name: "Bielorrusia", language: "be", currency: "BYN Br" },
+    { code: "BT", name: "Bután", language: "dz", currency: "BTN Nu." },
+    { code: "KH", name: "Camboya", language: "km", currency: "KHR ៛" },
+    { code: "CM", name: "Camerún", language: "fr", currency: "XAF FCFA" },
+    { code: "CY", name: "Chipre", language: "el", currency: "EUR €" },
+    { code: "EE", name: "Estonia", language: "et", currency: "EUR €" },
+    { code: "GE", name: "Georgia", language: "ka", currency: "GEL ₾" },
     { code: "GH", name: "Ghana", language: "en", currency: "GHS ₵" },
-  { code: "GR", name: "Grecia", language: "el", currency: "EUR €" },
-  { code: "GD", name: "Granada", language: "en", currency: "XCD $" },
-  { code: "GT", name: "Guatemala", language: "es", currency: "GTQ Q" },
-  { code: "GN", name: "Guinea", language: "fr", currency: "GNF FG" },
-  { code: "GW", name: "Guinea-Bisáu", language: "pt", currency: "XOF CFA" },
-  { code: "HT", name: "Haití", language: "fr", currency: "HTG G" },
-  { code: "HN", name: "Honduras", language: "es", currency: "HNL L" },
-  { code: "IS", name: "Islandia", language: "is", currency: "ISK kr" },
-  { code: "IN", name: "India", language: "hi", currency: "INR ₹" },
-  { code: "ID", name: "Indonesia", language: "id", currency: "IDR Rp" },
-  { code: "IR", name: "Irán", language: "fa", currency: "IRR ﷼" },
-  { code: "IQ", name: "Irak", language: "ar", currency: "IQD ع.د" },
-  { code: "IE", name: "Irlanda", language: "en", currency: "EUR €" },
-  { code: "SB", name: "Islas Salomón", language: "en", currency: "SBD $" },
-  { code: "MH", name: "Islas Marshall", language: "en", currency: "USD $" },
-  { code: "IL", name: "Israel", language: "he", currency: "ILS ₪" },
-  { code: "IT", name: "Italia", language: "it", currency: "EUR €" },
-  { code: "JP", name: "Japón", language: "ja", currency: "JPY ¥" },
-  { code: "KZ", name: "Kazajistán", language: "kk", currency: "KZT ₸" },
-  { code: "KE", name: "Kenia", language: "sw", currency: "KES KSh" },
-  { code: "KW", name: "Kuwait", language: "ar", currency: "KWD د.ك" },
-  { code: "LA", name: "Laos", language: "lo", currency: "LAK ₭" },
-  { code: "LV", name: "Letonia", language: "lv", currency: "EUR €" },
-  { code: "LT", name: "Lituania", language: "lt", currency: "EUR €" },
-  { code: "LS", name: "Lesotho", language: "en", currency: "LSL M" },
-  { code: "LU", name: "Luxemburgo", language: "fr", currency: "EUR €" },
-  { code: "MY", name: "Malasia", language: "ms", currency: "MYR RM" },
-  { code: "MT", name: "Malta", language: "mt", currency: "EUR €" },
+    { code: "IS", name: "Islandia", language: "is", currency: "ISK kr" },
+    { code: "KZ", name: "Kazajistán", language: "kk", currency: "KZT ₸" },
+    { code: "KW", name: "Kuwait", language: "ar", currency: "KWD د.ك" },
+    { code: "LA", name: "Laos", language: "lo", currency: "LAK ₭" },
+    { code: "LV", name: "Letonia", language: "lv", currency: "EUR €" },
+    { code: "LT", name: "Lituania", language: "lt", currency: "EUR €" },
+    { code: "LU", name: "Luxemburgo", language: "fr", currency: "EUR €" },
+    { code: "DE", name: "Alemania", language: "de", currency: "EUR €" },
+    { code: "IT", name: "Italia", language: "it", currency: "EUR €" },
+    { code: "RU", name: "Rusia", language: "ru", currency: "RUB ₽" },
+    { code: "TR", name: "Turquía", language: "tr", currency: "TRY ₺" },
+    { code: "SA", name: "Arabia Saudita", language: "ar", currency: "SAR ﷼" },
+    { code: "EG", name: "Egipto", language: "ar", currency: "EGP £" },
+    { code: "ZA", name: "Sudáfrica", language: "en", currency: "ZAR R" },
+    { code: "NG", name: "Nigeria", language: "en", currency: "NGN ₦" },
+    { code: "KE", name: "Kenia", language: "sw", currency: "KES KSh" },
+    { code: "PK", name: "Pakistán", language: "ur", currency: "PKR ₨" },
+    { code: "BD", name: "Bangladés", language: "bn", currency: "BDT ৳" },
+    { code: "ID", name: "Indonesia", language: "id", currency: "IDR Rp" },
+    { code: "PH", name: "Filipinas", language: "tl", currency: "PHP ₱" },
+    { code: "VN", name: "Vietnam", language: "vi", currency: "VND ₫" },
+    { code: "TH", name: "Tailandia", language: "th", currency: "THB ฿" },
+    { code: "MY", name: "Malasia", language: "ms", currency: "MYR RM" },
+    { code: "SG", name: "Singapur", language: "en", currency: "SGD $" },
+    { code: "NZ", name: "Nueva Zelanda", language: "en", currency: "NZD $" },
+    { code: "IE", name: "Irlanda", language: "en", currency: "EUR €" },
+    { code: "NL", name: "Países Bajos", language: "nl", currency: "EUR €" },
+    { code: "SE", name: "Suecia", language: "sv", currency: "SEK kr" },
+    { code: "NO", name: "Noruega", language: "no", currency: "NOK kr" },
+    { code: "FI", name: "Finlandia", language: "fi", currency: "EUR €" },
+    { code: "DK", name: "Dinamarca", language: "da", currency: "DKK kr" },
+    { code: "PL", name: "Polonia", language: "pl", currency: "PLN zł" },
+    { code: "CZ", name: "Chequia", language: "cs", currency: "CZK Kč" },
+    { code: "GR", name: "Grecia", language: "el", currency: "EUR €" },
+    { code: "HU", name: "Hungría", language: "hu", currency: "HUF Ft" },
+    { code: "RO", name: "Rumania", language: "ro", currency: "RON lei" },
+    { code: "UA", name: "Ucrania", language: "uk", currency: "UAH ₴" },
+    { code: "CH", name: "Suiza", language: "de", currency: "CHF Fr" },
+    { code: "AT", name: "Austria", language: "de", currency: "EUR €" },
+    { code: "BE", name: "Bélgica", language: "fr", currency: "EUR €" },
+    { code: "IL", name: "Israel", language: "he", currency: "ILS ₪" },
+    { code: "IR", name: "Irán", language: "fa", currency: "IRR ﷼" },
+    { code: "IQ", name: "Irak", language: "ar", currency: "IQD ع.د" },
+    { code: "CL", name: "Chile", language: "es", currency: "CLP $" },
+    { code: "PE", name: "Perú", language: "es", currency: "PEN S/" },
+    { code: "VE", name: "Venezuela", language: "es", currency: "VES Bs" },
+    { code: "BO", name: "Bolivia", language: "es", currency: "BOB Bs." },
+    { code: "EC", name: "Ecuador", language: "es", currency: "USD $" },
+    { code: "PY", name: "Paraguay", language: "es", currency: "PYG ₲" },
+    { code: "UY", name: "Uruguay", language: "es", currency: "UYU $" },
+    { code: "CR", name: "Costa Rica", language: "es", currency: "CRC ₡" },
+    { code: "GT", name: "Guatemala", language: "es", currency: "GTQ Q" },
+    { code: "DO", name: "República Dominicana", language: "es", currency: "DOP RD$" },
+    { code: "CU", name: "Cuba", language: "es", currency: "CUP $" },
+    { code: "HN", name: "Honduras", language: "es", currency: "HNL L" },
+    { code: "HR", name: "Croacia", language: "hr", currency: "HRK kn" },
+    { code: "PT", name: "Portugal", language: "pt", currency: "EUR €" },
+    { code: "SK", name: "Eslovaquia", language: "sk", currency: "EUR €" },
+    { code: "SI", name: "Eslovenia", language: "sl", currency: "EUR €" },
+    { code: "BG", name: "Bulgaria", language: "bg", currency: "BGN лв" },
+    { code: "MT", name: "Malta", language: "mt", currency: "EUR €" },
+    { code: "RS", name: "Serbia", language: "sr", currency: "RSD дин" },
+    { code: "AF", name: "Afganistán", language: "ps", currency: "AFN ؋" },
+    { code: "AO", name: "Angola", language: "pt", currency: "AOA Kz" },
+    { code: "AW", name: "Aruba", language: "nl", currency: "AWG ƒ" },
+    { code: "BB", name: "Barbados", language: "en", currency: "BBD $" },
+    { code: "BN", name: "Brunéi", language: "ms", currency: "BND $" },
+    { code: "CV", name: "Cabo Verde", language: "pt", currency: "CVE $" },
+    { code: "DJ", name: "Yibuti", language: "fr", currency: "DJF Fdj" },
+    { code: "DM", name: "Dominica", language: "en", currency: "XCD $" },
+    { code: "ER", name: "Eritrea", language: "ti", currency: "ERN ₨" },
+    { code: "FJ", name: "Fiyi", language: "en", currency: "FJD $" },
+    { code: "GD", name: "Granada", language: "en", currency: "XCD $" },
+    { code: "GN", name: "Guinea", language: "fr", currency: "GNF FG" },
+    { code: "GW", name: "Guinea-Bisáu", language: "pt", currency: "XOF CFA" },
+    { code: "HT", name: "Haití", language: "fr", currency: "HTG G" },
+    { code: "KI", name: "Kiribati", language: "en", currency: "AUD $" },
+    { code: "KM", name: "Comoras", language: "ar", currency: "KMF CF" },
+    { code: "LS", name: "Lesotho", language: "en", currency: "LSL M" },
+    { code: "MH", name: "Islas Marshall", language: "en", currency: "USD $" },
     { code: "MR", name: "Mauritania", language: "ar", currency: "MRU UM" },
-  { code: "MU", name: "Mauricio", language: "en", currency: "MUR ₹" },
-  { code: "MX", name: "México", language: "es", currency: "MXN $" },
-  { code: "FM", name: "Micronesia", language: "en", currency: "USD $" },
-  { code: "MD", name: "Moldavia", language: "ro", currency: "MDL L" },
-  { code: "MC", name: "Mónaco", language: "fr", currency: "EUR €" },
-  { code: "MN", name: "Mongolia", language: "mn", currency: "MNT ₮" },
-  { code: "ME", name: "Montenegro", language: "sr", currency: "EUR €" },
-  { code: "NA", name: "Namibia", language: "en", currency: "NAD $" },
-  { code: "NR", name: "Nauru", language: "en", currency: "AUD $" },
-  { code: "NZ", name: "Nueva Zelanda", language: "en", currency: "NZD $" },
-  { code: "NI", name: "Nicaragua", language: "es", currency: "NIO C$" },
-  { code: "NE", name: "Níger", language: "fr", currency: "XOF CFA" },
-  { code: "NG", name: "Nigeria", language: "en", currency: "NGN ₦" },
-  { code: "NO", name: "Noruega", language: "no", currency: "NOK kr" },
-  { code: "OM", name: "Omán", language: "ar", currency: "OMR ﷼" },
-  { code: "PK", name: "Pakistán", language: "ur", currency: "PKR ₨" },
-  { code: "PA", name: "Panamá", language: "es", currency: "PAB B/." },
-  { code: "PY", name: "Paraguay", language: "es", currency: "PYG ₲" },
-  { code: "PE", name: "Perú", language: "es", currency: "PEN S/" },
-  { code: "PL", name: "Polonia", language: "pl", currency: "PLN zł" },
-  { code: "PT", name: "Portugal", language: "pt", currency: "EUR €" },
-  { code: "GB", name: "Reino Unido", language: "en", currency: "GBP £" },
-  { code: "DO", name: "República Dominicana", language: "es", currency: "DOP RD$" },
-  { code: "RO", name: "Rumania", language: "ro", currency: "RON lei" },
-  { code: "RU", name: "Rusia", language: "ru", currency: "RUB ₽" },
-  { code: "KN", name: "San Cristóbal y Nieves", language: "en", currency: "XCD $" },
-  { code: "LC", name: "Santa Lucía", language: "en", currency: "XCD $" },
-  { code: "VC", name: "San Vicente y las Granadinas", language: "en", currency: "XCD $" },
-  { code: "WS", name: "Samoa", language: "en", currency: "WST WS$" },
-  { code: "SM", name: "San Marino", language: "it", currency: "EUR €" },
-  { code: "ST", name: "Santo Tomé y Príncipe", language: "pt", currency: "STN Db" },
-  { code: "SN", name: "Senegal", language: "fr", currency: "XOF CFA" },
-  { code: "RS", name: "Serbia", language: "sr", currency: "RSD дин" },
-  { code: "SC", name: "Seychelles", language: "en", currency: "SCR $" },
-  { code: "SG", name: "Singapur", language: "en", currency: "SGD $" },
-  { code: "SO", name: "Somalia", language: "so", currency: "SOS Sh" },
-  { code: "ZA", name: "Sudáfrica", language: "en", currency: "ZAR R" },
-  { code: "LK", name: "Sri Lanka", language: "si", currency: "LKR Rs" },
-  { code: "SD", name: "Sudán", language: "ar", currency: "SDG £" },
-  { code: "SE", name: "Suecia", language: "sv", currency: "SEK kr" },
-  { code: "CH", name: "Suiza", language: "de", currency: "CHF Fr" },
-  { code: "SY", name: "Siria", language: "ar", currency: "SYP £" },
-  { code: "TJ", name: "Tayikistán", language: "tg", currency: "TJS ЅМ" },
-  { code: "TH", name: "Tailandia", language: "th", currency: "THB ฿" },
-  { code: "TZ", name: "Tanzania", language: "sw", currency: "TZS Sh" },
-  { code: "TO", name: "Tonga", language: "to", currency: "TOP T$" },
-  { code: "TT", name: "Trinidad y Tobago", language: "en", currency: "TTD $" },
-  { code: "TN", name: "Túnez", language: "ar", currency: "TND د.ت" },
-  { code: "TR", name: "Turquía", language: "tr", currency: "TRY ₺" },
-  { code: "TV", name: "Tuvalu", language: "en", currency: "AUD $" },
-  { code: "UG", name: "Uganda", language: "en", currency: "UGX Sh" },
-  { code: "UA", name: "Ucrania", language: "uk", currency: "UAH ₴" },
-  { code: "UY", name: "Uruguay", language: "es", currency: "UYU $" },
-  { code: "UZ", name: "Uzbekistán", language: "uz", currency: "UZS so'm" },
-  { code: "VU", name: "Vanuatu", language: "bi", currency: "VUV VT" },
-  { code: "VE", name: "Venezuela", language: "es", currency: "VES Bs" },
-  { code: "VN", name: "Vietnam", language: "vi", currency: "VND ₫" },
-  { code: "YE", name: "Yemen", language: "ar", currency: "YER ﷼" },
-  { code: "ZM", name: "Zambia", language: "en", currency: "ZMW ZK" },
-  { code: "ZW", name: "Zimbabue", language: "en", currency: "ZWL $" }
-];
-    
-// 🔹 4️⃣ Inicializar selects y detectar país por IP
-const countrySelect = document.getElementById("country");
-const languageSelect = document.getElementById("language");
-const currencySelect = document.getElementById("currency");
-
-// Ordenar países
-countriesData.sort((a,b)=>a.name.localeCompare(b.name, "es", {sensitivity:"base"}));
-
-// Llenar select de países
-countriesData.forEach(c=>{
-  countrySelect.innerHTML+=`<option value="${c.code}">${c.name}</option>`;
-});
-
-// Llenar select de idiomas sin duplicados
-const addedLanguages = new Set();
-countriesData.forEach(c=>{
-  if(!addedLanguages.has(c.language)){
-    addedLanguages.add(c.language);
-    languageSelect.innerHTML+=`<option value="${c.language}">${languageNames[c.language]||c.language}</option>`;
-  }
-});
-
-// Llenar select de monedas sin duplicados
-const addedCurrencies = new Set();
-countriesData.forEach(c=>{
-  if(!addedCurrencies.has(c.currency)){
-    addedCurrencies.add(c.currency);
-    currencySelect.innerHTML+=`<option value="${c.currency}">${c.currency}</option>`;
-  }
-});
-
-// Detectar país por IP
-fetch("https://ipapi.co/json/").then(r=>r.json()).then(data=>{
-  const savedCountry = localStorage.getItem("selectedCountry") || "CO";
-  const savedLanguage = localStorage.getItem("selectedLanguage") || (countriesData.find(c=>c.code===data.country_code)?.language) || "es";
-  const savedCurrency = localStorage.getItem("selectedCurrency") || (countriesData.find(c=>c.code===savedCountry)?.currency) || "COP $";
-  
-  countrySelect.value=savedCountry;
-  languageSelect.value=savedLanguage;
-  currencySelect.value=savedCurrency;
-  
-  localStorage.setItem("selectedCountry",savedCountry);
-  localStorage.setItem("selectedLanguage",savedLanguage);
-  localStorage.setItem("selectedCurrency",savedCurrency);
-  
-  updatePrices(savedCurrency);
-  aplicarTraduccion();
-}).catch(()=>{
-  // Si falla la IP, usar Colombia
-  const savedCountry = localStorage.getItem("selectedCountry") || "CO";
-  const savedLanguage = localStorage.getItem("selectedLanguage") || "es";
-  const savedCurrency = localStorage.getItem("selectedCurrency") || "COP $";
-  
-  countrySelect.value=savedCountry;
-  languageSelect.value=savedLanguage;
-  currencySelect.value=savedCurrency;
-  
-  localStorage.setItem("selectedCountry",savedCountry);
-  localStorage.setItem("selectedLanguage",savedLanguage);
-  localStorage.setItem("selectedCurrency",savedCurrency);
-  
-  updatePrices(savedCurrency);
-  aplicarTraduccion();
-});
-
-// 🔹 5️⃣ Cambios manuales en selects
-countrySelect.addEventListener("change", ()=>{
-  const selected=countrySelect.value;
-  localStorage.setItem("selectedCountry",selected);
-  const country=countriesData.find(c=>c.code===selected);
-  if(country){
-    languageSelect.value=country.language;
-    currencySelect.value=country.currency;
-    localStorage.setItem("selectedLanguage",country.language);
-    localStorage.setItem("selectedCurrency",country.currency);
-  }
-  aplicarTraduccion();
-  updatePrices(currencySelect.value);
-});
-
-languageSelect.addEventListener("change", ()=>{
-  const selected=languageSelect.value;
-  localStorage.setItem("selectedLanguage",selected);
-  aplicarTraduccion();
-});
-
-currencySelect.addEventListener("change", ()=>{
-  const selected=currencySelect.value;
-  localStorage.setItem("selectedCurrency",selected);
-  updatePrices(selected);
-});
+    { code: "MU", name: "Mauricio", language: "en", currency: "MUR ₹" },
+    { code: "NR", name: "Nauru", language: "en", currency: "AUD $" },
+    { code: "PA", name: "Panamá", language: "es", currency: "PAB B/." },
+    { code: "WS", name: "Samoa", language: "en", currency: "WST WS$" },
+    { code: "ST", name: "Santo Tomé y Príncipe", language: "pt", currency: "STN Db" },
+    { code: "TO", name: "Tonga", language: "to", currency: "TOP T$" },
+    { code: "TV", name: "Tuvalu", language: "en", currency: "AUD $" },
+    { code: "VU", name: "Vanuatu", language: "bi", currency: "VUV VT" },
+    { code: "VC", name: "San Vicente y las Granadinas", language: "en", currency: "XCD $" },
+    { code: "LC", name: "Santa Lucía", language: "en", currency: "XCD $" }
+  ];
 </script>
 
+
+    const languageNames = {
+      es: "Español", en: "Inglés", fr: "Francés", pt: "Portugués", ja: "Japonés",
+      ko: "Coreano", hi: "Hindi", zh: "Chino",
+      de: "Alemán", it: "Italiano", ru: "Ruso", tr: "Turco", ar: "Árabe", sw: "Suajili",
+      ur: "Urdu", bn: "Bengalí", id: "Indonesio", tl: "Tagalo", vi: "Vietnamita",
+      th: "Tailandés", ms: "Malayo", nl: "Neerlandés", sv: "Sueco", no: "Noruego",
+      fi: "Finlandés", da: "Danés", pl: "Polaco", cs: "Checo", el: "Griego",
+      hu: "Húngaro", ro: "Rumano", uk: "Ucraniano", he: "Hebreo", fa: "Persa",   sq: "Albanés",
+      hy: "Armenio", az: "Azerí", be: "Bielorruso", dz: "Dzongkha", km: "Jemer", et: "Estonio",
+      ka: "Georgiano", is: "Islandés", kk: "Kazajo", lo: "Lao", lv: "Letón",   lt: "Lituano",
+      bg: "Búlgaro", hr: "Croata", et: "Estonio", mt: "Maltés", sk: "Eslovaco", sl: "Esloveno",
+      cs: "Checo", sr: "Serbio", 
+      // Al final de tu languageNames:
+      ps: "Pashto", ti: "Tigriña", bi: "Bislama", dv: "Divehi", ne: "Nepalí", my: "Birmano",
+      zh: "Chino", ca: "Catalán", hr: "Croata", sl: "Esloveno", sk: "Eslovaco", bg: "Búlgaro",
+      bs: "Bosnio", mk: "Macedonio", sq: "Albanés", sr: "Serbio", et: "Estonio", ka: "Georgiano",
+      lo: "Laosiano", km: "Jemer", az: "Azerí", hy: "Armenio", et: "Estonio", tl: "Tagalo",
+      dv: "Divehi", rw: "Kinyarwanda", kn: "Canarés", pa: "Panyabí", en: "Inglés", pt: "Portugués"
+
+
+     };
+    
+
+    const countrySelect = document.getElementById("country");
+    const languageSelect = document.getElementById("language");
+    const currencySelect = document.getElementById("currency");
+
+    countriesData.forEach(country => {
+      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+
+      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+        const langName = languageNames[country.language] || country.language;
+        languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
+      }
+
+      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+      }
+    });
+
+    function updatePrices(symbol) {
+      const prices = document.querySelectorAll(".price");
+      prices.forEach(el => {
+        const base = el.getAttribute("data-base");
+        el.textContent = `${symbol} ${base}`;
+      });
+    }
+
+    countrySelect.onchange = () => {
+      const country = countrySelect.value;
+      const selected = countriesData.find(c => c.code === country);
+      languageSelect.value = selected.language;
+      currencySelect.value = selected.currency;
+      localStorage.setItem('country', country);
+      localStorage.setItem('language', selected.language);
+      localStorage.setItem('currency', selected.currency);
+      updatePrices(selected.currency);
+    };
+
+    languageSelect.onchange = () => {
+      localStorage.setItem('language', languageSelect.value);
+      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+    };
+
+    currencySelect.onchange = () => {
+      localStorage.setItem('currency', currencySelect.value);
+      updatePrices(currencySelect.value);
+    };
+
+// Detectar país automáticamente usando IP
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const ipCountry = data.country;
+    const ipLanguage = data.languages?.split(',')[0] || "en";
+    const ipCurrency = data.currency;
+
+    const matched = countriesData.find(c => c.code === ipCountry);
+
+    if (matched) {
+      countrySelect.value = matched.code;
+      languageSelect.value = matched.language;
+      currencySelect.value = matched.currency;
+      updatePrices(matched.currency);
+
+      // Guardar en localStorage para persistencia
+      localStorage.setItem("country", matched.code);
+      localStorage.setItem("language", matched.language);
+      localStorage.setItem("currency", matched.currency);
+    }
+  })
+  .catch(err => console.log("Error al obtener IP:", err));
+
+    window.onload = () => {
+      const savedCountry = localStorage.getItem("country") || "CO";
+      const savedLanguage = localStorage.getItem("language") || "es";
+      const savedCurrency = localStorage.getItem("currency") || "COP $";
+
+      countrySelect.value = savedCountry;
+      languageSelect.value = savedLanguage;
+      currencySelect.value = savedCurrency;
+      updatePrices(savedCurrency);
+    };
+  </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
