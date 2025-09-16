@@ -363,16 +363,40 @@
       }
     });
 
-    // ===========================
-    // 4️⃣ Funciones
-    // ===========================
-    function updatePrices(symbol) {
-      const prices = document.querySelectorAll(".price");
-      prices.forEach(el => {
-        const base = el.getAttribute("data-base");
-        el.textContent = `${symbol} ${base}`;
-      });
-    }
+// ===========================
+// 🔹 4️⃣ Inicializar selects y detectar país por IP
+// ===========================    
+const countrySelect = document.getElementById("country");
+const languageSelect = document.getElementById("language");
+const currencySelect = document.getElementById("currency");
+
+// Ordenar países alfabéticamente por nombre
+countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
+
+// Llenar el select de países sin duplicados
+countriesData.forEach(c => {
+  countrySelect.innerHTML += `<option value="${c.code}">${c.name}</option>`;
+});
+
+// Selección automática por localStorage o Colombia por defecto
+let savedCountry = localStorage.getItem("selectedCountry");
+let savedLanguage = localStorage.getItem("selectedLanguage");
+let savedCurrency = localStorage.getItem("selectedCurrency");
+
+if (savedCountry) {
+  countrySelect.value = savedCountry;
+} else {
+  countrySelect.value = "CO"; // Forzamos Colombia si no hay nada guardado
+  localStorage.setItem("selectedCountry", "CO");
+}
+
+const selectedCountryData = countriesData.find(c => c.code === countrySelect.value);
+if (selectedCountryData) {
+  languageSelect.value = savedLanguage || selectedCountryData.language;
+  currencySelect.value = savedCurrency || selectedCountryData.currency;
+}
+
+
 
     // ===========================
     // 5️⃣ Eventos de cambio
@@ -433,4 +457,5 @@
   </script>
 </body>
 </html>
+
 
