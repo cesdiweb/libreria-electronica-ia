@@ -345,102 +345,94 @@
       to: "Tongano"
     };
 
-    // ===========================
-    // 3️⃣ Poblado de selects
-    // ===========================
-    const countrySelect = document.getElementById("country");
-    const languageSelect = document.getElementById("language");
-    const currencySelect = document.getElementById("currency");
-
-    countriesData.forEach(country => {
-      countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
-      if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
-        const langName = languageNames[country.language] || country.language;
-        languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
-      }
-      if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-        currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
-      }
-    });
-
+   // ===========================
+// 3️⃣ Poblado de selects
 // ===========================
-// 🔹 4️⃣ Inicializar selects y detectar país por IP
-// ===========================    
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
-// Ordenar países alfabéticamente por nombre
+// Ordenar países alfabéticamente
 countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
-// Llenar el select de países sin duplicados
-countriesData.forEach(c => {
-  countrySelect.innerHTML += `<option value="${c.code}">${c.name}</option>`;
+countriesData.forEach(country => {
+  // Países
+  countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+
+  // Idiomas sin duplicados
+  if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+    const langName = languageNames[country.language] || country.language;
+    languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
+  }
+
+  // Monedas sin duplicados
+  if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
+    currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+  }
 });
 
-// Selección automática por localStorage o Colombia por defecto
+// ===========================
+// 4️⃣ Inicializar selects
+// ===========================
 let savedCountry = localStorage.getItem("selectedCountry");
 let savedLanguage = localStorage.getItem("selectedLanguage");
 let savedCurrency = localStorage.getItem("selectedCurrency");
 
-if (savedCountry) {
-  countrySelect.value = savedCountry;
-} else {
-  countrySelect.value = "CO"; // Forzamos Colombia si no hay nada guardado
-  localStorage.setItem("selectedCountry", "CO");
+if (!savedCountry) {
+  savedCountry = "CO"; // Colombia por defecto
+  localStorage.setItem("selectedCountry", savedCountry);
 }
 
-const selectedCountryData = countriesData.find(c => c.code === countrySelect.value);
+const selectedCountryData = countriesData.find(c => c.code === savedCountry);
+
 if (selectedCountryData) {
+  countrySelect.value = savedCountry;
   languageSelect.value = savedLanguage || selectedCountryData.language;
   currencySelect.value = savedCurrency || selectedCountryData.currency;
 }
 
+// ===========================
+// 5️⃣ Eventos de cambio
+// ===========================
+countrySelect.onchange = () => {
+  const selected = countriesData.find(c => c.code === countrySelect.value);
+  languageSelect.value = selected.language;
+  currencySelect.value = selected.currency;
+  localStorage.setItem("selectedCountry", selected.code);
+  localStorage.setItem("selectedLanguage", selected.language);
+  localStorage.setItem("selectedCurrency", selected.currency);
+  updatePrices(selected.currency);
+};
 
+languageSelect.onchange = () => {
+  localStorage.setItem("selectedLanguage", languageSelect.value);
+  alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
+};
 
-    // ===========================
-    // 5️⃣ Eventos de cambio
-    // ===========================
-    countrySelect.onchange = () => {
-      const country = countrySelect.value;
-      const selected = countriesData.find(c => c.code === country);
-      languageSelect.value = selected.language;
-      currencySelect.value = selected.currency;
-      localStorage.setItem('country', country);
-      localStorage.setItem('language', selected.language);
-      localStorage.setItem('currency', selected.currency);
-      updatePrices(selected.currency);
-    };
+currencySelect.onchange = () => {
+  localStorage.setItem("selectedCurrency", currencySelect.value);
+  updatePrices(currencySelect.value);
+};
 
-    languageSelect.onchange = () => {
-      localStorage.setItem('language', languageSelect.value);
-      alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-    };
+// ===========================
+// 6️⃣ Detección automática por IP
+// ===========================
+fetch("https://ipapi.co/json/")
+  .then(response => response.json())
+  .then(data => {
+    const ipCountry = data.country;
+    const matched = countriesData.find(c => c.code === ipCountry);
+    if (matched) {
+      countrySelect.value = matched.code;
+      languageSelect.value = matched.language;
+      currencySelect.value = matched.currency;
+      updatePrices(matched.currency);
+      localStorage.setItem("selectedCountry", matched.code);
+      localStorage.setItem("selectedLanguage", matched.language);
+      localStorage.setItem("selectedCurrency", matched.currency);
+    }
+  });
 
-    currencySelect.onchange = () => {
-      localStorage.setItem('currency', currencySelect.value);
-      updatePrices(currencySelect.value);
-    };
-
-    // ===========================
-    // 6️⃣ Detección automática por IP
-    // ===========================
-    fetch("https://ipapi.co/json/")
-      .then(response => response.json())
-      .then(data => {
-        const ipCountry = data.country;
-        const matched = countriesData.find(c => c.code === ipCountry);
-        if (matched) {
-          countrySelect.value = matched.code;
-          languageSelect.value = matched.language;
-          currencySelect.value = matched.currency;
-          updatePrices(matched.currency);
-          localStorage.setItem("country", matched.code);
-          localStorage.setItem("language", matched.language);
-          localStorage.setItem("currency", matched.currency);
-        }
-      })
-      .catch(err => console.log("Error al obtener IP:", err));
 
     // ===========================
     // 7️⃣ Cargar valores guardados
@@ -457,5 +449,6 @@ if (selectedCountryData) {
   </script>
 </body>
 </html>
+
 
 
