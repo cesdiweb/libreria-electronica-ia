@@ -91,56 +91,94 @@
 </head>
 <body>
   <header>
-    <h1>Librería Electrónica IA</h1>
-    <p>Tu librería digital inteligente e internacional</p>
-  </header>
+  <h1>Electronic Bookstore AI</h1>
+  <p>Your smart and international digital bookstore</p>
+</header>
 
-  <nav>
-    <a href="#">Inicio</a>
-    <a href="#">Catálogo</a>
-    <a href="#">Registrarse</a>
-    <a href="#">Iniciar Sesión</a>
-    <a href="#">Contacto</a>
-  </nav>
+
+ <nav>
+  <a href="index.html">Inicio</a>
+   <a href="register.html">Registrarse</a>
+  <a href="login.html">Iniciar Sesión</a>
+  <a href="contacto.html">Contacto</a>
+  <a href="carrito.html">🛒 Carrito</a>
+  <a href="terminos.html">Términos</a>
+  <a href="reembolso.html">Reembolso</a>
+
+</nav>
+
 
   <div class="selector-container">
     <label>🌎 País:
-      <select id="country" aria-label="País"></select>
+      <select id="country"></select>
     </label>
     <label>🗣️ Idioma:
-      <select id="language" aria-label="Idioma"></select>
+      <select id="language"></select>
     </label>
     <label>💰 Moneda:
-      <select id="currency" aria-label="Moneda"></select>
+      <select id="currency"></select>
     </label>
   </div>
 
-  <section class="catalogo">
-    <div class="libro">
-      <img src="https://via.placeholder.com/150" alt="Libro 1">
-      <h3>Introducción a la Inteligencia Artificial</h3>
-      <p><strong>Autor:</strong> Ana Pérez</p>
-      <!-- data-base = precio numérico (sin símbolo); updatePrices mostrará la moneda seleccionada -->
-      <p class="price" data-base="30000">COP $ 30000</p>
-      <button class="carrito-btn" onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000)">Agregar al carrito</button>
-    </div>
-    <div class="libro">
-      <img src="https://via.placeholder.com/150" alt="Libro 2">
-      <h3>Machine Learning Avanzado</h3>
-      <p><strong>Autor:</strong> John Smith</p>
-      <p class="price" data-base="20">USD $ 20</p>
-      <button class="carrito-btn" onclick="agregarAlCarrito('Machine Learning Avanzado', 20)">Agregar al carrito</button>
-    </div>
-    <div class="libro">
-      <img src="https://via.placeholder.com/150" alt="Libro 3">
-      <h3>Redes Neuronales con Python</h3>
-      <p><strong>Autor:</strong> María López</p>
-      <p class="price" data-base="18">EUR € 18</p>
-      <button class="carrito-btn" onclick="agregarAlCarrito('Redes Neuronales con Python', 18)">Agregar al carrito</button>
-    </div>
-  </section>
+<section class="catalogo">
+ <div class="libro" data-titulo="Introducción a la Inteligencia Artificial" data-autor="Ana Pérez" data-precio="30000">
+   <h3>Introducción a la Inteligencia Artificial</h3>
+   <p>Autor: Ana Pérez</p>
+   <p class="precio">COP $30,000</p>
+   <button class="carrito-btn">Agregar al carrito</button>
+  </div>
+  <div class="libro" data-titulo="Machine Learning Avanzado" data-autor="John Smith" data-precio="20000">
+    <h3>Machine Learning Avanzado</h3>
+    <p>Autor: John Smith</p>
+    <p class="precio">COP $20,000</p>
+    <button class="carrito-btn">Agregar al carrito</button>
+  </div>
+
+  <div class="libro" data-titulo="Redes Neuronales con Python" data-autor="María López" data-precio="18000">
+    <h3>Redes Neuronales con Python</h3>
+    <p>Autor: María López</p>
+    <p class="precio">COP $18,000</p>
+    <button class="carrito-btn">Agregar al carrito</button>
+  </div>
+</section>
+
+<script>
+function actualizarPrecios() {
+  const monedaCompleta = localStorage.getItem('currency') || 'COP $';
+  const monedaCodigo = monedaCompleta.split(' ')[0];
+  const simbolo = monedaCompleta.split(' ')[1] || '$';
+  
+  document.querySelectorAll(".libro").forEach(libro => {
+    const precioBaseCOP = parseFloat(libro.dataset.precio);
+    const rate = exchangeRates[monedaCodigo] || 1;
+    const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
+    libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
+  });
+}
+// Inicializar precios al cargar
+window.addEventListener('load', actualizarPrecios);
+
+// Agregar al carrito usando moneda actual
+document.querySelectorAll(".carrito-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const contenedor = btn.closest(".libro");
+    const titulo = contenedor.dataset.titulo;
+    const autor = contenedor.dataset.autor;
+    const precio = parseFloat(contenedor.dataset.precio);
+    const moneda = localStorage.getItem('currency') || 'COP $';
+    agregarAlCarrito(titulo, autor, precio, moneda);
+  });
+});
+</script>
+
 
   <footer>
+  <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
+  <p>
+    <a href="terminos.html">Términos y Condiciones</a> | 
+    <a href="reembolso.html">Política de Reembolso</a>
+  </p>
+</footer>
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   </footer>
 
@@ -343,3 +381,4 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
