@@ -399,55 +399,57 @@ const languageNames = {
 // ===========================
 // Poblado de selects + persistencia + detección IP
 // ===========================
+
+// Referencias
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
-// Limpiar (por si había algo) y ordenar países
+// Limpiar selects
 countrySelect.innerHTML = "";
 languageSelect.innerHTML = "";
 currencySelect.innerHTML = "";
 
-// Ordenar (ya lo dejamos ordenado en el array, pero por seguridad lo ordenamos aquí)
+// Ordenar países por nombre
 countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
+// Llenar selects sin duplicados
 countriesData.forEach(country => {
   countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
-
-  if (!languageSelect.querySelector(`option[value='${country.language}']`)) {
+  if (!languageSelect.querySelector(`option[value="${country.language}"]`)) {
     const langName = languageNames[country.language] || country.language;
     languageSelect.innerHTML += `<option value="${country.language}">${langName}</option>`;
   }
-
-  if (!currencySelect.querySelector(`option[value='${country.currency}']`)) {
-    currencySelect.innerHTML += `<option value='${country.currency}'>${country.currency}</option>`;
+  if (!currencySelect.querySelector(`option[value="${country.currency}"]`)) {
+    currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
   }
 });
 
-// Leer guardado (convención: selected*)
+// ===========================
+// 1️⃣ Cargar valores guardados o inicializar
+// ===========================
 let savedCountry = localStorage.getItem("selectedCountry");
 let savedLanguage = localStorage.getItem("selectedLanguage");
 let savedCurrency = localStorage.getItem("selectedCurrency");
 
-// Si no había nada guardado, usar Colombia como fallback y guardar idioma/moneda por defecto
 if (!savedCountry) {
   savedCountry = "CO";
   const def = countriesData.find(c => c.code === savedCountry);
-  if (def) {
-    savedLanguage = def.language;
-    savedCurrency = def.currency;
-    localStorage.setItem("selectedCountry", savedCountry);
-    localStorage.setItem("selectedLanguage", savedLanguage);
-    localStorage.setItem("selectedCurrency", savedCurrency);
-  }
+  savedLanguage = def?.language || "es";
+  savedCurrency = def?.currency || "COP $";
+  localStorage.setItem("selectedCountry", savedCountry);
+  localStorage.setItem("selectedLanguage", savedLanguage);
+  localStorage.setItem("selectedCurrency", savedCurrency);
 }
 
 // Aplicar valores a selects
-countrySelect.value = savedCountry || "CO";
-languageSelect.value = savedLanguage || countrySelect.querySelector("option")?.value || "es";
-currencySelect.value = savedCurrency || countrySelect.querySelector("option")?.value || "COP $";
+countrySelect.value = savedCountry;
+languageSelect.value = savedLanguage;
+currencySelect.value = savedCurrency;
 
-// Eventos
+// ===========================
+// 2️⃣ Eventos de cambio
+// ===========================
 countrySelect.onchange = () => {
   const selected = countriesData.find(c => c.code === countrySelect.value);
   if (!selected) return;
@@ -461,7 +463,7 @@ countrySelect.onchange = () => {
 
 languageSelect.onchange = () => {
   localStorage.setItem("selectedLanguage", languageSelect.value);
-  // opcional: sin alert si prefieres UX más limpio
+  // Si quieres feedback visual, puedes usar alert, pero no es obligatorio:
   // alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
 };
 
@@ -470,7 +472,9 @@ currencySelect.onchange = () => {
   if (typeof updatePrices === "function") updatePrices(currencySelect.value);
 };
 
-// Detección por IP: solo si no hay country ya guardado (no sobrescribir elección manual)
+// ===========================
+// 3️⃣ Detección por IP (solo si no hay guardado previo)
+// ===========================
 if (!localStorage.getItem("selectedCountry")) {
   fetch("https://ipapi.co/json/")
     .then(res => res.ok ? res.json() : null)
@@ -486,99 +490,21 @@ if (!localStorage.getItem("selectedCountry")) {
         localStorage.setItem("selectedCurrency", matched.currency);
         if (typeof updatePrices === "function") updatePrices(matched.currency);
       }
-    }).catch(err => {
-      // fallo en IP: no hacemos nada (queda Colombia o lo guardado)
-      console.warn("ip detect error:", err);
-    });
-}
-
-
-// ===========================
-// 4️⃣ Inicializar selects
-// ===========================
-let savedCountry = localStorage.getItem("selectedCountry");
-let savedLanguage = localStorage.getItem("selectedLanguage");
-let savedCurrency = localStorage.getItem("selectedCurrency");
-
-// Si no hay nada guardado, inicializar con Colombia
-if (!savedCountry) {
-  savedCountry = "CO";
-  const defaultData = countriesData.find(c => c.code === savedCountry);
-  localStorage.setItem("selectedCountry", savedCountry);
-  localStorage.setItem("selectedLanguage", defaultData.language);
-  localStorage.setItem("selectedCurrency", defaultData.currency);
-}
-
-// Aplicar valores a los selects
-const selectedCountryData = countriesData.find(c => c.code === savedCountry);
-if (selectedCountryData) {
-  countrySelect.value = savedCountry;
-  languageSelect.value = savedLanguage || selectedCountryData.language;
-  currencySelect.value = savedCurrency || selectedCountryData.currency;
+    })
+    .catch(err => console.warn("Error detectando país por IP:", err));
 }
 
 // ===========================
-// 5️⃣ Eventos de cambio
+// 4️⃣ Aplicar precios al cargar
 // ===========================
-countrySelect.onchange = () => {
-  const selected = countriesData.find(c => c.code === countrySelect.value);
-  languageSelect.value = selected.language;
-  currencySelect.value = selected.currency;
-  localStorage.setItem("selectedCountry", selected.code);
-  localStorage.setItem("selectedLanguage", selected.language);
-  localStorage.setItem("selectedCurrency", selected.currency);
-  updatePrices(selected.currency);
-};
+window.addEventListener("load", () => {
+  if (typeof updatePrices === "function") updatePrices(currencySelect.value);
+});
+</script>
 
-languageSelect.onchange = () => {
-  localStorage.setItem("selectedLanguage", languageSelect.value);
-  alert("Idioma cambiado a: " + (languageNames[languageSelect.value] || languageSelect.value));
-};
-
-currencySelect.onchange = () => {
-  localStorage.setItem("selectedCurrency", currencySelect.value);
-  updatePrices(currencySelect.value);
-};
-
-// ===========================
-// 6️⃣ Detección automática por IP
-// ===========================
-fetch("https://ipapi.co/json/")
-  .then(response => response.json())
-  .then(data => {
-    // Solo si el usuario no tiene un país guardado manualmente
-    if (!localStorage.getItem("selectedCountry")) {
-      const ipCountry = data.country;
-      const matched = countriesData.find(c => c.code === ipCountry);
-      if (matched) {
-        countrySelect.value = matched.code;
-        languageSelect.value = matched.language;
-        currencySelect.value = matched.currency;
-        updatePrices(matched.currency);
-        localStorage.setItem("selectedCountry", matched.code);
-        localStorage.setItem("selectedLanguage", matched.language);
-        localStorage.setItem("selectedCurrency", matched.currency);
-      }
-    }
-  });
-
-
-
-    // ===========================
-    // 7️⃣ Cargar valores guardados
-    // ===========================
-    window.onload = () => {
-      const savedCountry = localStorage.getItem("country") || "CO";
-      const savedLanguage = localStorage.getItem("language") || "es";
-      const savedCurrency = localStorage.getItem("currency") || "COP $";
-      countrySelect.value = savedCountry;
-      languageSelect.value = savedLanguage;
-      currencySelect.value = savedCurrency;
-      updatePrices(savedCurrency);
-    };
-  </script>
 </body>
 </html>
+
 
 
 
