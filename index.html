@@ -350,7 +350,8 @@
       to: "Tongano"
     };
 
-   // ===========================
+  
+// ===========================
 // 3️⃣ Poblado de selects
 // ===========================
 const countrySelect = document.getElementById("country");
@@ -383,13 +384,17 @@ let savedCountry = localStorage.getItem("selectedCountry");
 let savedLanguage = localStorage.getItem("selectedLanguage");
 let savedCurrency = localStorage.getItem("selectedCurrency");
 
+// Si no hay nada guardado, inicializar con Colombia
 if (!savedCountry) {
-  savedCountry = "CO"; // Colombia por defecto
+  savedCountry = "CO";
+  const defaultData = countriesData.find(c => c.code === savedCountry);
   localStorage.setItem("selectedCountry", savedCountry);
+  localStorage.setItem("selectedLanguage", defaultData.language);
+  localStorage.setItem("selectedCurrency", defaultData.currency);
 }
 
+// Aplicar valores a los selects
 const selectedCountryData = countriesData.find(c => c.code === savedCountry);
-
 if (selectedCountryData) {
   countrySelect.value = savedCountry;
   languageSelect.value = savedLanguage || selectedCountryData.language;
@@ -425,18 +430,22 @@ currencySelect.onchange = () => {
 fetch("https://ipapi.co/json/")
   .then(response => response.json())
   .then(data => {
-    const ipCountry = data.country;
-    const matched = countriesData.find(c => c.code === ipCountry);
-    if (matched) {
-      countrySelect.value = matched.code;
-      languageSelect.value = matched.language;
-      currencySelect.value = matched.currency;
-      updatePrices(matched.currency);
-      localStorage.setItem("selectedCountry", matched.code);
-      localStorage.setItem("selectedLanguage", matched.language);
-      localStorage.setItem("selectedCurrency", matched.currency);
+    // Solo si el usuario no tiene un país guardado manualmente
+    if (!localStorage.getItem("selectedCountry")) {
+      const ipCountry = data.country;
+      const matched = countriesData.find(c => c.code === ipCountry);
+      if (matched) {
+        countrySelect.value = matched.code;
+        languageSelect.value = matched.language;
+        currencySelect.value = matched.currency;
+        updatePrices(matched.currency);
+        localStorage.setItem("selectedCountry", matched.code);
+        localStorage.setItem("selectedLanguage", matched.language);
+        localStorage.setItem("selectedCurrency", matched.currency);
+      }
     }
   });
+
 
 
     // ===========================
@@ -454,6 +463,7 @@ fetch("https://ipapi.co/json/")
   </script>
 </body>
 </html>
+
 
 
 
