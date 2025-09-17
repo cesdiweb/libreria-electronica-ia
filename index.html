@@ -363,6 +363,20 @@ function updatePrices(currencyLabel) {
 }
 
 /* ===========================
+   updatePrices: actualiza los elementos .price
+   Nota: aquí no hacemos conversión de divisa (sin tasas).
+   Simplemente mostramos el número y el identificador de moneda seleccionado.
+   Si quieres conversión real, puedo integrar tasas (API) y convertir automáticamente.
+   =========================== */
+function updatePrices(currencyLabel) {
+  document.querySelectorAll(".price").forEach(el => {
+    const base = el.dataset.base;
+    if (!base) return;
+    el.textContent = `${currencyLabel} ${base}`;
+  });
+}
+
+/* ===========================
    Carrito (simple)
    =========================== */
 function agregarAlCarrito(nombre, precio) {
@@ -371,10 +385,6 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
-
-
-
-
 
 
 
