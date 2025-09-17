@@ -555,19 +555,10 @@ function updatePrices(currencyLabel) {
 function agregarAlCarrito(nombre, precio) {
   alert(`${nombre} agregado al carrito (${precio} ${currencySelect.value})`);
 }
-// 🔹 Configurar botones del carrito
-  document.querySelectorAll(".carrito-btn").forEach(btn => {
-    btn.addEventListener("click", () => {
-      const contenedor = btn.closest(".libro");
-      const titulo = contenedor.dataset.titulo;
-      const autor = contenedor.dataset.autor;
-      const precio = parseFloat(contenedor.dataset.precio);
-      const moneda = localStorage.getItem('currency') || 'COP $';
-      agregarAlCarrito(titulo, autor, precio, moneda);
-    });
-   </script>
+  </script>
 </body>
 </html>
+
 
 
 
