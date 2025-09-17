@@ -429,13 +429,6 @@ const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
-// limpiar selects
-countrySelect.innerHTML = "";
-languageSelect.innerHTML = "";
-currencySelect.innerHTML = "";
-
-// ordenar países alfabéticamente (por seguridad)
-countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
 // llenar selects (sin duplicados en idioma/moneda)
 countriesData.forEach(country => {
@@ -565,6 +558,7 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
 
