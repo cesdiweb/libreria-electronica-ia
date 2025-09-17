@@ -120,27 +120,31 @@
 
  <section class="catalogo">
   <div class="libro">
-  <h3>Introducción a la Inteligencia Artificial</h3>
-  <p><strong>Autor:</strong> Ana Pérez</p>
-  <p class="price" data-base="30000">30000</p>
-  <button class="carrito-btn" onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000)">Agregar al carrito</button>
-</div>
+    <img src="https://via.placeholder.com/150" alt="Libro 1">
+    <h3>Introducción a la Inteligencia Artificial</h3>
+    <p><strong>Autor:</strong> Ana Pérez</p>
+    <!-- data-base = precio numérico (base en COP) -->
+    <p class="price" data-base="30000"></p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000)">Agregar al carrito</button>
+  </div>
 
-<div class="libro">
-  <h3>Machine Learning Avanzado</h3>
-  <p><strong>Autor:</strong> John Smith</p>
-  <p class="price" data-base="84000">84000</p>
-  <button class="carrito-btn" onclick="agregarAlCarrito('Machine Learning Avanzado', 84000)">Agregar al carrito</button>
-</div>
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 2">
+    <h3>Machine Learning Avanzado</h3>
+    <p><strong>Autor:</strong> John Smith</p>
+    <p class="price" data-base="84000"></p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('Machine Learning Avanzado', 84000)">Agregar al carrito</button>
+  </div>
 
-<div class="libro">
-  <h3>Redes Neuronales con Python</h3>
-  <p><strong>Autor:</strong> María López</p>
-  <p class="price" data-base="89225">89225</p>
-  <button class="carrito-btn" onclick="agregarAlCarrito('Redes Neuronales con Python', 89225)">Agregar al carrito</button>
-</div>
-
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 3">
+    <h3>Redes Neuronales con Python</h3>
+    <p><strong>Autor:</strong> María López</p>
+    <p class="price" data-base="89225"></p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('Redes Neuronales con Python', 89225)">Agregar al carrito</button>
+  </div>
 </section>
+
   
 
   <footer>
@@ -396,5 +400,6 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
