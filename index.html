@@ -330,8 +330,9 @@ if (!hadSavedCountry) {
   // si ya existía, sólo aplicar precios según lo guardado
   updatePrices(savedCurrency);
 }
+
 /* ===========================
-   updatePrices: convierte y actualiza los elementos .price
+   Tasas de cambio y función updatePrices
    =========================== */
 const exchangeRates = {
   "COP": 1,
@@ -347,7 +348,6 @@ const exchangeRates = {
   // puedes agregar el resto de monedas si quieres
 };
 
-// ===========================
 function updatePrices(currencyLabel) {
   document.querySelectorAll(".price").forEach(el => {
     const base = parseFloat(el.dataset.base);
@@ -360,6 +360,13 @@ function updatePrices(currencyLabel) {
     const converted = Math.round(base * rate * 100) / 100; // redondear a 2 decimales
     el.textContent = `${currencyLabel} ${converted}`;
   });
+}
+
+/* ===========================
+   Carrito (simple)
+   =========================== */
+function agregarAlCarrito(nombre, precio) {
+  alert(`${nombre} agregado al carrito (${precio} ${currencySelect.value})`);
 }
 
 /* ===========================
@@ -385,6 +392,7 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
 
