@@ -330,9 +330,8 @@ if (!hadSavedCountry) {
   // si ya existía, sólo aplicar precios según lo guardado
   updatePrices(savedCurrency);
 }
-
 /* ===========================
-   Tasas de cambio y función updatePrices
+   updatePrices: convierte y actualiza los elementos .price
    =========================== */
 const exchangeRates = {
   "COP": 1,
@@ -348,6 +347,7 @@ const exchangeRates = {
   // puedes agregar el resto de monedas si quieres
 };
 
+// ===========================
 function updatePrices(currencyLabel) {
   document.querySelectorAll(".price").forEach(el => {
     const base = parseFloat(el.dataset.base);
@@ -368,7 +368,6 @@ function updatePrices(currencyLabel) {
 function agregarAlCarrito(nombre, precio) {
   alert(`${nombre} agregado al carrito (${precio} ${currencySelect.value})`);
 }
-
 /* ===========================
    updatePrices: actualiza los elementos .price
    Nota: aquí no hacemos conversión de divisa (sin tasas).
@@ -392,6 +391,7 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
 
