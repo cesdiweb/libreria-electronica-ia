@@ -330,9 +330,9 @@ if (!hadSavedCountry) {
   // si ya existía, sólo aplicar precios según lo guardado
   updatePrices(savedCurrency);
 }
-// ===========================
-//  Bloque de tasas de cambio
-// ===========================
+/* ===========================
+   updatePrices: convierte y actualiza los elementos .price
+   =========================== */
 const exchangeRates = {
   "COP": 1,
   "USD": 0.000255,
@@ -343,12 +343,8 @@ const exchangeRates = {
   "GBP": 0.00020,
   "CNY": 0.0017,
   "JPY": 0.037,
-  "KRW": 0.32,
-  "INR": 0.022,
-  "CAD": 0.00033,
-  "AUD": 0.00036,
-  "CHF": 0.00024,
-  // ... resto de monedas
+  "KRW": 0.32
+  // puedes agregar el resto de monedas si quieres
 };
 
 // ===========================
@@ -389,6 +385,7 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
 
