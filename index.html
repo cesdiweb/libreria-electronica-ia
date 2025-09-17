@@ -340,6 +340,9 @@ if (!hadSavedCountry) {
   // si ya existía, sólo aplicar precios según lo guardado
   updatePrices(savedCurrency);
 }
+
+// Llamada inicial para mostrar precios al cargar la página
+updatePrices(currencySelect.value || "COP $");
 /* ===========================
    updatePrices: convierte y actualiza los elementos .price
    =========================== */
@@ -372,21 +375,8 @@ const exchangeRates = {
 // ===========================
 function updatePrices(currencyLabel) {
   document.querySelectorAll(".price").forEach(el => {
-    // Convertir todos los precios a COP base primero
-    let baseInCOP;
-    const originalBase = parseFloat(el.dataset.base);
-    
-    if (originalBase === 30000) {
-      baseInCOP = 30000; // Ya está en COP
-    } else if (originalBase === 20) {
-      baseInCOP = 84000; // 20 USD = 84000 COP
-      el.dataset.base = "84000"; // Actualizar el data-base
-    } else if (originalBase === 18) {
-      baseInCOP = 89280; // 18 EUR = 89280 COP
-      el.dataset.base = "89280"; // Actualizar el data-base
-    } else {
-      baseInCOP = originalBase; // Default
-    }
+    const baseInCOP = parseFloat(el.dataset.base);
+    if (!baseInCOP) return;
 
     // Obtener código de moneda destino
     const code = currencyLabel.split(" ")[0];
@@ -407,8 +397,3 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
-
-
-
-
-
