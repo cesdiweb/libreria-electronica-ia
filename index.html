@@ -333,31 +333,57 @@ if (!hadSavedCountry) {
 /* ===========================
    updatePrices: convierte y actualiza los elementos .price
    =========================== */
+// Tasas de cambio desde COP hacia otras monedas
 const exchangeRates = {
   "COP": 1,
-  "USD": 0.000255,
-  "EUR": 0.000223,
-  "MXN": 0.0042,
-  "BRL": 0.0011,
-  "ARS": 0.22,
-  "GBP": 0.00020,
-  "CNY": 0.0017,
-  "JPY": 0.037,
-  "KRW": 0.32
-  // puedes agregar el resto de monedas si quieres
+  "USD": 0.000238,
+  "EUR": 0.000202,
+  "CNY": 0.00171,
+  "BRL": 0.00124,
+  "MXN": 0.00428,
+  "ARS": 0.214,
+  "GBP": 0.000186,
+  "JPY": 0.0357,
+  "KRW": 0.31,
+  "AUD": 0.000357,
+  "CAD": 0.000321,
+  "CHF": 0.000214,
+  "AFN": 0.0179,
+  "ALL": 0.0226,
+  "AOA": 0.202,
+  "CLP": 0.226,
+  "CRC": 0.124,
+  "PEN": 0.000881,
+  "RUB": 0.0214,
+  "XCD": 0.000643,
+  "ZAR": 0.00428
 };
 
 // ===========================
 function updatePrices(currencyLabel) {
   document.querySelectorAll(".price").forEach(el => {
-    const base = parseFloat(el.dataset.base);
-    if (!base) return;
+    // Convertir todos los precios a COP base primero
+    let baseInCOP;
+    const originalBase = parseFloat(el.dataset.base);
+    
+    if (originalBase === 30000) {
+      baseInCOP = 30000; // Ya está en COP
+    } else if (originalBase === 20) {
+      baseInCOP = 84000; // 20 USD = 84000 COP
+      el.dataset.base = "84000"; // Actualizar el data-base
+    } else if (originalBase === 18) {
+      baseInCOP = 89280; // 18 EUR = 89280 COP
+      el.dataset.base = "89280"; // Actualizar el data-base
+    } else {
+      baseInCOP = originalBase; // Default
+    }
 
-    // separar el código de moneda (ej. "USD $" -> "USD")
-    const code = currencyLabel.split(" ")[0]; 
+    // Obtener código de moneda destino
+    const code = currencyLabel.split(" ")[0];
     const rate = exchangeRates[code] || 1;
 
-    const converted = Math.round(base * rate * 100) / 100; // redondear a 2 decimales
+    // Convertir desde COP a la moneda destino
+    const converted = Math.round(baseInCOP * rate * 100) / 100;
     el.textContent = `${currencyLabel} ${converted}`;
   });
 }
@@ -371,21 +397,3 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
