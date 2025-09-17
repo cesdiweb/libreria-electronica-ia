@@ -143,33 +143,6 @@
     </div>
   </section>
   <script>
-function actualizarPrecios() {
-  const monedaCompleta = localStorage.getItem('currency') || 'COP $';
-  const monedaCodigo = monedaCompleta.split(' ')[0];
-  const simbolo = monedaCompleta.split(' ')[1] || '$';
-  
-  document.querySelectorAll(".libro").forEach(libro => {
-    const precioBaseCOP = parseFloat(libro.dataset.precio);
-    const rate = exchangeRates[monedaCodigo] || 1;
-    const precioConvertido = Math.round(precioBaseCOP * rate * 100) / 100;
-    libro.querySelector(".precio").textContent = `${monedaCodigo} ${simbolo}${precioConvertido.toLocaleString()}`;
-  });
-}
-// Inicializar precios al cargar
-window.addEventListener('load', actualizarPrecios);
-
-// Agregar al carrito usando moneda actual
-document.querySelectorAll(".carrito-btn").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const contenedor = btn.closest(".libro");
-    const titulo = contenedor.dataset.titulo;
-    const autor = contenedor.dataset.autor;
-    const precio = parseFloat(contenedor.dataset.precio);
-    const moneda = localStorage.getItem('currency') || 'COP $';
-    agregarAlCarrito(titulo, autor, precio, moneda);
-  });
-});
-</script>
 
 
   <footer>
@@ -382,6 +355,7 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
 
