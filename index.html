@@ -540,13 +540,20 @@ if (!hadSavedCountry) {
    Simplemente mostramos el número y el identificador de moneda seleccionado.
    Si quieres conversión real, puedo integrar tasas (API) y convertir automáticamente.
    =========================== */
-function updatePrices(currencyLabel) {
+function updatePrices(currencyCode) {
+  // obtenemos la tasa de conversión según el código de moneda
+  const rate = exchangeRates[currencyCode] || 1;
+
   document.querySelectorAll(".price").forEach(el => {
-    const base = el.dataset.base;
+    const base = parseFloat(el.dataset.base); // precio base en COP
     if (!base) return;
-    el.textContent = `${currencyLabel} ${base}`;
+
+    // convertir y formatear
+    const converted = Math.round(base * rate);
+    el.textContent = `${currencyCode} ${converted.toLocaleString()}`;
   });
 }
+
 
 /* ===========================
    Carrito (simple)
@@ -557,6 +564,7 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
+
 
 
 
