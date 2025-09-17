@@ -118,7 +118,7 @@
     </label>
   </div>
 
-<section class="catalogo">
+  <section class="catalogo">
     <div class="libro">
       <img src="https://via.placeholder.com/150" alt="Libro 1">
       <h3>Introducción a la Inteligencia Artificial</h3>
@@ -144,16 +144,6 @@
   </section>
   
 
-
-<script>
-  // Ejecutar updatePrices al cargar la página para que se muestren los precios correctamente
-  document.addEventListener("DOMContentLoaded", () => {
-    updatePrices(currencySelect.value);
-  });
-</script>
-
- 
-
   <footer>
 
   <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
@@ -168,6 +158,7 @@
    <script>
 /* ===========================
    1) Lista de países (ejemplo representativo)
+   Puedes extender countriesData con más países si lo deseas.
    =========================== */
 const countriesData = [
   { code: "AF", name: "Afganistán", language: "ps", currency: "AFN ؋" },
@@ -221,53 +212,7 @@ const languageNames = {
 };
 
 /* ===========================
-   3) Tasas de cambio desde COP hacia otras monedas
-   =========================== */
-const exchangeRates = {
-  "COP": 1,
-  "USD": 0.000238,
-  "EUR": 0.000202,
-  "CNY": 0.00171,
-  "BRL": 0.00124,
-  "MXN": 0.00428,
-  "ARS": 0.214,
-  "GBP": 0.000186,
-  "JPY": 0.0357,
-  "KRW": 0.31,
-  "AUD": 0.000357,
-  "CAD": 0.000321,
-  "CHF": 0.000214,
-  "AFN": 0.0179,
-  "ALL": 0.0226,
-  "AOA": 0.202,
-  "CLP": 0.226,
-  "CRC": 0.124,
-  "PEN": 0.000881,
-  "RUB": 0.0214,
-  "XCD": 0.000643,
-  "ZAR": 0.00428
-};
-
-/* ===========================
-   4) Función updatePrices
-   =========================== */
-function updatePrices(currencyLabel) {
-  document.querySelectorAll(".price").forEach(el => {
-    const baseInCOP = parseFloat(el.dataset.base);
-    if (!baseInCOP) return;
-
-    // Obtener código de moneda destino
-    const code = currencyLabel.split(" ")[0];
-    const rate = exchangeRates[code] || 1;
-
-    // Convertir desde COP a la moneda destino
-    const converted = Math.round(baseInCOP * rate * 100) / 100;
-    el.textContent = `${currencyLabel} ${converted}`;
-  });
-}
-
-/* ===========================
-   5) Poblado de selects + persistencia + detección IP
+   3) Poblado de selects + persistencia + detección IP
    =========================== */
 const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
@@ -278,7 +223,7 @@ countrySelect.innerHTML = "";
 languageSelect.innerHTML = "";
 currencySelect.innerHTML = "";
 
-// ordenar países alfabéticamente
+// ordenar países alfabéticamente (por seguridad)
 countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
 // llenar selects (sin duplicados en idioma/moneda)
@@ -293,14 +238,14 @@ countriesData.forEach(country => {
   }
 });
 
-// comprobar si ya existía país guardado
+// comprobar si ya existía país guardado (antes de inicializar)
 const hadSavedCountry = !!localStorage.getItem("selectedCountry");
 
 let savedCountry = localStorage.getItem("selectedCountry");
 let savedLanguage = localStorage.getItem("selectedLanguage");
 let savedCurrency = localStorage.getItem("selectedCurrency");
 
-// si no había guardado, usar Colombia por defecto
+// si no había guardado, usar temporalmente Colombia para mostrar algo (pero NO escribirlo aún)
 if (!hadSavedCountry) {
   const def = countriesData.find(c => c.code === "CO");
   savedCountry = "CO";
@@ -308,13 +253,14 @@ if (!hadSavedCountry) {
   savedCurrency = def?.currency || "COP $";
 }
 
-// aplicar valores a selects
+// aplicar valores a selects para que el usuario vea algo
 countrySelect.value = savedCountry;
 languageSelect.value = savedLanguage;
 currencySelect.value = savedCurrency;
 
-// si el usuario ya tenía guardado, aplicamos a localStorage
+// si el usuario ya tenía guardado, aplicamos directamente a localStorage (si hacía falta)
 if (hadSavedCountry) {
+  // asegurarnos de que language/currency no estén vacíos
   const def = countriesData.find(c => c.code === savedCountry);
   if (!savedLanguage && def) savedLanguage = def.language;
   if (!savedCurrency && def) savedCurrency = def.currency;
@@ -322,9 +268,7 @@ if (hadSavedCountry) {
   localStorage.setItem("selectedCurrency", savedCurrency);
 }
 
-/* ===========================
-   6) Eventos
-   =========================== */
+//  Eventos
 countrySelect.addEventListener("change", () => {
   const selected = countriesData.find(c => c.code === countrySelect.value);
   if (!selected) return;
@@ -345,14 +289,13 @@ currencySelect.addEventListener("change", () => {
   updatePrices(currencySelect.value);
 });
 
-/* ===========================
-   7) Detección por IP
-   =========================== */
+// Detección por IP sólo si no había selección previa
 if (!hadSavedCountry) {
   fetch("https://ipapi.co/json/")
     .then(res => res.ok ? res.json() : null)
     .then(data => {
       if (!data || !data.country) {
+        // si no detecta, fijar los valores por defecto en localStorage (CO)
         localStorage.setItem("selectedCountry", savedCountry);
         localStorage.setItem("selectedLanguage", savedLanguage);
         localStorage.setItem("selectedCurrency", savedCurrency);
@@ -369,6 +312,7 @@ if (!hadSavedCountry) {
         localStorage.setItem("selectedCurrency", matched.currency);
         updatePrices(matched.currency);
       } else {
+        // país no en lista: fijar defaults en localStorage
         localStorage.setItem("selectedCountry", savedCountry);
         localStorage.setItem("selectedLanguage", savedLanguage);
         localStorage.setItem("selectedCurrency", savedCurrency);
@@ -383,25 +327,45 @@ if (!hadSavedCountry) {
       updatePrices(savedCurrency);
     });
 } else {
+  // si ya existía, sólo aplicar precios según lo guardado
   updatePrices(savedCurrency);
 }
 
 /* ===========================
-   8) Inicialización - Mostrar precios al cargar
+   updatePrices: actualiza los elementos .price
+   Nota: aquí no hacemos conversión de divisa (sin tasas).
+   Simplemente mostramos el número y el identificador de moneda seleccionado.
+   Si quieres conversión real, puedo integrar tasas (API) y convertir automáticamente.
    =========================== */
-// Esperar a que el DOM esté listo y ejecutar updatePrices
-document.addEventListener("DOMContentLoaded", () => {
-  setTimeout(() => {
-    updatePrices(currencySelect.value || "COP $");
-  }, 100);
-});
+function updatePrices(currencyLabel) {
+  document.querySelectorAll(".price").forEach(el => {
+    const base = el.dataset.base;
+    if (!base) return;
+    el.textContent = `${currencyLabel} ${base}`;
+  });
+}
 
 /* ===========================
-   9) Carrito
+   Carrito (simple)
    =========================== */
 function agregarAlCarrito(nombre, precio) {
   alert(`${nombre} agregado al carrito (${precio} ${currencySelect.value})`);
 }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
