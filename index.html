@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -152,7 +153,8 @@
   </p>
 </footer>
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-  
+  </footer>
+
    <script>
    // Reemplaza tu exchangeRates por este bloque (valores aproximados)
 const exchangeRates = {
@@ -428,6 +430,13 @@ const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
+// limpiar selects
+countrySelect.innerHTML = "";
+languageSelect.innerHTML = "";
+currencySelect.innerHTML = "";
+
+// ordenar países alfabéticamente (por seguridad)
+countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
 // llenar selects (sin duplicados en idioma/moneda)
 countriesData.forEach(country => {
@@ -540,17 +549,14 @@ if (!hadSavedCountry) {
    Simplemente mostramos el número y el identificador de moneda seleccionado.
    Si quieres conversión real, puedo integrar tasas (API) y convertir automáticamente.
    =========================== */
-function updatePrices(currencyCode) {
-  // obtenemos la tasa de conversión según el código de moneda
-  const rate = exchangeRates[currencyCode] || 1;
+   function updatePrices(selectedCurrency) {
+  // Obtener la tasa de cambio según la moneda seleccionada
+  const rate = exchangeRates[selectedCurrency.split(" ")[0]] || 1; // toma el primer código, ej: "COP" de "COP $"
 
-  document.querySelectorAll(".price").forEach(el => {
-    const base = parseFloat(el.dataset.base); // precio base en COP
-    if (!base) return;
-
-    // convertir y formatear
-    const converted = Math.round(base * rate);
-    el.textContent = `${currencyCode} ${converted.toLocaleString()}`;
+  document.querySelectorAll(".price").forEach(priceEl => {
+    const base = parseFloat(priceEl.dataset.base); // precio original en base
+    const converted = (base * rate).toFixed(2);
+    priceEl.textContent = `${selectedCurrency} ${converted}`;
   });
 }
 
@@ -564,12 +570,6 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
-
-
-
-
-
-
 
 
 
