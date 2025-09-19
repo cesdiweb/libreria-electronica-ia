@@ -153,7 +153,8 @@
   </p>
 </footer>
     <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-  
+  </footer>
+
    <script>
    // Reemplaza tu exchangeRates por este bloque (valores aproximados)
 const exchangeRates = {
@@ -429,6 +430,13 @@ const countrySelect = document.getElementById("country");
 const languageSelect = document.getElementById("language");
 const currencySelect = document.getElementById("currency");
 
+// limpiar selects
+countrySelect.innerHTML = "";
+languageSelect.innerHTML = "";
+currencySelect.innerHTML = "";
+
+// ordenar países alfabéticamente (por seguridad)
+countriesData.sort((a, b) => a.name.localeCompare(b.name, "es", { sensitivity: "base" }));
 
 // llenar selects (sin duplicados en idioma/moneda)
 countriesData.forEach(country => {
@@ -541,19 +549,18 @@ if (!hadSavedCountry) {
    Simplemente mostramos el número y el identificador de moneda seleccionado.
    Si quieres conversión real, puedo integrar tasas (API) y convertir automáticamente.
    =========================== */
-function updatePrices(currencyCode) {
-  // obtenemos la tasa de conversión según el código de moneda
+   function updatePrices(currencyLabel) {
+  const currencyCode = currencyLabel.split(' ')[0]; 
   const rate = exchangeRates[currencyCode] || 1;
 
   document.querySelectorAll(".price").forEach(el => {
-    const base = parseFloat(el.dataset.base); // precio base en COP
+    const base = parseFloat(el.dataset.base);
     if (!base) return;
-
-    // convertir y formatear
     const converted = Math.round(base * rate);
-    el.textContent = `${currencyCode} ${converted.toLocaleString()}`;
+    el.textContent = `${currencyLabel} ${converted}`;
   });
 }
+
 
 
 /* ===========================
@@ -565,12 +572,6 @@ function agregarAlCarrito(nombre, precio) {
   </script>
 </body>
 </html>
-
-
-
-
-
-
 
 
 
