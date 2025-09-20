@@ -54,18 +54,17 @@
   </footer>
 
 <script>
-// Elementos
 const carritoContenedor = document.getElementById("carrito-contenido");
 const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
-// Mostrar carrito
+// Función para mostrar carrito con conversión de moneda y autores
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const pais = localStorage.getItem("selectedCountry") || "CO"; 
   const moneda = localStorage.getItem("selectedCurrency") || "COP";
-  const tasas = JSON.parse(localStorage.getItem("currencyRates")) || { "COP":1 }; // tasas de conversión
+  const conversion = parseFloat(localStorage.getItem("conversionRate")) || 1;
 
   carritoContenedor.innerHTML = "";
   botonesPago.innerHTML = "";
@@ -78,8 +77,7 @@ function mostrarCarrito() {
 
   let total = 0;
   carrito.forEach((item, index) => {
-    const tasa = tasas[moneda] || 1;
-    const precioConvertido = item.precio * tasa;
+    const precioConvertido = item.precio * conversion;
     const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
 
@@ -104,7 +102,6 @@ function mostrarCarrito() {
   mostrarBotonesPago(pais, moneda, total);
 }
 
-// Cambiar cantidad
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -113,7 +110,6 @@ function cambiarCantidad(index, delta) {
   mostrarCarrito();
 }
 
-// Eliminar item
 function eliminarItem(index) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito.splice(index, 1);
@@ -121,7 +117,6 @@ function eliminarItem(index) {
   mostrarCarrito();
 }
 
-// Vaciar carrito
 vaciarBtn.onclick = () => {
   if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
     localStorage.removeItem("carrito");
@@ -129,7 +124,7 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// Mostrar botones de pago
+// BOTONES DE PAGO SEGÚN PAÍS
 function mostrarBotonesPago(pais, moneda, total) {
   if (pais === "CO") {
     botonesPago.innerHTML = `
@@ -155,7 +150,6 @@ function mostrarBotonesPago(pais, moneda, total) {
   }
 }
 
-// Inicial
 window.onload = mostrarCarrito;
 </script>
 </body>
