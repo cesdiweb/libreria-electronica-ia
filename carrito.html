@@ -17,10 +17,10 @@
     button { padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; }
     .acciones button { background-color: #007bff; color: white; }
     .acciones .eliminar { background-color: #cc0000; }
-    #vaciar-btn { margin-top: 1rem; background-color: #cc0000; color: white; }
+    #vaciar-btn { margin-top: 1rem; background-color: #cc0000; color: white; padding: 8px 16px; border-radius: 6px; }
     #botonesPago { margin-top: 1rem; text-align: center; }
-    .btn-wompi { background: #00a859; color: white; padding: 10px 20px; border-radius: 6px; }
-    .btn-paypal { background: #0070ba; color: white; padding: 10px 20px; border-radius: 6px; }
+    .btn-wompi { background: #00a859; color: white; padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; }
+    .btn-paypal { background: #0070ba; color: white; padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -35,7 +35,6 @@
     <a href="register.html">Registrarse</a>
     <a href="login.html">Iniciar Sesión</a>
     <a href="contacto.html">Contacto</a>
-    <a href="carrito.html">🛒 Carrito</a>
   </nav>
 
   <main>
@@ -55,19 +54,27 @@
   </footer>
 
 <script>
+// ===========================
+// Carrito con conversión de moneda y botones de pago
+// ===========================
+
 const carritoContenedor = document.getElementById("carrito-contenido");
 const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
-// 🔹 tasas de cambio guardadas en localStorage (las carga el index)
-const exchangeRates = JSON.parse(localStorage.getItem("exchangeRates")) || {};
-const monedaSeleccionada = localStorage.getItem("selectedCurrency") || "COP";
-const tasa = exchangeRates[monedaSeleccionada] || 1;
-
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const pais = localStorage.getItem("selectedCountry") || "CO";
+  const pais = localStorage.getItem("selectedCountry") || "CO"; 
+  const moneda = localStorage.getItem("selectedCurrency") || "COP";
+
+  // Ejemplo de tasas de cambio: puedes actualizar desde API real
+  const exchangeRates = {
+    "COP": 1,
+    "USD": 0.00021,
+    "EUR": 0.00020,
+    "BHD": 0.000079
+  };
 
   carritoContenedor.innerHTML = "";
   botonesPago.innerHTML = "";
@@ -80,7 +87,8 @@ function mostrarCarrito() {
 
   let total = 0;
   carrito.forEach((item, index) => {
-    const precioConvertido = Math.round(item.precio * tasa);
+    const rate = exchangeRates[moneda] || 1;
+    const precioConvertido = Math.round(item.precio * rate);
     const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
 
@@ -90,7 +98,7 @@ function mostrarCarrito() {
       <div class="item-info">
         <strong>${item.titulo}</strong><br>
         Autor: ${item.autor}<br>
-        Precio: ${monedaSeleccionada} ${precioConvertido} × ${item.cantidad}
+        Precio: ${moneda} ${precioConvertido} × ${item.cantidad}
       </div>
       <div class="acciones">
         <button onclick="cambiarCantidad(${index}, 1)">＋</button>
@@ -101,8 +109,8 @@ function mostrarCarrito() {
     carritoContenedor.appendChild(div);
   });
 
-  totalTexto.textContent = `Total: ${monedaSeleccionada} ${total.toFixed(2)}`;
-  mostrarBotonesPago(pais, monedaSeleccionada, total);
+  totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
+  mostrarBotonesPago(pais, moneda, total);
 }
 
 function cambiarCantidad(index, delta) {
@@ -127,19 +135,22 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// 🔹 BOTONES DE PAGO
+// BOTONES DE PAGO
 function mostrarBotonesPago(pais, moneda, total) {
   if (pais === "CO") {
+    // Wompi modo prueba (COP)
+    const totalCOP = Math.round(total / (0.00021)); // convertir a COP si el total está en USD/BHD/etc
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
         <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
         <input type="hidden" name="currency" value="COP" />
-        <input type="hidden" name="amount-in-cents" value="${Math.round(total * 100)}" />
+        <input type="hidden" name="amount-in-cents" value="${totalCOP * 100}" />
         <input type="hidden" name="reference" value="ORD-${Date.now()}" />
         <button type="submit" class="btn-wompi">Pagar con Wompi (Prueba)</button>
       </form>
     `;
   } else {
+    // PayPal sandbox (internacional)
     botonesPago.innerHTML = `
       <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="cmd" value="_xclick">
