@@ -51,18 +51,21 @@
       <a href="terminos.html">Términos y Condiciones</a> | 
       <a href="reembolso.html">Política de Reembolso</a>
     </p>
-  <footer>
+  </footer>
 
 <script>
+// Elementos
 const carritoContenedor = document.getElementById("carrito-contenido");
 const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
+// Mostrar carrito
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const pais = localStorage.getItem("selectedCountry") || "CO"; 
   const moneda = localStorage.getItem("selectedCurrency") || "COP";
+  const tasas = JSON.parse(localStorage.getItem("currencyRates")) || { "COP":1 }; // tasas de conversión
 
   carritoContenedor.innerHTML = "";
   botonesPago.innerHTML = "";
@@ -75,7 +78,9 @@ function mostrarCarrito() {
 
   let total = 0;
   carrito.forEach((item, index) => {
-    const subtotal = item.precio * item.cantidad;
+    const tasa = tasas[moneda] || 1;
+    const precioConvertido = item.precio * tasa;
+    const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
 
     const div = document.createElement("div");
@@ -84,7 +89,7 @@ function mostrarCarrito() {
       <div class="item-info">
         <strong>${item.titulo}</strong><br>
         Autor: ${item.autor}<br>
-        Precio: ${item.moneda} ${item.precio} × ${item.cantidad}
+        Precio: ${moneda} ${precioConvertido.toFixed(2)} × ${item.cantidad}
       </div>
       <div class="acciones">
         <button onclick="cambiarCantidad(${index}, 1)">＋</button>
@@ -99,6 +104,7 @@ function mostrarCarrito() {
   mostrarBotonesPago(pais, moneda, total);
 }
 
+// Cambiar cantidad
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -107,6 +113,7 @@ function cambiarCantidad(index, delta) {
   mostrarCarrito();
 }
 
+// Eliminar item
 function eliminarItem(index) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito.splice(index, 1);
@@ -114,6 +121,7 @@ function eliminarItem(index) {
   mostrarCarrito();
 }
 
+// Vaciar carrito
 vaciarBtn.onclick = () => {
   if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
     localStorage.removeItem("carrito");
@@ -121,10 +129,9 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// BOTONES DE PAGO SEGÚN PAÍS
+// Mostrar botones de pago
 function mostrarBotonesPago(pais, moneda, total) {
   if (pais === "CO") {
-    // Wompi modo prueba (COP)
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
         <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
@@ -135,7 +142,6 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } else {
-    // PayPal sandbox (internacional)
     botonesPago.innerHTML = `
       <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="cmd" value="_xclick">
@@ -149,6 +155,7 @@ function mostrarBotonesPago(pais, moneda, total) {
   }
 }
 
+// Inicial
 window.onload = mostrarCarrito;
 </script>
 </body>
