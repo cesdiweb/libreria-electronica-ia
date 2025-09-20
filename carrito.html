@@ -1,23 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Carrito - Librería Electrónica IA</title>
-  <style>
-    body { font-family: Arial, sans-serif; background: #f5f5f5; margin: 0; padding: 0; }
-    header { background: #333; color: #fff; padding: 10px 20px; }
-    header h1 { margin: 0; font-size: 1.5em; }
-    nav a { color: #fff; margin-right: 15px; text-decoration: none; }
-    main { padding: 20px; }
-    .carrito-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 10px; margin-bottom: 10px; border-radius: 5px; }
-    .carrito-item .titulo { flex: 2; }
-    .carrito-item .precio { flex: 1; text-align: right; margin-right: 10px; }
-    .carrito-item button { margin-left: 5px; padding: 5px 10px; cursor: pointer; border: none; background: #007BFF; color: #fff; border-radius: 3px; }
-    .carrito-item button:hover { background: #0056b3; }
-    #carrito-total { font-weight: bold; font-size: 1.2em; margin-top: 20px; }
-    select { padding: 5px; margin-left: 10px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carrito - Librería Electrónica IA</title>
+<style>
+  body { font-family: Arial, sans-serif; background: #f0f2f5; margin: 0; padding: 0; }
+  header { background: linear-gradient(90deg, #4e54c8, #8f94fb); color: #fff; padding: 15px 20px; display: flex; flex-direction: column; }
+  header h1 { margin: 0; font-size: 1.8em; }
+  nav a { color: #fff; margin-right: 15px; text-decoration: none; font-weight: bold; }
+  .header-info { margin-top: 10px; font-size: 0.95em; }
+  main { padding: 20px; }
+  .carrito-item { display: flex; align-items: center; justify-content: space-between; background: #fff; padding: 15px; margin-bottom: 15px; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+  .carrito-item .titulo { flex: 2; font-weight: bold; color: #333; }
+  .carrito-item .precio { flex: 1; text-align: right; margin-right: 10px; color: #4e54c8; font-weight: bold; }
+  .carrito-item button { margin-left: 5px; padding: 6px 12px; cursor: pointer; border: none; border-radius: 6px; font-weight: bold; transition: 0.2s; }
+  .carrito-item button:hover { opacity: 0.8; }
+  .btn-aumentar { background-color: #4e54c8; color: #fff; }
+  .btn-disminuir { background-color: #ff6b6b; color: #fff; }
+  .btn-eliminar { background-color: #1dd1a1; color: #fff; }
+  #carrito-total { font-weight: bold; font-size: 1.4em; margin-top: 20px; text-align: right; color: #333; }
+  select { padding: 5px; margin-left: 10px; border-radius: 6px; border: 1px solid #ccc; }
+</style>
 </head>
 <body>
 
@@ -31,7 +35,7 @@
     <a href="login.html">Iniciar Sesión</a>
     <a href="contacto.html">Contacto</a>
   </nav>
-  <div>
+  <div class="header-info">
     🌎 País: <span id="selected-country">Colombia</span>
     🗣️ Idioma: <span id="selected-language">Español</span>
     💰 Moneda: 
@@ -40,7 +44,6 @@
       <option value="USD $">USD $</option>
       <option value="EUR €">EUR €</option>
       <option value="AWG ƒ">AWG ƒ</option>
-      <!-- Agrega más monedas según tu lista -->
     </select>
   </div>
 </header>
@@ -52,27 +55,16 @@
 </main>
 
 <script>
-/* ===========================
-   Exchange rates
-   =========================== */
 const exchangeRates = {
-  "COP": 1, "USD": 0.000255, "EUR": 0.000223, "MXN": 0.0042,
-  "BRL": 0.0011, "ARS": 0.22, "GBP": 0.00020, "CNY": 0.0017,
-  "JPY": 0.037, "KRW": 0.32, "AWG": 0.00014 // ejemplo
+  "COP": 1, "USD": 0.000255, "EUR": 0.000223, "AWG": 0.00014
 };
 
-/* ===========================
-   Función para convertir precio
-   =========================== */
 function convertirPrecio(base, moneda) {
   const codigo = moneda.split(' ')[0];
   const tasa = exchangeRates[codigo] || 1;
   return Math.round(base * tasa);
 }
 
-/* ===========================
-   Mostrar carrito
-   =========================== */
 function mostrarCarrito() {
   const contenedor = document.getElementById("carrito-contenido");
   contenedor.innerHTML = "";
@@ -89,9 +81,9 @@ function mostrarCarrito() {
     div.innerHTML = `
       <span class="titulo">${item.titulo} × ${item.cantidad}</span>
       <span class="precio">${moneda} ${precioConvertido * item.cantidad}</span>
-      <button onclick="aumentar(${index})">＋</button>
-      <button onclick="disminuir(${index})">−</button>
-      <button onclick="eliminar(${index})">🗑️</button>
+      <button class="btn-aumentar" onclick="aumentar(${index})">＋</button>
+      <button class="btn-disminuir" onclick="disminuir(${index})">−</button>
+      <button class="btn-eliminar" onclick="eliminar(${index})">🗑️</button>
     `;
     contenedor.appendChild(div);
   });
@@ -99,9 +91,6 @@ function mostrarCarrito() {
   document.getElementById("carrito-total").textContent = `Total: ${moneda} ${total}`;
 }
 
-/* ===========================
-   Funciones de cantidad
-   =========================== */
 function aumentar(i) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[i].cantidad++;
@@ -111,44 +100,29 @@ function aumentar(i) {
 
 function disminuir(i) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  if (carrito[i].cantidad > 1) {
-    carrito[i].cantidad--;
-  } else {
-    carrito.splice(i, 1);
-  }
+  if (carrito[i].cantidad > 1) carrito[i].cantidad--;
+  else carrito.splice(i,1);
   localStorage.setItem("carrito", JSON.stringify(carrito));
   mostrarCarrito();
 }
 
 function eliminar(i) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.splice(i, 1);
+  carrito.splice(i,1);
   localStorage.setItem("carrito", JSON.stringify(carrito));
   mostrarCarrito();
 }
 
-/* ===========================
-   Actualizar moneda
-   =========================== */
 function actualizarMoneda() {
   const currencySelect = document.getElementById("currency");
   localStorage.setItem("selectedCurrency", currencySelect.value);
   mostrarCarrito();
 }
 
-/* ===========================
-   Inicialización al cargar
-   =========================== */
 document.addEventListener("DOMContentLoaded", () => {
-  // Cargar moneda guardada
   const savedCurrency = localStorage.getItem("selectedCurrency");
-  if(savedCurrency){
-    document.getElementById("currency").value = savedCurrency;
-  }
-
+  if(savedCurrency) document.getElementById("currency").value = savedCurrency;
   mostrarCarrito();
-
-  // Evento cambio de moneda
   document.getElementById("currency").addEventListener("change", actualizarMoneda);
 });
 </script>
