@@ -1,167 +1,147 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Carrito - Librería Electrónica IA</title>
-  <style>
-    body { font-family: Arial, sans-serif; margin: 0; background: #f3f6fa; }
-    header { background-color: #004080; color: white; padding: 1rem; text-align: center; }
-    nav { display: flex; justify-content: center; background-color: #0066cc; gap: 1rem; padding: 0.5rem; }
-    nav a { color: white; text-decoration: none; font-weight: bold; }
-    main { max-width: 800px; margin: auto; padding: 2rem; background: white; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
-    h2 { text-align: center; }
-    .item { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #ccc; padding: 0.5rem 0; }
-    .item-info { flex: 1; }
-    .acciones { display: flex; gap: 0.5rem; align-items: center; }
-    button { padding: 0.3rem 0.6rem; border: none; border-radius: 4px; cursor: pointer; }
-    .acciones button { background-color: #007bff; color: white; }
-    .acciones .eliminar { background-color: #cc0000; }
-    #vaciar-btn { margin-top: 1rem; background-color: #cc0000; color: white; }
-    #botonesPago { margin-top: 1rem; text-align: center; }
-    .btn-wompi { background: #00a859; color: white; padding: 10px 20px; border-radius: 6px; }
-    .btn-paypal { background: #0070ba; color: white; padding: 10px 20px; border-radius: 6px; }
-    footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Carrito - Librería Electrónica IA</title>
+<style>
+body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f3f6fa; color:#222; }
+header { background-color: #004080; color:white; padding:1rem; text-align:center; }
+nav { display:flex; justify-content:center; gap:1rem; background-color:#0066cc; padding:0.5rem; }
+nav a { color:white; text-decoration:none; font-weight:bold; }
+.selector-container { display:flex; justify-content:center; gap:1rem; margin:1rem; flex-wrap:wrap; }
+.selector-container select { padding:0.5rem; border-radius:5px; }
+.carrito-container { max-width:800px; margin:2rem auto; background:white; padding:1rem; border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,0.1); }
+.item { display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0; border-bottom:1px solid #ccc; }
+.item:last-child { border-bottom:none; }
+.item button { padding:0.3rem 0.5rem; margin:0 0.2rem; }
+.total { text-align:right; font-weight:bold; margin-top:1rem; }
+.empty-msg { text-align:center; padding:2rem; font-style:italic; }
+</style>
 </head>
 <body>
-  <header>
-    <h1>Electronic Bookstore AI</h1>
-    <p>Your smart and international digital bookstore</p>
-  </header>
+<header>
+<h1>Electronic Bookstore AI</h1>
+<p>Your smart and international digital bookstore</p>
+</header>
+<nav>
+<a href="index.html">Inicio</a>
+<a href="register.html">Registrarse</a>
+<a href="login.html">Iniciar Sesión</a>
+<a href="contacto.html">Contacto</a>
+<a href="carrito.html">🛒 Carrito</a>
+</nav>
 
-  <nav>
-    <a href="index.html">Inicio</a>
-    <a href="register.html">Registrarse</a>
-    <a href="login.html">Iniciar Sesión</a>
-    <a href="contacto.html">Contacto</a>
-  </nav>
+<div class="selector-container">
+<label>🌎 País:
+<select id="country" aria-label="País"></select>
+</label>
+<label>🗣️ Idioma:
+<select id="language" aria-label="Idioma"></select>
+</label>
+<label>💰 Moneda:
+<select id="currency" aria-label="Moneda"></select>
+</label>
+</div>
 
-  <main>
-    <h2>Carrito de Compras</h2>
-    <div id="carrito-contenido"></div>
-    <p class="total" id="total"></p>
-    <button id="vaciar-btn">Vaciar carrito</button>
-    <div id="botonesPago"></div>
-  </main>
-
-  <footer>
-    <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
-    <p>
-      <a href="terminos.html">Términos y Condiciones</a> | 
-      <a href="reembolso.html">Política de Reembolso</a>
-    </p>
-  </footer>
+<div class="carrito-container" id="carrito-container">
+<!-- Items del carrito se mostrarán aquí -->
+</div>
 
 <script>
-// Tasas de conversión de ejemplo (igual que en index)
-const exchangeRates = {
-  COP: 1,
-  USD: 0.00027,
-  BHD: 0.00010,
-  EUR: 0.00025,
-  GBP: 0.00022
-  // puedes añadir más monedas aquí
-};
+// Copiar exchangeRates, countriesData y languageNames desde index.html
+const exchangeRates = { /* ...pega todo tu bloque de exchangeRates aquí... */ };
+const countriesData = [ /* ...pega todo tu bloque countriesData aquí... */ ];
+const languageNames = { /* ...pega todo tu bloque languageNames aquí... */ };
 
-const carritoContenedor = document.getElementById("carrito-contenido");
-const totalTexto = document.getElementById("total");
-const vaciarBtn = document.getElementById("vaciar-btn");
-const botonesPago = document.getElementById("botonesPago");
+// Selects
+const countrySelect = document.getElementById("country");
+const languageSelect = document.getElementById("language");
+const currencySelect = document.getElementById("currency");
 
-function mostrarCarrito() {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const pais = localStorage.getItem("selectedCountry") || "CO"; 
-  const moneda = localStorage.getItem("selectedCurrency") || "COP";
-
-  carritoContenedor.innerHTML = "";
-  botonesPago.innerHTML = "";
-
-  if (carrito.length === 0) {
-    carritoContenedor.innerHTML = "<p class='vacio'>🛒 El carrito está vacío.</p>";
-    totalTexto.textContent = "";
-    return;
+// Llenado de selects (igual que index.html)
+countrySelect.innerHTML = "";
+languageSelect.innerHTML = "";
+currencySelect.innerHTML = "";
+countriesData.sort((a,b)=>a.name.localeCompare(b.name,"es",{sensitivity:"base"}));
+countriesData.forEach(country=>{
+  countrySelect.innerHTML += `<option value="${country.code}">${country.name}</option>`;
+  if(!languageSelect.querySelector(`option[value="${country.language}"]`)){
+    languageSelect.innerHTML += `<option value="${country.language}">${languageNames[country.language]||country.language}</option>`;
   }
+  if(!currencySelect.querySelector(`option[value="${country.currency}"]`)){
+    currencySelect.innerHTML += `<option value="${country.currency}">${country.currency}</option>`;
+  }
+});
 
-  let total = 0;
-  carrito.forEach((item, index) => {
-    const rate = exchangeRates[moneda] || 1;
-    const precioConvertido = Math.round(item.precio * rate);
-    const subtotal = precioConvertido * item.cantidad;
-    total += subtotal;
+// Cargar selección de localStorage
+let savedCountry = localStorage.getItem("selectedCountry") || "CO";
+let savedLanguage = localStorage.getItem("selectedLanguage") || "es";
+let savedCurrency = localStorage.getItem("selectedCurrency") || "COP $";
+countrySelect.value = savedCountry;
+languageSelect.value = savedLanguage;
+currencySelect.value = savedCurrency;
 
-    const div = document.createElement("div");
-    div.className = "item";
-    div.innerHTML = `
-      <div class="item-info">
-        <strong>${item.titulo}</strong><br>
-        Autor: ${item.autor}<br>
-        Precio: ${moneda} ${precioConvertido} × ${item.cantidad}
-      </div>
-      <div class="acciones">
-        <button onclick="cambiarCantidad(${index}, 1)">＋</button>
-        <button onclick="cambiarCantidad(${index}, -1)">−</button>
-        <button class="eliminar" onclick="eliminarItem(${index})">🗑️</button>
-      </div>
-    `;
-    carritoContenedor.appendChild(div);
+// Eventos para selects
+countrySelect.addEventListener("change",()=>{
+  const sel=countriesData.find(c=>c.code===countrySelect.value);
+  if(!sel) return;
+  languageSelect.value=sel.language;
+  currencySelect.value=sel.currency;
+  localStorage.setItem("selectedCountry",sel.code);
+  localStorage.setItem("selectedLanguage",sel.language);
+  localStorage.setItem("selectedCurrency",sel.currency);
+  mostrarCarrito();
+});
+languageSelect.addEventListener("change",()=>localStorage.setItem("selectedLanguage",languageSelect.value));
+currencySelect.addEventListener("change",()=>{localStorage.setItem("selectedCurrency",currencySelect.value); mostrarCarrito();});
+
+// Mostrar carrito
+function mostrarCarrito(){
+  const cont=document.getElementById("carrito-container");
+  let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
+  const currencyLabel = currencySelect.value;
+  const currencyCode = currencyLabel.split(' ')[0];
+  const rate = exchangeRates[currencyCode] || 1;
+  if(carrito.length===0){ cont.innerHTML='<p class="empty-msg">El carrito está vacío.</p>'; return; }
+
+  let html='';
+  let total=0;
+  carrito.forEach((item,index)=>{
+    const precioConv = Math.round(item.precio*rate);
+    total+=precioConv*item.cantidad;
+    html+=`
+    <div class="item">
+      <span>${item.titulo} × ${item.cantidad}</span>
+      <span>${currencyLabel} ${precioConv*item.cantidad}</span>
+      <span>
+        <button onclick="cambiarCantidad(${index},1)">＋</button>
+        <button onclick="cambiarCantidad(${index},-1)">−</button>
+        <button onclick="eliminarItem(${index})">🗑️</button>
+      </span>
+    </div>`;
   });
-
-  totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
-  mostrarBotonesPago(pais, moneda, total);
+  html+=`<div class="total">Total: ${currencyLabel} ${total}</div>`;
+  cont.innerHTML=html;
 }
 
-function cambiarCantidad(index, delta) {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito[index].cantidad += delta;
-  if (carrito[index].cantidad < 1) carrito[index].cantidad = 1;
-  localStorage.setItem("carrito", JSON.stringify(carrito));
+// Funciones para actualizar carrito
+function cambiarCantidad(i,delta){
+  let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
+  carrito[i].cantidad+=delta;
+  if(carrito[i].cantidad<1) carrito[i].cantidad=1;
+  localStorage.setItem("carrito",JSON.stringify(carrito));
+  mostrarCarrito();
+}
+function eliminarItem(i){
+  let carrito=JSON.parse(localStorage.getItem("carrito"))||[];
+  carrito.splice(i,1);
+  localStorage.setItem("carrito",JSON.stringify(carrito));
   mostrarCarrito();
 }
 
-function eliminarItem(index) {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  carrito.splice(index, 1);
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
-}
-
-vaciarBtn.onclick = () => {
-  if (confirm("¿Estás seguro de que deseas vaciar el carrito?")) {
-    localStorage.removeItem("carrito");
-    mostrarCarrito();
-  }
-};
-
-// BOTONES DE PAGO SEGÚN PAÍS
-function mostrarBotonesPago(pais, moneda, total) {
-  if (pais === "CO") {
-    // Wompi modo prueba (COP)
-    botonesPago.innerHTML = `
-      <form action="https://checkout.wompi.co/p/" method="GET">
-        <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
-        <input type="hidden" name="currency" value="COP" />
-        <input type="hidden" name="amount-in-cents" value="${Math.round(total * 100)}" />
-        <input type="hidden" name="reference" value="ORD-${Date.now()}" />
-        <button type="submit" class="btn-wompi">Pagar con Wompi (Prueba)</button>
-      </form>
-    `;
-  } else {
-    // PayPal sandbox (internacional)
-    botonesPago.innerHTML = `
-      <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="TU_EMAIL_SANDBOX@paypal.com">
-        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-        <input type="hidden" name="amount" value="${total.toFixed(2)}">
-        <input type="hidden" name="currency_code" value="${moneda}">
-        <button type="submit" class="btn-paypal">Pagar con PayPal</button>
-      </form>
-    `;
-  }
-}
-
-window.onload = mostrarCarrito;
+// Inicializar
+mostrarCarrito();
 </script>
 </body>
 </html>
