@@ -559,17 +559,40 @@ if (!hadSavedCountry) {
   });
 }
 
-
-
 /* ===========================
-   Carrito (simple)
+   Carrito (con localStorage)
    =========================== */
 function agregarAlCarrito(nombre, precio) {
-  alert(`${nombre} agregado al carrito (${precio} ${currencySelect.value})`);
+  const pais = localStorage.getItem("selectedCountry") || "CO";
+  const moneda = localStorage.getItem("selectedCurrency") || "COP";
+
+  let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+  const index = carrito.findIndex(item => item.titulo === nombre);
+
+  if (index >= 0) {
+    carrito[index].cantidad++;
+  } else {
+    carrito.push({
+      titulo: nombre,
+      autor: "Autor desconocido", // si quieres, luego capturamos el autor real
+      precio: precio,
+      cantidad: 1,
+      moneda: moneda,
+      pais: pais
+    });
+  }
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+
+  alert(`${nombre} agregado al carrito (${precio} ${moneda})`);
 }
-  </script>
+</script>
 </body>
 </html>
+
+
+
 
 
 
