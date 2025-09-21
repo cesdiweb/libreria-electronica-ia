@@ -558,7 +558,7 @@ if (!hadSavedCountry) {
    Simplemente mostramos el número y el identificador de moneda seleccionado.
    Si quieres conversión real, puedo integrar tasas (API) y convertir automáticamente.
    =========================== */
-   function updatePrices(currencyLabel) {
+function updatePrices(currencyLabel) {
   const currencyCode = currencyLabel.split(' ')[0]; 
   const rate = exchangeRates[currencyCode] || 1;
 
@@ -571,40 +571,38 @@ if (!hadSavedCountry) {
 }
 
 /* ===========================
-   Carrito (con localStorage)
+   Carrito (con autor dinámico)
    =========================== */
-function agregarAlCarrito(nombre, precio) {
-  const pais = localStorage.getItem("selectedCountry") || "CO";
-  const moneda = localStorage.getItem("selectedCurrency") || "COP";
+function agregarAlCarrito(titulo, precio) {
+  // 1. Buscar el autor en el catálogo usando el título
+  const libro = Array.from(document.querySelectorAll(".libro")).find(
+    l => l.querySelector("h3").innerText === titulo
+  );
+  const autor = libro
+    ? libro.querySelector("p strong").parentElement.innerText.replace("Autor: ", "")
+    : "Autor desconocido";
 
+  // 2. Obtener carrito actual
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-  const index = carrito.findIndex(item => item.titulo === nombre);
+  // 3. Buscar si el libro ya está en el carrito
+  const index = carrito.findIndex(item => item.titulo === titulo);
 
   if (index >= 0) {
-    carrito[index].cantidad++;
+    carrito[index].cantidad += 1;
   } else {
-    carrito.push({
-      titulo: nombre,
-      autor: "Autor desconocido", // si quieres, luego capturamos el autor real
-      precio: precio,
-      cantidad: 1,
-      moneda: moneda,
-      pais: pais
-    });
+    carrito.push({ titulo, autor, precio, cantidad: 1 });
   }
 
+  // 4. Guardar en localStorage
   localStorage.setItem("carrito", JSON.stringify(carrito));
 
-  alert(`${nombre} agregado al carrito (${precio} ${moneda})`);
+  // 5. Notificar
+  alert(`${titulo} agregado al carrito`);
 }
 </script>
 </body>
 </html>
-
-
-
-
 
 
 
