@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -129,20 +130,17 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// Función de agregar libro al carrito
 function agregarAlCarrito(titulo, precio, autor) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  
   const libroExistente = carrito.find(item => item.titulo === titulo);
   if (libroExistente) {
     libroExistente.cantidad += 1;
   } else {
-    carrito.push({ titulo, precio, autor, cantidad: 1 });
+    carrito.push({ titulo, precioBase: precio, autor, cantidad: 1 });
   }
-  
   localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
 }
+
 
 // BOTONES DE PAGO
 function mostrarBotonesPago(pais, moneda, total) {
