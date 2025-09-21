@@ -582,27 +582,40 @@ function agregarAlCarrito(titulo, precio) {
     ? libro.querySelector("p strong").parentElement.innerText.replace("Autor: ", "")
     : "Autor desconocido";
 
-  // 2. Obtener carrito actual
+  // 2. Obtener la moneda actual y convertir el precio
+  const currentCurrency = localStorage.getItem("selectedCurrency") || "COP $";
+  const currencyCode = currentCurrency.split(' ')[0];
+  const rate = exchangeRates[currencyCode] || 1;
+  const convertedPrice = Math.round(precio * rate);
+
+  // 3. Obtener carrito actual
   let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
-  // 3. Buscar si el libro ya está en el carrito
+  // 4. Buscar si el libro ya está en el carrito
   const index = carrito.findIndex(item => item.titulo === titulo);
 
   if (index >= 0) {
     carrito[index].cantidad += 1;
   } else {
-    carrito.push({ titulo, autor, precio, cantidad: 1 });
+    carrito.push({ 
+      titulo, 
+      autor, 
+      precio: convertedPrice, // Usar el precio convertido
+      moneda: currentCurrency, // Guardar la moneda actual
+      cantidad: 1 
+    });
   }
 
-  // 4. Guardar en localStorage
+  // 5. Guardar en localStorage
   localStorage.setItem("carrito", JSON.stringify(carrito));
 
-  // 5. Notificar
+  // 6. Notificar
   alert(`${titulo} agregado al carrito`);
 }
 </script>
 </body>
 </html>
+
 
 
 
