@@ -499,6 +499,7 @@ countrySelect.addEventListener("change", () => {
   localStorage.setItem("selectedLanguage", selected.language);
   localStorage.setItem("selectedCurrency", selected.currency);
   updatePrices(selected.currency);
+  actualizarMetodosPago(selected.code); 
 });
 
 languageSelect.addEventListener("change", () => {
@@ -642,15 +643,15 @@ function actualizarMetodosPago(paisCodigo) {
   const payoneerBtn = document.getElementById("btn-payoneer");
 
   if (paypalRestrictedCountries.includes(paisCodigo)) {
-    // País restringido: ocultar PayPal
+    // País restringido: ocultar PayPal, mostrar solo Checkout y Payoneer
     if (paypalBtn) paypalBtn.style.display = "none";
     if (checkoutBtn) checkoutBtn.style.display = "inline-block";
     if (payoneerBtn) payoneerBtn.style.display = "inline-block";
   } else {
-    // País permitido: mostrar todas
+    // País permitido: mostrar PayPal, ocultar otros
     if (paypalBtn) paypalBtn.style.display = "inline-block";
-    if (checkoutBtn) checkoutBtn.style.display = "inline-block";
-    if (payoneerBtn) payoneerBtn.style.display = "inline-block";
+    if (checkoutBtn) checkoutBtn.style.display = "none";
+    if (payoneerBtn) payoneerBtn.style.display = "none";
   }
 }
 
