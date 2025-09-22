@@ -60,11 +60,22 @@ const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
+// ===========================
+// Países restringidos para PayPal
+// ===========================
+const paypalRestrictedCountries = [
+  "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
+  "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
+  "GA","GN","ML","MD","MC","TR","PY"
+];
+
+// ===========================
 // Función para mostrar el carrito
+// ===========================
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const pais = localStorage.getItem("selectedCountry") || "CO"; 
-  const moneda = localStorage.getItem("selectedCurrency") || "COP";
+  const moneda = localStorage.getItem("selectedCurrency") || "COP $";
 
   carritoContenedor.innerHTML = "";
   botonesPago.innerHTML = "";
@@ -77,12 +88,10 @@ function mostrarCarrito() {
 
   let total = 0;
   carrito.forEach((item, index) => {
-    // Convertir precio si no es COP
-    let precioConvertido = item.precio;
-    if(moneda !== "COP") {
-      const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1 }; // ejemplo
-      precioConvertido = item.precio * (tasas[moneda] || 1);
-    }
+    // Convertir precio según moneda y tasa
+    const currencyCode = moneda.split(' ')[0];
+    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, AFN:1 };
+    const precioConvertido = Math.round(item.precio * (tasas[currencyCode] || 1) * 100) / 100;
     const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
 
@@ -107,7 +116,9 @@ function mostrarCarrito() {
   mostrarBotonesPago(pais, moneda, total);
 }
 
+// ===========================
 // Funciones de cantidad y eliminar
+// ===========================
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -130,45 +141,47 @@ vaciarBtn.onclick = () => {
   }
 };
 
+// ===========================
+// Agregar libro al carrito
+// ===========================
 function agregarAlCarrito(titulo, precio, autor) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const libroExistente = carrito.find(item => item.titulo === titulo);
   if (libroExistente) {
     libroExistente.cantidad += 1;
   } else {
-    carrito.push({ titulo, precioBase: precio, autor, cantidad: 1 });
+    carrito.push({ titulo, precio, autor, cantidad: 1 });
   }
   localStorage.setItem("carrito", JSON.stringify(carrito));
+  mostrarCarrito();
 }
 
-
-// BOTONES DE PAGO
+// ===========================
+// Mostrar botones de pago según país
+// ===========================
 function mostrarBotonesPago(pais, moneda, total) {
-  if (pais === "CO") {
+  const monedaCode = moneda.split(' ')[0];
+  if (paypalRestrictedCountries.includes(pais)) {
+    // País restringido → mostrar Checkout y Payoneer
     botonesPago.innerHTML = `
-      <form action="https://checkout.wompi.co/p/" method="GET">
-        <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
-        <input type="hidden" name="currency" value="COP" />
-        <input type="hidden" name="amount-in-cents" value="${Math.round(total * 100)}" />
-        <input type="hidden" name="reference" value="ORD-${Date.now()}" />
-        <button type="submit" class="btn-wompi">Pagar con Wompi (Prueba)</button>
-      </form>
+      <button class="pago-btn">Pagar con Checkout</button>
+      <button class="pago-btn">Pagar con Payoneer</button>
     `;
   } else {
+    // País permitido → mostrar PayPal
     botonesPago.innerHTML = `
-      <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="TU_EMAIL_SANDBOX@paypal.com">
-        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-        <input type="hidden" name="amount" value="${total.toFixed(2)}">
-        <input type="hidden" name="currency_code" value="${moneda}">
-        <button type="submit" class="btn-paypal">Pagar con PayPal</button>
-      </form>
+      <button class="pago-btn">Pagar con PayPal</button>
     `;
   }
 }
 
-window.onload = mostrarCarrito;
+// ===========================
+// Inicializar carrito al cargar
+// ===========================
+window.addEventListener("load", () => {
+  mostrarCarrito();
+});
 </script>
+
 </body>
 </html>
