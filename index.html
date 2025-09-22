@@ -572,8 +572,8 @@ function updatePrices(currencyLabel) {
 
 /* ===========================
    Carrito (con autor dinámico)
-   =========================== */
-   function agregarAlCarrito(titulo, precio) {
+=========================== */
+function agregarAlCarrito(titulo, precio) {
   // 1. Buscar el autor en el catálogo usando el título
   const libro = Array.from(document.querySelectorAll(".libro")).find(
     l => l.querySelector("h3").innerText === titulo
@@ -625,7 +625,7 @@ function updatePrices(currencyLabel) {
 
 <script>
 // ===========================
-// Lista de países restringidos para PayPal (códigos ISO)
+// Lista única de países restringidos para PayPal
 // ===========================
 const paypalRestrictedCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
@@ -634,7 +634,7 @@ const paypalRestrictedCountries = [
 ];
 
 // ===========================
-// Función que muestra/oculta métodos de pago según el país
+// Mostrar/Ocultar botones según país
 // ===========================
 function actualizarMetodosPago(paisCodigo) {
   const paypalBtn = document.getElementById("btn-paypal");
@@ -642,12 +642,10 @@ function actualizarMetodosPago(paisCodigo) {
   const payoneerBtn = document.getElementById("btn-payoneer");
 
   if (paypalRestrictedCountries.includes(paisCodigo)) {
-    // País restringido: ocultar PayPal
     if (paypalBtn) paypalBtn.style.display = "none";
     if (checkoutBtn) checkoutBtn.style.display = "inline-block";
     if (payoneerBtn) payoneerBtn.style.display = "inline-block";
   } else {
-    // País permitido: mostrar todas
     if (paypalBtn) paypalBtn.style.display = "inline-block";
     if (checkoutBtn) checkoutBtn.style.display = "inline-block";
     if (payoneerBtn) payoneerBtn.style.display = "inline-block";
@@ -655,12 +653,17 @@ function actualizarMetodosPago(paisCodigo) {
 }
 
 // ===========================
-// Ejecutar al cargar la página
+// Detectar país y aplicar reglas
 // ===========================
-window.addEventListener("load", () => {
-  const paisSeleccionado = localStorage.getItem("selectedCountry") || "CO";
-  actualizarMetodosPago(paisSeleccionado);
-});
+const paisGuardado = localStorage.getItem("selectedCountry");
+if (paisGuardado) {
+  actualizarMetodosPago(paisGuardado);
+} else {
+  fetch("https://ipapi.co/json/")
+    .then(response => response.json())
+    .then(data => actualizarMetodosPago(data.country_code))
+    .catch(() => actualizarMetodosPago("CO")); // fallback a Colombia
+}
 </script>
 
 <style>
@@ -681,9 +684,6 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
-
-
-
 
 
 
