@@ -573,7 +573,7 @@ function updatePrices(currencyLabel) {
 /* ===========================
    Carrito (con autor dinámico)
    =========================== */
-function agregarAlCarrito(titulo, precio) {
+   function agregarAlCarrito(titulo, precio) {
   // 1. Buscar el autor en el catálogo usando el título
   const libro = Array.from(document.querySelectorAll(".libro")).find(
     l => l.querySelector("h3").innerText === titulo
@@ -600,8 +600,8 @@ function agregarAlCarrito(titulo, precio) {
     carrito.push({ 
       titulo, 
       autor, 
-      precio: convertedPrice, // Usar el precio convertido
-      moneda: currentCurrency, // Guardar la moneda actual
+      precio: convertedPrice, // Guardar precio convertido
+      moneda: currentCurrency, // Guardar moneda usada
       cantidad: 1 
     });
   }
@@ -613,10 +613,74 @@ function agregarAlCarrito(titulo, precio) {
   alert(`${titulo} agregado al carrito`);
 }
 </script>
+
+<!-- ===========================
+     Métodos de pago dinámicos
+=========================== -->
+<div class="metodos-pago" style="margin-top: 20px; text-align:center;">
+  <button id="btn-paypal" class="pago-btn">Pagar con PayPal</button>
+  <button id="btn-checkout" class="pago-btn" style="display:none;">Pagar con Checkout</button>
+  <button id="btn-payoneer" class="pago-btn" style="display:none;">Pagar con Payoneer</button>
+</div>
+
+<script>
+// ===========================
+// Lista de países restringidos para PayPal (códigos ISO)
+// ===========================
+const paypalRestrictedCountries = [
+  "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
+  "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
+  "GA","GN","ML","MD","MC","TR","PY"
+];
+
+// ===========================
+// Función que muestra/oculta métodos de pago según el país
+// ===========================
+function actualizarMetodosPago(paisCodigo) {
+  const paypalBtn = document.getElementById("btn-paypal");
+  const checkoutBtn = document.getElementById("btn-checkout");
+  const payoneerBtn = document.getElementById("btn-payoneer");
+
+  if (paypalRestrictedCountries.includes(paisCodigo)) {
+    // País restringido: ocultar PayPal
+    if (paypalBtn) paypalBtn.style.display = "none";
+    if (checkoutBtn) checkoutBtn.style.display = "inline-block";
+    if (payoneerBtn) payoneerBtn.style.display = "inline-block";
+  } else {
+    // País permitido: mostrar todas
+    if (paypalBtn) paypalBtn.style.display = "inline-block";
+    if (checkoutBtn) checkoutBtn.style.display = "inline-block";
+    if (payoneerBtn) payoneerBtn.style.display = "inline-block";
+  }
+}
+
+// ===========================
+// Ejecutar al cargar la página
+// ===========================
+window.addEventListener("load", () => {
+  const paisSeleccionado = localStorage.getItem("selectedCountry") || "CO";
+  actualizarMetodosPago(paisSeleccionado);
+});
+</script>
+
+<style>
+.pago-btn {
+  background-color: #0070ba;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin: 5px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+.pago-btn:hover {
+  opacity: 0.85;
+}
+</style>
+
 </body>
 </html>
-
-
 
 
 
