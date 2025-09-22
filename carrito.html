@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -20,8 +19,10 @@
     .acciones .eliminar { background-color: #cc0000; }
     #vaciar-btn { margin-top: 1rem; background-color: #cc0000; color: white; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
     #botonesPago { margin-top: 1rem; text-align: center; }
-    .btn-wompi { background: #00a859; color: white; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
-    .btn-paypal { background: #0070ba; color: white; padding: 10px 20px; border-radius: 6px; cursor: pointer; }
+    .pago-btn { background-color: #0070ba; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
+    .pago-btn:hover { opacity: 0.85; }
+    .btn-wompi { background: #00a859; }
+    .btn-paypal { background: #0070ba; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -88,9 +89,8 @@ function mostrarCarrito() {
 
   let total = 0;
   carrito.forEach((item, index) => {
-    // Convertir precio según moneda y tasa
     const currencyCode = moneda.split(' ')[0];
-    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, AFN:1 };
+    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, AFN:1, COP:1 };
     const precioConvertido = Math.round(item.precio * (tasas[currencyCode] || 1) * 100) / 100;
     const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
@@ -160,17 +160,35 @@ function agregarAlCarrito(titulo, precio, autor) {
 // Mostrar botones de pago según país
 // ===========================
 function mostrarBotonesPago(pais, moneda, total) {
-  const monedaCode = moneda.split(' ')[0];
-  if (paypalRestrictedCountries.includes(pais)) {
-    // País restringido → mostrar Checkout y Payoneer
+  botonesPago.innerHTML = "";
+  if (pais === "CO") {
+    // Colombia → Wompi
+    botonesPago.innerHTML = `
+      <form action="https://checkout.wompi.co/p/" method="GET">
+        <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
+        <input type="hidden" name="currency" value="COP" />
+        <input type="hidden" name="amount-in-cents" value="${Math.round(total * 100)}" />
+        <input type="hidden" name="reference" value="ORD-${Date.now()}" />
+        <button type="submit" class="pago-btn btn-wompi">Pagar con Wompi</button>
+      </form>
+    `;
+  } else if (paypalRestrictedCountries.includes(pais)) {
+    // País restringido → Checkout + Payoneer
     botonesPago.innerHTML = `
       <button class="pago-btn">Pagar con Checkout</button>
       <button class="pago-btn">Pagar con Payoneer</button>
     `;
   } else {
-    // País permitido → mostrar PayPal
+    // Resto del mundo → PayPal
     botonesPago.innerHTML = `
-      <button class="pago-btn">Pagar con PayPal</button>
+      <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="TU_EMAIL_SANDBOX@paypal.com">
+        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
+        <input type="hidden" name="amount" value="${total.toFixed(2)}">
+        <input type="hidden" name="currency_code" value="${moneda.split(' ')[0]}">
+        <button type="submit" class="pago-btn btn-paypal">Pagar con PayPal</button>
+      </form>
     `;
   }
 }
