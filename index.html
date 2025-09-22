@@ -619,44 +619,52 @@ function updatePrices(currencyLabel) {
      Métodos de pago dinámicos
 =========================== -->
 <div class="metodos-pago" style="margin-top: 20px; text-align:center;">
-  <button id="btn-paypal" class="pago-btn">Pagar con PayPal</button>
+  <button id="btn-wompi" class="pago-btn" style="display:none;">Pagar con Wompi</button>
+  <button id="btn-paypal" class="pago-btn" style="display:none;">Pagar con PayPal</button>
   <button id="btn-checkout" class="pago-btn" style="display:none;">Pagar con Checkout</button>
   <button id="btn-payoneer" class="pago-btn" style="display:none;">Pagar con Payoneer</button>
 </div>
 
 <script>
-// ===========================
-// Lista de países restringidos para PayPal (códigos ISO)
-// ===========================
-const paypalRestrictedCountries = [
-  "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
-  "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
-  "GA","GN","ML","MD","MC","TR","PY"
-];
+  // ===========================
+  // Lista de países restringidos para PayPal (códigos ISO)
+  // ===========================
+  const paypalRestrictedCountries = [
+    "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
+    "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
+    "GA","GN","ML","MD","MC","TR","PY"
+  ];
 
 // ===========================
 // Función que muestra/oculta métodos de pago según el país
 // ===========================
 function actualizarMetodosPago(paisCodigo) {
-  const paypalBtn = document.getElementById("btn-paypal");
-  const checkoutBtn = document.getElementById("btn-checkout");
-  const payoneerBtn = document.getElementById("btn-payoneer");
+  const btnWompi = document.getElementById("btn-wompi");
+  const btnPayPal = document.getElementById("btn-paypal");
+  const btnCheckout = document.getElementById("btn-checkout");
+  const btnPayoneer = document.getElementById("btn-payoneer");
 
-  if (paypalRestrictedCountries.includes(paisCodigo)) {
-    // País restringido: ocultar PayPal, mostrar solo Checkout y Payoneer
-    if (paypalBtn) paypalBtn.style.display = "none";
-    if (checkoutBtn) checkoutBtn.style.display = "inline-block";
-    if (payoneerBtn) payoneerBtn.style.display = "inline-block";
+  // Ocultar todos primero
+  btnWompi.style.display = "none";
+  btnPayPal.style.display = "none";
+  btnCheckout.style.display = "none";
+  btnPayoneer.style.display = "none";
+
+  if (paisCodigo === "CO") {
+    // Colombia → Wompi solo
+    btnWompi.style.display = "inline-block";
+  } else if (paypalRestrictedCountries.includes(paisCodigo)) {
+    // Países restringidos → Checkout y Payoneer
+    btnCheckout.style.display = "inline-block";
+    btnPayoneer.style.display = "inline-block";
   } else {
-    // País permitido: mostrar PayPal, ocultar otros
-    if (paypalBtn) paypalBtn.style.display = "inline-block";
-    if (checkoutBtn) checkoutBtn.style.display = "none";
-    if (payoneerBtn) payoneerBtn.style.display = "none";
+    // Otros países → PayPal
+    btnPayPal.style.display = "inline-block";
   }
 }
 
 // ===========================
-// Ejecutar al cargar la página
+// Detectar país actual y aplicar reglas
 // ===========================
 window.addEventListener("load", () => {
   const paisSeleccionado = localStorage.getItem("selectedCountry") || "CO";
@@ -665,20 +673,23 @@ window.addEventListener("load", () => {
 </script>
 
 <style>
-.pago-btn {
-  background-color: #0070ba;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  margin: 5px;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 16px;
-}
-.pago-btn:hover {
-  opacity: 0.85;
-}
-</style>
+  .pago-btn {
+    background-color: #0070ba;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin: 5px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  .pago-btn:hover {
+    opacity: 0.85;
+  }
+  #btn-wompi { background-color: #00a859; }
+  #btn-checkout { background-color: #ff9900; }
+  #btn-payoneer { background-color: #ff3300; }
+  </style>
 <script>
   // ===========================
   // 1️⃣ Lista de países restringidos por PayPal
@@ -732,7 +743,6 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
-
 
 
 
