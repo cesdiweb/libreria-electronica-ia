@@ -71,7 +71,7 @@ const paypalRestrictedCountries = [
 ];
 
 // ===========================
-// Función para mostrar el carrito
+// Mostrar carrito
 // ===========================
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -117,7 +117,7 @@ function mostrarCarrito() {
 }
 
 // ===========================
-// Funciones de cantidad y eliminar
+// Cambiar cantidad / eliminar
 // ===========================
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -162,12 +162,11 @@ function agregarAlCarrito(titulo, precio, autor) {
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
   if (pais === "CO") {
-    // Colombia → Wompi (solo COP)
-    const montoCentavos = Math.round(total * 100); // Wompi usa centavos
+    const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
-        <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
+        <input type="hidden" name="public-key" value="pub_prod_d3FZY9xt1PwMoKZx1ZhpFibwFkPoQHks" />
         <input type="hidden" name="currency" value="COP" />
         <input type="hidden" name="amount-in-cents" value="${montoCentavos}" />
         <input type="hidden" name="reference" value="${referencia}" />
@@ -176,13 +175,11 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } else if (paypalRestrictedCountries.includes(pais)) {
-    // País restringido → Checkout + Payoneer
     botonesPago.innerHTML = `
       <button class="pago-btn">Pagar con Checkout</button>
       <button class="pago-btn">Pagar con Payoneer</button>
     `;
   } else {
-    // Resto del mundo → PayPal
     botonesPago.innerHTML = `
       <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="cmd" value="_xclick">
@@ -196,14 +193,10 @@ function mostrarBotonesPago(pais, moneda, total) {
   }
 }
 
-
 // ===========================
-// Inicializar carrito al cargar
+// Inicializar carrito
 // ===========================
-window.addEventListener("load", () => {
-  mostrarCarrito();
-});
+window.addEventListener("load", mostrarCarrito);
 </script>
-
 </body>
 </html>
