@@ -616,7 +616,17 @@ function updatePrices(currencyLabel) {
 }
 </script>
 
+<!-- ===========================
+     Métodos de pago dinámicos
+=========================== -->
+<div class="metodos-pago" style="margin-top: 20px; text-align:center;">
+  <button id="btn-wompi" class="pago-btn" style="display:none;">Pagar con Wompi</button>
+  <button id="btn-paypal" class="pago-btn" style="display:none;">Pagar con PayPal</button>
+  <button id="btn-checkout" class="pago-btn" style="display:none;">Pagar con Checkout</button>
+  <button id="btn-payoneer" class="pago-btn" style="display:none;">Pagar con Payoneer</button>
+</div>
 
+<script>
   // ===========================
   // Lista de países restringidos para PayPal (códigos ISO)
   // ===========================
