@@ -162,13 +162,16 @@ function agregarAlCarrito(titulo, precio, autor) {
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
   if (pais === "CO") {
-    // Colombia → Wompi
+    // Colombia → Wompi (solo COP)
+    const montoCentavos = Math.round(total * 100); // Wompi usa centavos
+    const referencia = `ORD-${Date.now()}`;
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
         <input type="hidden" name="public-key" value="PUBLIC_KEY_WOMPI_TEST" />
         <input type="hidden" name="currency" value="COP" />
-        <input type="hidden" name="amount-in-cents" value="${Math.round(total * 100)}" />
-        <input type="hidden" name="reference" value="ORD-${Date.now()}" />
+        <input type="hidden" name="amount-in-cents" value="${montoCentavos}" />
+        <input type="hidden" name="reference" value="${referencia}" />
+        <input type="hidden" name="redirect-url" value="https://cesdiweb.github.io/libreria-electronica-ia/confirmacion.html" />
         <button type="submit" class="pago-btn btn-wompi">Pagar con Wompi</button>
       </form>
     `;
@@ -192,6 +195,7 @@ function mostrarBotonesPago(pais, moneda, total) {
     `;
   }
 }
+
 
 // ===========================
 // Inicializar carrito al cargar
