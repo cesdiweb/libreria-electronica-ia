@@ -17,8 +17,8 @@
       max-width: 500px;
       margin: auto;
       padding: 2em;
-      border-radius: 12px;
-      box-shadow: 0 0 15px rgba(0, 128, 0, 0.2);
+      border-radius: 15px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
     h1 {
       color: #28a745;
@@ -30,7 +30,8 @@
       color: white;
       padding: 0.8em 1.5em;
       text-decoration: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      transition: background 0.3s ease;
     }
     a:hover {
       background: #0056b3;
@@ -39,10 +40,37 @@
 </head>
 <body>
   <div class="box">
-    <h1>✅ ¡Pago exitoso!</h1>
-    <p>Gracias por tu compra en la Librería Electrónica IA.</p>
-    <p>Hemos recibido tu pago correctamente.</p>
-    <a href="index.html">Volver al inicio</a>
+    <h1 data-translate="titulo">✅ ¡Pago exitoso!</h1>
+    <p data-translate="linea1">Gracias por tu compra en la Librería Electrónica IA.</p>
+    <p data-translate="linea2">Hemos recibido tu pago correctamente.</p>
+    <a href="index.html" data-translate="volver">Volver al inicio</a>
   </div>
+
+  <script>
+    // Traducciones para idiomas
+    const traducciones = {
+      es: {
+        titulo: "✅ ¡Pago exitoso!",
+        linea1: "Gracias por tu compra en la Librería Electrónica IA.",
+        linea2: "Hemos recibido tu pago correctamente.",
+        volver: "Volver al inicio"
+      },
+      en: {
+        titulo: "✅ Payment Successful!",
+        linea1: "Thank you for your purchase at Librería Electrónica IA.",
+        linea2: "We have received your payment successfully.",
+        volver: "Return to Home"
+      }
+    };
+
+    // Detectar idioma guardado en localStorage
+    const lang = localStorage.getItem("selectedLanguage") || "es";
+    document.querySelectorAll("[data-translate]").forEach(el => {
+      const key = el.getAttribute("data-translate");
+      if (traducciones[lang] && traducciones[lang][key]) {
+        el.textContent = traducciones[lang][key];
+      }
+    });
+  </script>
 </body>
 </html>
