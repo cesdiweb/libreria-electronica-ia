@@ -157,15 +157,12 @@ function agregarAlCarrito(titulo, precio, autor) {
   mostrarCarrito();
 }
 
-<!-- ===========================
- Mostrar botones de pago según país
-=========================== -->
-<script>
+// ===========================
+// Mostrar botones de pago según país
+// ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
-
   if (pais === "CO") {
-    // === Wompi solo para Colombia ===
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
     botonesPago.innerHTML = `
@@ -179,15 +176,11 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } else if (paypalRestrictedCountries.includes(pais)) {
-    // === Países restringidos: Checkout + Payoneer ===
     botonesPago.innerHTML = `
-      <button class="pago-btn btn-checkout">Pagar con Checkout</button>
-      <button class="pago-btn btn-payoneer" onclick="window.open('TU_ENLACE_PAYONEER','_blank')">
-        Pagar con Payoneer
-      </button>
+      <button class="pago-btn">Pagar con Checkout</button>
+      <button class="pago-btn">Pagar con Payoneer</button>
     `;
   } else {
-    // === PayPal para el resto de países ===
     botonesPago.innerHTML = `
       <form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post">
         <input type="hidden" name="cmd" value="_xclick">
