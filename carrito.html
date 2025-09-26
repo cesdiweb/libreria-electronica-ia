@@ -193,7 +193,19 @@ function mostrarBotonesPago(pais, moneda, total) {
     `;
   }
 }
+// Botón Payoneer (internacional)
+  botonesPago.innerHTML += `
+    <button id="btn-payoneer" class="pago-btn" style="background-color:#ff6600;">Pagar con Payoneer</button>
+  `;
 
+  // Acción del botón Payoneer
+  const payoneerBtn = document.getElementById("btn-payoneer");
+  if (payoneerBtn) {
+    payoneerBtn.addEventListener("click", function() {
+      window.open("TU_LINK_PAYONEER", "_blank"); // <-- Reemplaza con tu enlace real de Payoneer
+    });
+  }
+}
 // ===========================
 // Inicializar carrito
 // ===========================
