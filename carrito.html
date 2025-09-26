@@ -192,8 +192,16 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   }
+// Payoneer (siempre visible)
+  const payoneerBtn = document.createElement("button");
+  payoneerBtn.textContent = "Pagar con Payoneer";
+  payoneerBtn.className = "pago-btn";
+  payoneerBtn.style.backgroundColor = "#ff6600";
+  payoneerBtn.onclick = function() {
+    window.open("TU_ENLACE_PAYONEER", "_blank"); // Reemplaza con tu enlace real
+  };
+  botonesPago.appendChild(payoneerBtn);
 }
-
 // ===========================
 // Inicializar carrito
 // ===========================
