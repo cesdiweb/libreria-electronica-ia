@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,8 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Carrito - Librería Electrónica IA</title>
   <!-- SDK de PayPal -->
-  <script src="https://www.paypal.com/sdk/js?client-id=AbC123xyz456_REAL_ID_AQUI&currency=USD"></script>
-
+  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_PAYPAL&currency=USD"></script>
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f3f6fa; }
     header { background-color: #004080; color: white; padding: 1rem; text-align: center; }
@@ -65,18 +63,14 @@ const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
-// ===========================
 // Países restringidos para PayPal
-// ===========================
 const paypalRestrictedCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
   "GA","GN","ML","MD","MC","TR","PY"
 ];
 
-// ===========================
 // Mostrar carrito
-// ===========================
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const pais = localStorage.getItem("selectedCountry") || "CO"; 
@@ -120,9 +114,7 @@ function mostrarCarrito() {
   mostrarBotonesPago(pais, moneda, total);
 }
 
-// ===========================
 // Cambiar cantidad / eliminar
-// ===========================
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -145,9 +137,7 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// ===========================
 // Agregar libro al carrito
-// ===========================
 function agregarAlCarrito(titulo, precio, autor) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const libroExistente = carrito.find(item => item.titulo === titulo);
@@ -160,11 +150,10 @@ function agregarAlCarrito(titulo, precio, autor) {
   mostrarCarrito();
 }
 
-// ===========================
 // Mostrar botones de pago según país
-// ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
+
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -184,11 +173,8 @@ function mostrarBotonesPago(pais, moneda, total) {
       <button class="pago-btn">Pagar con Payoneer</button>
     `;
   } else {
-    botonesPago.innerHTML = `
-      <div id="paypal-button-container"></div>
-    `;
+    botonesPago.innerHTML = `<div id="paypal-button-container"></div>`;
 
-    // Renderiza el botón inteligente de PayPal
     paypal.Buttons({
       style: {
         color: 'gold',
@@ -218,14 +204,11 @@ function mostrarBotonesPago(pais, moneda, total) {
         console.error(err);
         alert('❌ Error al procesar el pago con PayPal.');
       }
-    }).render('#paypal-button-container');
-  }
-}
+    }).render('#paypal-button-container'); // ⚡ Esta línea cierra correctamente el botón PayPal
+  } // ⚡ Cierre del else de PayPal
+} // ⚡ Cierre de la función mostrarBotonesPago
 
-
-// ===========================
 // Inicializar carrito
-// ===========================
 window.addEventListener("load", mostrarCarrito);
 </script>
 </body>
