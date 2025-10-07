@@ -165,6 +165,7 @@ function agregarAlCarrito(titulo, precio, autor) {
 // ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
+
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -183,17 +184,26 @@ function mostrarBotonesPago(pais, moneda, total) {
       <button class="pago-btn">Pagar con Checkout</button>
       <button class="pago-btn">Pagar con Payoneer</button>
     `;
-  // Bloque correcto de PayPal dentro de mostrarBotonesPago
-else {
-    botonesPago.innerHTML = `<div id="paypal-button-container"></div>`;
+  } else {
+    botonesPago.innerHTML = `
+      <div id="paypal-button-container"></div>
+    `;
 
     paypal.Buttons({
-      style: { color: 'gold', shape: 'pill', label: 'paypal', layout: 'vertical' },
+      style: {
+        color: 'gold',
+        shape: 'pill',
+        label: 'paypal',
+        layout: 'vertical'
+      },
       createOrder: function(data, actions) {
         return actions.order.create({
           purchase_units: [{
             description: "Compra en Librería Electrónica IA",
-            amount: { value: total.toFixed(2), currency_code: moneda.split(' ')[0] || 'USD' }
+            amount: {
+              value: total.toFixed(2),
+              currency_code: moneda.split(' ')[0] || 'USD'
+            }
           }]
         });
       },
@@ -208,8 +218,9 @@ else {
         console.error(err);
         alert('❌ Error al procesar el pago con PayPal.');
       }
-    }).render('#paypal-button-container'); // ESTA ES LA LLAVE FINAL CORRECTA
-} // <- Esta llave cierra el else de PayPal correctamente
+    }).render('#paypal-button-container'); // 👈 esta es la llave final correcta
+  }
+}
 
 
 // ===========================
