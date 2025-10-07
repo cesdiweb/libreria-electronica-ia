@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Carrito - Librería Electrónica IA</title>
   <!-- SDK de PayPal -->
-  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_REAL&currency=USD"></script>
+  <script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_PAYPAL&currency=USD"></script>
 
   <style>
     body { font-family: Arial, sans-serif; margin: 0; background: #f3f6fa; }
@@ -155,9 +155,11 @@ function agregarAlCarrito(titulo, precio, autor) {
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
 
+  const montoCentavos = Math.round(total * 100);
+  const referencia = `ORD-${Date.now()}`;
+
   if (pais === "CO") {
-    const montoCentavos = Math.round(total * 100);
-    const referencia = `ORD-${Date.now()}`;
+    // Solo Wompi para Colombia
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
         <input type="hidden" name="public-key" value="pub_prod_d3FZY9xt1PwMoKZx1ZhpFibwFkPoQHks" />
@@ -169,18 +171,24 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } else if (paypalRestrictedCountries.includes(pais)) {
+    // Países restringidos: Checkout + Payoneer
     botonesPago.innerHTML = `
-      <button class="pago-btn">Pago no disponible</button>
+      <button class="pago-btn">Pagar con Checkout</button>
+      <button class="pago-btn">Pagar con Payoneer</button>
     `;
   } else {
-    // Botón PayPal con tarjeta
-    botonesPago.innerHTML = `<div id="paypal-button-container"></div>`;
+    // Resto del mundo: Checkout + Payoneer + PayPal Smart Buttons
+    botonesPago.innerHTML = `
+      <button class="pago-btn">Pagar con Checkout</button>
+      <button class="pago-btn">Pagar con Payoneer</button>
+      <div id="paypal-button-container" style="margin-top: 10px;"></div>
+    `;
 
     paypal.Buttons({
       style: {
-        color: 'gold',
-        shape: 'pill',
-        label: 'paypal',
+        color: 'blue',
+        shape: 'rect',
+        label: 'pay',
         layout: 'vertical'
       },
       createOrder: function(data, actions) {
