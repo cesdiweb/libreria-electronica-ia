@@ -24,7 +24,7 @@
     .btn-wompi { background: #00a859; }
     .btn-payoneer { background: #ff6600; }
     .btn-checkout { background: #0066cc; }
-    #paypal-button-container { margin: 10px auto; max-width: 400px; }
+    #paypal-button-container { margin: 10px auto; max-width: 400px; min-height: 50px; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -57,7 +57,8 @@
     </p>
   </footer>
 
-<script src="https://www.paypal.com/sdk/js?client-id=ATm4yt-gKXg7FW4GJv4lC-COMPLETA-TU-CLIENT-ID&currency=USD,EUR,COP"></script>
+  <!-- SDK de PayPal -->
+  <script src="https://www.paypal.com/sdk/js?client-id=ATm4yt-gKXg7FW4GJv4lCsGj04VQTeRvg3Q9wXa55v3srOyACzrzkUrlVJ2LxSpHMdK-lLpcjRrMEAkI&currency=USD,EUR,COP,MXN,ARS,GBP,CAD,AUD"></script>
 
 <script>
 const carritoContenedor = document.getElementById("carrito-contenido");
@@ -73,6 +74,10 @@ const paypalRestrictedCountries = [
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
   "GA","GN","ML","MD","MC","TR","PY"
 ];
+
+// Variable global para almacenar total y moneda
+let currentTotal = 0;
+let currentCurrency = "USD";
 
 // ===========================
 // Mostrar carrito
@@ -115,6 +120,10 @@ function mostrarCarrito() {
     `;
     carritoContenedor.appendChild(div);
   });
+
+  // Guardar valores globales
+  currentTotal = total;
+  currentCurrency = moneda.split(' ')[0];
 
   totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
   mostrarBotonesPago(pais, moneda, total);
@@ -166,6 +175,9 @@ function agregarAlCarrito(titulo, precio, autor) {
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
   
+  console.log("País seleccionado:", pais); // Debug
+  console.log("¿Es restringido?", paypalRestrictedCountries.includes(pais)); // Debug
+  
   // COLOMBIA: Wompi
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
@@ -184,17 +196,22 @@ function mostrarBotonesPago(pais, moneda, total) {
   // PAÍSES RESTRINGIDOS: Payoneer y Checkout
   else if (paypalRestrictedCountries.includes(pais)) {
     botonesPago.innerHTML = `
-      <button class="pago-btn btn-payoneer" onclick="pagarConPayoneer()">Pagar con Payoneer</button>
       <button class="pago-btn btn-checkout" onclick="pagarConCheckout()">Pagar con Checkout</button>
+      <button class="pago-btn btn-payoneer" onclick="pagarConPayoneer()">Pagar con Payoneer</button>
       <p style="font-size: 12px; color: #666; margin-top: 10px;">
-        PayPal no está disponible en tu país. Usa Payoneer o Checkout.
+        PayPal no está disponible en tu país. Usa Checkout o Payoneer.
       </p>
     `;
   } 
   // RESTO DEL MUNDO: PayPal
   else {
+    console.log("Mostrando PayPal para país:", pais); // Debug
     botonesPago.innerHTML = '<div id="paypal-button-container"></div>';
-    renderizarBotonPayPal(moneda, total);
+    
+    // Pequeño delay para asegurar que el contenedor existe
+    setTimeout(() => {
+      renderizarBotonPayPal(moneda, total);
+    }, 100);
   }
 }
 
@@ -204,6 +221,15 @@ function mostrarBotonesPago(pais, moneda, total) {
 function renderizarBotonPayPal(moneda, total) {
   const currencyCode = moneda.split(' ')[0];
   
+  console.log("Renderizando PayPal con:", currencyCode, total); // Debug
+  
+  // Verificar que PayPal SDK esté cargado
+  if (typeof paypal === 'undefined') {
+    console.error("PayPal SDK no está cargado");
+    botonesPago.innerHTML = '<p style="color: red;">Error: PayPal no disponible. Recarga la página.</p>';
+    return;
+  }
+  
   paypal.Buttons({
     style: {
       layout: 'vertical',
@@ -212,6 +238,7 @@ function renderizarBotonPayPal(moneda, total) {
       label: 'paypal'
     },
     createOrder: function(data, actions) {
+      console.log("Creando orden PayPal"); // Debug
       return actions.order.create({
         purchase_units: [{
           amount: {
@@ -223,6 +250,7 @@ function renderizarBotonPayPal(moneda, total) {
       });
     },
     onApprove: function(data, actions) {
+      console.log("Pago aprobado"); // Debug
       return actions.order.capture().then(function(details) {
         alert('¡Pago completado con éxito! Gracias ' + details.payer.name.given_name);
         localStorage.removeItem("carrito");
@@ -233,7 +261,10 @@ function renderizarBotonPayPal(moneda, total) {
       console.error('Error en el pago:', err);
       alert('Hubo un error al procesar el pago. Por favor intenta de nuevo.');
     }
-  }).render('#paypal-button-container');
+  }).render('#paypal-button-container').catch(function(err) {
+    console.error('Error al renderizar botón PayPal:', err);
+    botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Verifica tu conexión.</p>';
+  });
 }
 
 // ===========================
