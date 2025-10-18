@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -70,7 +69,7 @@ const botonesPago = document.getElementById("botonesPago");
 const paypalRestrictedCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
-  "GA","GN","ML","MD","MC","TR","PY"
+  "GA","GN","ML","MD","MC","TR","PY","CN","BY","CL"
 ];
 
 // Variable global para almacenar total y moneda
@@ -191,13 +190,20 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } 
-  // PAÍSES RESTRINGIDOS: Payoneer y Checkout
+  // PAÍSES RESTRINGIDOS: Mercado Pago
   else if (paypalRestrictedCountries.includes(pais)) {
+    const montoFinal = total.toFixed(2);
     botonesPago.innerHTML = `
-      <button class="pago-btn btn-checkout" onclick="pagarConCheckout()">Pagar con Checkout</button>
-      <button class="pago-btn btn-payoneer" onclick="pagarConPayoneer()">Pagar con Payoneer</button>
+      <form action="https://www.mercadopago.com.co/checkout/v1/redirect" method="POST">
+        <input type="hidden" name="title" value="Compra en Librería Electrónica IA" />
+        <input type="hidden" name="description" value="Libros digitales - Librería Electrónica IA" />
+        <input type="hidden" name="transaction_amount" value="${montoFinal}" />
+        <input type="hidden" name="currency_id" value="${moneda.split(' ')[0]}" />
+        <input type="hidden" name="external_reference" value="ORD-${Date.now()}" />
+        <button type="submit" class="pago-btn" style="background:#00a6ff;">Pagar con Mercado Pago</button>
+      </form>
       <p style="font-size: 12px; color: #666; margin-top: 10px;">
-        PayPal no está disponible en tu país. Usa Checkout o Payoneer.
+        PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
       </p>
     `;
   } 
@@ -276,21 +282,6 @@ function initPayPalButton(currencyCode, total) {
     console.error('Error al renderizar botón PayPal:', err);
     botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Intenta recargar la página.</p>';
   });
-}
-
-// ===========================
-// Funciones para Payoneer y Checkout
-// ===========================
-function pagarConPayoneer() {
-  alert('Redirigiendo a Payoneer... (Configura la URL de integración)');
-  // TODO: Agregar URL de integración de Payoneer
-  // window.location.href = 'URL_DE_PAYONEER';
-}
-
-function pagarConCheckout() {
-  alert('Redirigiendo a Checkout... (Configura la URL de integración)');
-  // TODO: Agregar URL de integración de Checkout
-  // window.location.href = 'URL_DE_CHECKOUT';
 }
 
 // ===========================
