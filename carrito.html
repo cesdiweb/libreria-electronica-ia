@@ -19,13 +19,10 @@
     .acciones .eliminar { background-color: #cc0000; }
     #vaciar-btn { margin-top: 1rem; background-color: #cc0000; color: white; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
     #botonesPago { margin-top: 1rem; text-align: center; }
-    .pago-btn { background-color: #0070ba; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; text-decoration: none; display:inline-block; }
+    .pago-btn { background-color: #0070ba; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
     .pago-btn:hover { opacity: 0.85; }
     .btn-wompi { background: #00a859; }
-    .btn-payoneer { background: #ff6600; }
-    .btn-checkout { background: #0066cc; }
-    #paypal-button-container { margin: 10px auto; max-width: 400px; min-height: 50px; }
-    #mercadoPagoButton { margin-top: 10px; }
+    #mercadopago-btn { background:#00a6ff; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -58,7 +55,6 @@
     </p>
   </footer>
 
-<script src="https://sdk.mercadopago.com/js/v2"></script>
 <script>
 const carritoContenedor = document.getElementById("carrito-contenido");
 const totalTexto = document.getElementById("total");
@@ -66,15 +62,14 @@ const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
 // ===========================
-// Países restringidos para PayPal
+// Países restringidos para Mercado Pago
 // ===========================
-const paypalRestrictedCountries = [
+const mercadoPagoCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
   "GA","GN","ML","MD","MC","TR","PY","CN","BY","CL"
 ];
 
-// Variables globales
 let currentTotal = 0;
 let currentCurrency = "USD";
 
@@ -98,7 +93,7 @@ function mostrarCarrito() {
   let total = 0;
   carrito.forEach((item, index) => {
     const currencyCode = moneda.split(' ')[0];
-    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, AFN:1, COP:1 };
+    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, COP:1 };
     const precioConvertido = Math.round(item.precio * (tasas[currencyCode] || 1) * 100) / 100;
     const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
@@ -122,7 +117,6 @@ function mostrarCarrito() {
 
   currentTotal = total;
   currentCurrency = moneda.split(' ')[0];
-
   totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
   mostrarBotonesPago(pais, moneda, total);
 }
@@ -168,7 +162,7 @@ function agregarAlCarrito(titulo, precio, autor) {
 }
 
 // ===========================
-// Mostrar botones de pago según país
+// Mostrar botones de pago
 // ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
@@ -189,91 +183,24 @@ function mostrarBotonesPago(pais, moneda, total) {
     `;
   } 
   // PAÍSES RESTRINGIDOS: Mercado Pago
-  else if (paypalRestrictedCountries.includes(pais)) {
-    botonesPago.innerHTML = `<div id="mercadoPagoButton"></div>`;
-
-    const mp = new MercadoPago('APP_USR-c47dad4f-1a59-440e-a87e-d848998c527a', { locale: 'es-CO' });
-
-    const preferenceData = {
-        items: [
-            { title: "Compra en Librería Electrónica IA", quantity: 1, unit_price: total }
-        ],
-        back_urls: {
-            success: "https://cesdiweb.github.io/libreria-electronica-ia/confirmacion.html",
-            failure: "https://cesdiweb.github.io/libreria-electronica-ia/carrito.html",
-            pending: "https://cesdiweb.github.io/libreria-electronica-ia/carrito.html"
-        },
-        auto_return: "approved"
-    };
-
-    mp.preferences.create(preferenceData)
-      .then(function(response) {
-          const id = response.body.id;
-          const mpButton = document.createElement("a");
-          mpButton.href = `https://www.mercadopago.com.co/checkout/v1/redirect?pref_id=${id}`;
-          mpButton.className = "pago-btn";
-          mpButton.textContent = "Pagar con Mercado Pago";
-          botonesPago.appendChild(mpButton);
-      })
-      .catch(function(error){
-          console.error("Error creando preferencia Mercado Pago:", error);
-          botonesPago.innerHTML = '<p style="color:red;">Error con Mercado Pago. Intenta más tarde.</p>';
-      });
-  } 
-  // RESTO DEL MUNDO: PayPal
-  else {
-    botonesPago.innerHTML = '<div id="paypal-button-container"></div>';
-    setTimeout(() => {
-      renderizarBotonPayPal(moneda, total);
-    }, 100);
+  else if (mercadoPagoCountries.includes(pais)) {
+    const montoFinal = total.toFixed(2);
+    botonesPago.innerHTML = `
+      <form action="https://www.mercadopago.com.co/checkout/v1/redirect" method="POST">
+        <input type="hidden" name="title" value="Compra en Librería Electrónica IA" />
+        <input type="hidden" name="description" value="Libros digitales - Librería Electrónica IA" />
+        <input type="hidden" name="transaction_amount" value="${montoFinal}" />
+        <input type="hidden" name="currency_id" value="${moneda.split(' ')[0]}" />
+        <input type="hidden" name="external_reference" value="ORD-${Date.now()}" />
+        <button type="submit" class="pago-btn" id="mercadopago-btn">Pagar con Mercado Pago</button>
+      </form>
+      <p style="font-size: 12px; color: #666; margin-top: 10px;">
+        PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
+      </p>
+    `;
   }
 }
 
-// ===========================
-// Renderizar botón de PayPal
-// ===========================
-function renderizarBotonPayPal(moneda, total) {
-  const currencyCode = moneda.split(' ')[0];
-
-  if (typeof paypal === 'undefined') {
-    const script = document.createElement('script');
-    script.src = `https://www.paypal.com/sdk/js?client-id=ATm4yt-gKXg7FW4GJv4lCsGj04VQTeRvg3Q9wXa55v3srOyACzrzkUrlVJ2LxSpHMdK-lLpcjRrMEAkI&currency=${currencyCode}`;
-    script.onload = function() { initPayPalButton(currencyCode, total); };
-    script.onerror = function() {
-      botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Intenta recargar la página.</p>';
-    };
-    document.head.appendChild(script);
-  } else {
-    initPayPalButton(currencyCode, total);
-  }
-}
-
-function initPayPalButton(currencyCode, total) {
-  paypal.Buttons({
-    style: { layout: 'vertical', color: 'blue', shape: 'rect', label: 'paypal' },
-    createOrder: function(data, actions) {
-      return actions.order.create({
-        purchase_units: [{ amount: { value: total.toFixed(2), currency_code: currencyCode }, description: 'Compra en Librería Electrónica IA' }]
-      });
-    },
-    onApprove: function(data, actions) {
-      return actions.order.capture().then(function(details) {
-        alert('¡Pago completado con éxito! Gracias ' + details.payer.name.given_name);
-        localStorage.removeItem("carrito");
-        window.location.href = 'confirmacion.html';
-      });
-    },
-    onError: function(err) {
-      alert('Hubo un error al procesar el pago. Por favor intenta de nuevo.');
-    }
-  }).render('#paypal-button-container').catch(function(err){
-    botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Intenta recargar la página.</p>';
-  });
-}
-
-// ===========================
-// Inicializar carrito
-// ===========================
 window.addEventListener("load", mostrarCarrito);
 </script>
 </body>
