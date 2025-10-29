@@ -190,7 +190,7 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } 
-  // PAÍSES RESTRINGIDOS: Mercado Pago
+    // PAÍSES RESTRINGIDOS: Mercado Pago
   else if (paypalRestrictedCountries.includes(pais)) {
     const montoFinal = total.toFixed(2);
     botonesPago.innerHTML = `
@@ -206,7 +206,10 @@ function mostrarBotonesPago(pais, moneda, total) {
         PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
       </p>
     `;
-  } 
+
+    const mp = new MercadoPago('APP_USR-c47dad4f-1a59-440e-a87e-d848998c527a', { locale: 'es-CO' });
+  }
+
   // RESTO DEL MUNDO: PayPal
   else {
     console.log("Mostrando PayPal para país:", pais); // Debug
@@ -289,5 +292,6 @@ function initPayPalButton(currencyCode, total) {
 // ===========================
 window.addEventListener("load", mostrarCarrito);
 </script>
-</body>
+  <script src="https://sdk.mercadopago.com/js/v2"></script>
+  </body>
 </html>
