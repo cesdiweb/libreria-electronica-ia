@@ -171,18 +171,51 @@ function mostrarBotonesPago(pais, moneda, total) {
       </p>
     `;
   } 
-  // RESTO DEL MUNDO → PayPal
-  else {
-    botonesPago.innerHTML = `
-      <form action="https://www.paypal.com/ncp/payment/4MHH7FW6XUJCU" method="GET" target="_blank">
-        <button type="submit" class="pago-btn">Pagar con PayPal</button>
-      </form>
-      <form action="https://www.paypal.com/ncp/payment/4MHH7FW6XUJCU" method="GET" target="_blank">
-        <button type="submit" class="pago-btn" style="background:#005ea6;">Pagar con tarjeta</button>
-      </form>
-    `;
-  }
-}
+<!-- Botón de pago PayPal -->
+<div id="paypal-button-container" style="margin-top: 20px; text-align: center;"></div>
+
+<!-- SDK oficial de PayPal -->
+<script src="https://www.paypal.com/sdk/js?client-id=TU_CLIENT_ID_AQUI&currency=COP"></script>
+
+<script>
+  // Recuperar el total desde localStorage o desde el HTML
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  let total = carrito.reduce((acc, item) => acc + item.precio * item.cantidad, 0);
+
+  paypal.Buttons({
+    style: {
+      color: 'gold',
+      shape: 'rect',
+      label: 'paypal',
+      layout: 'vertical'
+    },
+    createOrder: function(data, actions) {
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total.toFixed(2),
+            currency_code: 'COP'
+          },
+          description: 'Compra en Librería Electrónica IA'
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      return actions.order.capture().then(function(details) {
+        alert('✅ Pago completado por ' + details.payer.name.given_name);
+        localStorage.removeItem('carrito'); // Vacía el carrito
+        window.location.href = 'index.html'; // Redirige al inicio
+      });
+    },
+    onCancel: function (data) {
+      alert('❌ Pago cancelado por el usuario.');
+    },
+    onError: function (err) {
+      console.error(err);
+      alert('⚠️ Ocurrió un error al procesar el pago.');
+    }
+  }).render('#paypal-button-container');
+</script>
 
 window.addEventListener("load", mostrarCarrito);
 </script>
