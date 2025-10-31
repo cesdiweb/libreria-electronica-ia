@@ -180,23 +180,31 @@ function mostrarBotonesPago(pais, moneda, total) {
     `;
   } 
 
-  // RESTO DEL MUNDO → PAYPAL
-  else {
-    const montoUSD = total.toFixed(2);
-    botonesPago.innerHTML = `
-      <form action="https://www.paypal.com/ncp/payment" method="POST">
-        <input type="hidden" name="amount" value="${montoUSD}" />
-        <input type="hidden" name="currency_code" value="USD" />
-        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA" />
-        <button type="submit" class="pago-btn btn-paypal">Pagar con PayPal</button>
+// PAYPAL (RESTO DEL MUNDO)
+else {
+  const montoFinal = total.toFixed(2);
+  botonesPago.innerHTML = `
+    <div style="text-align: center;">
+      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="distribuidoradegafascesdi1@gmail.com">
+        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
+        <input type="hidden" name="currency_code" value="${moneda.split(' ')[0]}">
+        <input type="hidden" name="amount" value="${montoFinal}">
+        <button type="submit" class="pago-btn" style="background-color:#0070ba;">Pagar con PayPal</button>
       </form>
-      <form action="https://www.paypal.com/checkoutnow?useraction=guest" method="POST">
-        <input type="hidden" name="amount" value="${montoUSD}" />
-        <input type="hidden" name="currency_code" value="USD" />
-        <button type="submit" class="pago-btn btn-tarjeta">Pagar con Tarjeta (sin cuenta PayPal)</button>
+
+      <p style="margin:10px 0;font-weight:bold;">O</p>
+
+      <form action="https://www.paypal.com/checkoutnow?token=" method="post" target="_blank">
+        <input type="hidden" name="business" value="distribuidoradegafascesdi1@gmail.com">
+        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
+        <input type="hidden" name="amount" value="${montoFinal}">
+        <input type="hidden" name="currency_code" value="${moneda.split(' ')[0]}">
+        <button type="submit" class="pago-btn" style="background-color:#142c8e;">Pagar con tarjeta</button>
       </form>
-    `;
-  }
+    </div>
+  `;
 }
 
 window.addEventListener("load", mostrarCarrito);
