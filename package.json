@@ -1,0 +1,8 @@
+{
+  "name": "libreria-electronica-ia",
+  "version": "1.0.0",
+  "description": "Librería Electrónica con IA",
+  "dependencies": {
+    "node-fetch": "^2.6.7"
+  }
+}
