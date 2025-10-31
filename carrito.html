@@ -23,8 +23,6 @@
     .pago-btn:hover { opacity: 0.85; }
     .btn-wompi { background: #00a859; }
     #mercadopago-btn { background:#00a6ff; }
-    .btn-paypal { background:#0070ba; }
-    .btn-tarjeta { background:#d4d4d4; color:black; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -63,7 +61,6 @@ const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
-// Países restringidos para Mercado Pago
 const mercadoPagoCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
@@ -73,7 +70,6 @@ const mercadoPagoCountries = [
 let currentTotal = 0;
 let currentCurrency = "USD";
 
-// Mostrar carrito
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const pais = localStorage.getItem("selectedCountry") || "CO"; 
@@ -119,7 +115,6 @@ function mostrarCarrito() {
   mostrarBotonesPago(pais, moneda, total);
 }
 
-// Cambiar cantidad / eliminar
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -142,11 +137,10 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// Mostrar botones de pago según país
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
 
-  // COLOMBIA → WOMPI
+  // COLOMBIA → Wompi
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -161,50 +155,33 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } 
-
-  // PAÍSES RESTRINGIDOS → MERCADO PAGO
+  // PAÍSES RESTRINGIDOS → Mercado Pago
   else if (mercadoPagoCountries.includes(pais)) {
     const montoFinal = total.toFixed(2);
     botonesPago.innerHTML = `
       <form action="https://www.mercadopago.com.co/checkout/v1/redirect" method="POST">
         <input type="hidden" name="title" value="Compra en Librería Electrónica IA" />
-        <input type="hidden" name="description" value="Libros digitales - Librería Electrónica IA" />
         <input type="hidden" name="transaction_amount" value="${montoFinal}" />
         <input type="hidden" name="currency_id" value="${moneda.split(' ')[0]}" />
         <input type="hidden" name="external_reference" value="ORD-${Date.now()}" />
         <button type="submit" class="pago-btn" id="mercadopago-btn">Pagar con Mercado Pago</button>
       </form>
       <p style="font-size: 12px; color: #666; margin-top: 10px;">
-        Mercado Pago está disponible en tu país.
+        PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
       </p>
     `;
   } 
-
-// PAYPAL (RESTO DEL MUNDO)
-else {
-  const montoFinal = total.toFixed(2);
-  botonesPago.innerHTML = `
-    <div style="text-align: center;">
-      <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-        <input type="hidden" name="cmd" value="_xclick">
-        <input type="hidden" name="business" value="distribuidoradegafascesdi1@gmail.com">
-        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-        <input type="hidden" name="currency_code" value="${moneda.split(' ')[0]}">
-        <input type="hidden" name="amount" value="${montoFinal}">
-        <button type="submit" class="pago-btn" style="background-color:#0070ba;">Pagar con PayPal</button>
+  // RESTO DEL MUNDO → PayPal
+  else {
+    botonesPago.innerHTML = `
+      <form action="https://www.paypal.com/ncp/payment/4MHH7FW6XUJCU" method="GET" target="_blank">
+        <button type="submit" class="pago-btn">Pagar con PayPal</button>
       </form>
-
-      <p style="margin:10px 0;font-weight:bold;">O</p>
-
-      <form action="https://www.paypal.com/checkoutnow?token=" method="post" target="_blank">
-        <input type="hidden" name="business" value="distribuidoradegafascesdi1@gmail.com">
-        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-        <input type="hidden" name="amount" value="${montoFinal}">
-        <input type="hidden" name="currency_code" value="${moneda.split(' ')[0]}">
-        <button type="submit" class="pago-btn" style="background-color:#142c8e;">Pagar con tarjeta</button>
+      <form action="https://www.paypal.com/ncp/payment/4MHH7FW6XUJCU" method="GET" target="_blank">
+        <button type="submit" class="pago-btn" style="background:#005ea6;">Pagar con tarjeta</button>
       </form>
-    </div>
-  `;
+    `;
+  }
 }
 
 window.addEventListener("load", mostrarCarrito);
