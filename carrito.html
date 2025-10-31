@@ -61,16 +61,26 @@ const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
+// ===========================
+// Países restringidos para Mercado Pago
+// ===========================
 const mercadoPagoCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
   "GA","GN","ML","MD","MC","TR","PY","CN","BY","CL"
 ];
 
+let currentTotal = 0;
+let currentCurrency = "USD";
+
+// ===========================
+// Mostrar carrito
+// ===========================
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const pais = localStorage.getItem("selectedCountry") || "CO";
+  const pais = localStorage.getItem("selectedCountry") || "CO"; 
   const moneda = localStorage.getItem("selectedCurrency") || "COP $";
+
   carritoContenedor.innerHTML = "";
   botonesPago.innerHTML = "";
 
@@ -105,10 +115,15 @@ function mostrarCarrito() {
     carritoContenedor.appendChild(div);
   });
 
+  currentTotal = total;
+  currentCurrency = moneda.split(' ')[0];
   totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
   mostrarBotonesPago(pais, moneda, total);
 }
 
+// ===========================
+// Cambiar cantidad / eliminar
+// ===========================
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -131,10 +146,28 @@ vaciarBtn.onclick = () => {
   }
 };
 
+// ===========================
+// Agregar libro al carrito
+// ===========================
+function agregarAlCarrito(titulo, precio, autor) {
+  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  const libroExistente = carrito.find(item => item.titulo === titulo);
+  if (libroExistente) {
+    libroExistente.cantidad += 1;
+  } else {
+    carrito.push({ titulo, precio, autor, cantidad: 1 });
+  }
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  mostrarCarrito();
+}
+
+// ===========================
+// Mostrar botones de pago
+// ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
 
-  // 🟢 Wompi (solo Colombia)
+  // COLOMBIA: Wompi
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -148,11 +181,9 @@ function mostrarBotonesPago(pais, moneda, total) {
         <button type="submit" class="pago-btn btn-wompi">Pagar con Wompi</button>
       </form>
     `;
-    return;
-  }
-
-  // 🔵 Mercado Pago (países restringidos)
-  if (mercadoPagoCountries.includes(pais)) {
+  } 
+  // PAÍSES RESTRINGIDOS: Mercado Pago
+  else if (mercadoPagoCountries.includes(pais)) {
     const montoFinal = total.toFixed(2);
     botonesPago.innerHTML = `
       <form action="https://www.mercadopago.com.co/checkout/v1/redirect" method="POST">
@@ -163,24 +194,11 @@ function mostrarBotonesPago(pais, moneda, total) {
         <input type="hidden" name="external_reference" value="ORD-${Date.now()}" />
         <button type="submit" class="pago-btn" id="mercadopago-btn">Pagar con Mercado Pago</button>
       </form>
+      <p style="font-size: 12px; color: #666; margin-top: 10px;">
+        PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
+      </p>
     `;
-    return;
   }
-
-  // 💳 PayPal (resto del mundo)
-  const montoUSD = (total / 4000).toFixed(2); // aproximado
-  botonesPago.innerHTML = `
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_blank">
-      <input type="hidden" name="cmd" value="_xclick">
-      <input type="hidden" name="business" value="distribuidoradegafascesdi1@gmail.com">
-      <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA">
-      <input type="hidden" name="currency_code" value="USD">
-      <input type="hidden" name="amount" value="${montoUSD}">
-      <input type="hidden" name="return" value="https://cesdiweb.github.io/libreria-electronica-ia/confirmacion.html">
-      <input type="hidden" name="cancel_return" value="https://cesdiweb.github.io/libreria-electronica-ia/error.html">
-      <button type="submit" class="pago-btn">Pagar con PayPal</button>
-    </form>
-  `;
 }
 
 window.addEventListener("load", mostrarCarrito);
