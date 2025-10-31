@@ -23,6 +23,8 @@
     .pago-btn:hover { opacity: 0.85; }
     .btn-wompi { background: #00a859; }
     #mercadopago-btn { background:#00a6ff; }
+    .btn-paypal { background:#0070ba; }
+    .btn-tarjeta { background:#d4d4d4; color:black; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -61,9 +63,7 @@ const totalTexto = document.getElementById("total");
 const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
-// ===========================
 // Países restringidos para Mercado Pago
-// ===========================
 const mercadoPagoCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
@@ -73,9 +73,7 @@ const mercadoPagoCountries = [
 let currentTotal = 0;
 let currentCurrency = "USD";
 
-// ===========================
 // Mostrar carrito
-// ===========================
 function mostrarCarrito() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const pais = localStorage.getItem("selectedCountry") || "CO"; 
@@ -121,9 +119,7 @@ function mostrarCarrito() {
   mostrarBotonesPago(pais, moneda, total);
 }
 
-// ===========================
 // Cambiar cantidad / eliminar
-// ===========================
 function cambiarCantidad(index, delta) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   carrito[index].cantidad += delta;
@@ -146,28 +142,11 @@ vaciarBtn.onclick = () => {
   }
 };
 
-// ===========================
-// Agregar libro al carrito
-// ===========================
-function agregarAlCarrito(titulo, precio, autor) {
-  const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const libroExistente = carrito.find(item => item.titulo === titulo);
-  if (libroExistente) {
-    libroExistente.cantidad += 1;
-  } else {
-    carrito.push({ titulo, precio, autor, cantidad: 1 });
-  }
-  localStorage.setItem("carrito", JSON.stringify(carrito));
-  mostrarCarrito();
-}
-
-// ===========================
-// Mostrar botones de pago
-// ===========================
+// Mostrar botones de pago según país
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
 
-  // COLOMBIA: Wompi
+  // COLOMBIA → WOMPI
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -182,7 +161,8 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } 
-  // PAÍSES RESTRINGIDOS: Mercado Pago
+
+  // PAÍSES RESTRINGIDOS → MERCADO PAGO
   else if (mercadoPagoCountries.includes(pais)) {
     const montoFinal = total.toFixed(2);
     botonesPago.innerHTML = `
@@ -195,8 +175,26 @@ function mostrarBotonesPago(pais, moneda, total) {
         <button type="submit" class="pago-btn" id="mercadopago-btn">Pagar con Mercado Pago</button>
       </form>
       <p style="font-size: 12px; color: #666; margin-top: 10px;">
-        PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
+        Mercado Pago está disponible en tu país.
       </p>
+    `;
+  } 
+
+  // RESTO DEL MUNDO → PAYPAL
+  else {
+    const montoUSD = total.toFixed(2);
+    botonesPago.innerHTML = `
+      <form action="https://www.paypal.com/ncp/payment" method="POST">
+        <input type="hidden" name="amount" value="${montoUSD}" />
+        <input type="hidden" name="currency_code" value="USD" />
+        <input type="hidden" name="item_name" value="Compra en Librería Electrónica IA" />
+        <button type="submit" class="pago-btn btn-paypal">Pagar con PayPal</button>
+      </form>
+      <form action="https://www.paypal.com/checkoutnow?useraction=guest" method="POST">
+        <input type="hidden" name="amount" value="${montoUSD}" />
+        <input type="hidden" name="currency_code" value="USD" />
+        <button type="submit" class="pago-btn btn-tarjeta">Pagar con Tarjeta (sin cuenta PayPal)</button>
+      </form>
     `;
   }
 }
