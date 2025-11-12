@@ -174,10 +174,10 @@ function agregarAlCarrito(titulo, precio, autor) {
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
   
-  console.log("País seleccionado:", pais); // Debug
-  console.log("¿Es restringido?", paypalRestrictedCountries.includes(pais)); // Debug
+  console.log("País seleccionado:", pais);
+  console.log("¿Es restringido?", paypalRestrictedCountries.includes(pais));
   
-  // COLOMBIA: Wompi
+  // 🇨🇴 COLOMBIA: Wompi
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -192,58 +192,42 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } 
- // PAÍSES RESTRINGIDOS → MERCADO PAGO
-else if (paypalRestrictedCountries.includes(pais)) {
-  botonesPago.innerHTML = `
-    <div id="wallet_container"></div>
-    <p style="font-size: 12px; color: #666; margin-top: 10px;">
-      PayPal no está disponible en tu país. Usa Mercado Pago.
-    </p>
-  `;
+  // 🌐 PAÍSES RESTRINGIDOS: Mercado Pago
+  else if (paypalRestrictedCountries.includes(pais)) {
+    botonesPago.innerHTML = `
+      <div id="mercadoPagoButton"></div>
+      <p style="font-size: 12px; color: #666; margin-top: 10px;">
+        PayPal no está disponible en tu país. Usa Mercado Pago.
+      </p>
+    `;
 
-  // Cargar SDK oficial de Mercado Pago
-  const mpScript = document.createElement("script");
-  mpScript.src = "https://sdk.mercadopago.com/js/v2";
-  mpScript.onload = function () {
-    const mp = new MercadoPago("TEST-REPLACE_WITH_YOUR_PUBLIC_KEY", {
-      locale: "es-CO"
-    });
-
-    // Crear preferencia (desde tu backend o URL de prueba)
-    fetch("https://tu-servidor.com/api/create-mercadopago-preference", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        items: JSON.parse(localStorage.getItem("carrito") || "[]").map(item => ({
-          title: item.titulo,
-          quantity: item.cantidad,
-          unit_price: item.precio
-        })),
-        country: pais
-      })
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data && data.preferenceId) {
-          mp.checkout({
-            preference: {
-              id: data.preferenceId
-            },
-            render: {
-              container: "#wallet_container",
-              label: "Pagar con Mercado Pago"
-            }
-          });
-        } else {
-          botonesPago.innerHTML = "<p style='color:red'>Error al generar preferencia de pago.</p>";
-        }
-      })
-      .catch(err => {
-        console.error("Error creando preferencia Mercado Pago:", err);
-        botonesPago.innerHTML = "<p style='color:red'>No se pudo conectar con Mercado Pago.</p>";
+    // Cargar SDK oficial de Mercado Pago
+    const mpScript = document.createElement("script");
+    mpScript.src = "https://sdk.mercadopago.com/js/v2";
+    mpScript.onload = () => {
+      // Inicializar Mercado Pago con tu clave pública
+      const mp = new MercadoPago("TU_PUBLIC_KEY_AQUI", {
+        locale: "es-CO"
       });
-  };
-  document.head.appendChild(mpScript);
+
+      // Crear preferencia de prueba local (debes reemplazar esto por tu preferencia real desde tu backend)
+      const preferenceId = "TEST-PREFERENCE-ID"; 
+
+      mp.bricks().create("wallet", "mercadoPagoButton", {
+        initialization: {
+          preferenceId: preferenceId
+        }
+      });
+    };
+    document.body.appendChild(mpScript);
+  } 
+  // 💳 RESTO DEL MUNDO: PayPal
+  else {
+    botonesPago.innerHTML = '<div id="paypal-button-container"></div>';
+    setTimeout(() => {
+      renderizarBotonPayPal(moneda, total);
+    }, 100);
+  }
 }
 
 // ===========================
