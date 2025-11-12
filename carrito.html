@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -22,7 +24,9 @@
     .pago-btn { background-color: #0070ba; color: white; border: none; padding: 10px 20px; margin: 5px; border-radius: 8px; cursor: pointer; font-size: 16px; }
     .pago-btn:hover { opacity: 0.85; }
     .btn-wompi { background: #00a859; }
-    #mercadopago-btn { background:#00a6ff; }
+    .btn-payoneer { background: #ff6600; }
+    .btn-checkout { background: #0066cc; }
+    #paypal-button-container { margin: 10px auto; max-width: 400px; min-height: 50px; }
     footer { background-color: #003366; color: white; text-align: center; padding: 1rem; margin-top: 2rem; }
   </style>
 </head>
@@ -62,14 +66,15 @@ const vaciarBtn = document.getElementById("vaciar-btn");
 const botonesPago = document.getElementById("botonesPago");
 
 // ===========================
-// Países restringidos para Mercado Pago
+// Países restringidos para PayPal
 // ===========================
-const mercadoPagoCountries = [
+const paypalRestrictedCountries = [
   "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
   "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
-  "GA","GN","ML","MD","MC","TR","PY","CN","BY","CL"
+  "GA","GN","ML","MD","MC","TR","PY"
 ];
 
+// Variable global para almacenar total y moneda
 let currentTotal = 0;
 let currentCurrency = "USD";
 
@@ -93,7 +98,7 @@ function mostrarCarrito() {
   let total = 0;
   carrito.forEach((item, index) => {
     const currencyCode = moneda.split(' ')[0];
-    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, COP:1 };
+    const tasas = JSON.parse(localStorage.getItem("tasasCambio")) || { USD:1, EUR:1, AFN:1, COP:1 };
     const precioConvertido = Math.round(item.precio * (tasas[currencyCode] || 1) * 100) / 100;
     const subtotal = precioConvertido * item.cantidad;
     total += subtotal;
@@ -115,8 +120,10 @@ function mostrarCarrito() {
     carritoContenedor.appendChild(div);
   });
 
+  // Guardar valores globales
   currentTotal = total;
   currentCurrency = moneda.split(' ')[0];
+
   totalTexto.textContent = `Total: ${moneda} ${total.toFixed(2)}`;
   mostrarBotonesPago(pais, moneda, total);
 }
@@ -162,11 +169,14 @@ function agregarAlCarrito(titulo, precio, autor) {
 }
 
 // ===========================
-// Mostrar botones de pago
+// Mostrar botones de pago según país
 // ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
-
+  
+  console.log("País seleccionado:", pais); // Debug
+  console.log("¿Es restringido?", paypalRestrictedCountries.includes(pais)); // Debug
+  
   // COLOMBIA: Wompi
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
@@ -182,25 +192,111 @@ function mostrarBotonesPago(pais, moneda, total) {
       </form>
     `;
   } 
-  // PAÍSES RESTRINGIDOS: Mercado Pago
-  else if (mercadoPagoCountries.includes(pais)) {
-    const montoFinal = total.toFixed(2);
+  // PAÍSES RESTRINGIDOS: Payoneer y Checkout
+  else if (paypalRestrictedCountries.includes(pais)) {
     botonesPago.innerHTML = `
-      <form action="https://www.mercadopago.com.co/checkout/v1/redirect" method="POST">
-        <input type="hidden" name="title" value="Compra en Librería Electrónica IA" />
-        <input type="hidden" name="description" value="Libros digitales - Librería Electrónica IA" />
-        <input type="hidden" name="transaction_amount" value="${montoFinal}" />
-        <input type="hidden" name="currency_id" value="${moneda.split(' ')[0]}" />
-        <input type="hidden" name="external_reference" value="ORD-${Date.now()}" />
-        <button type="submit" class="pago-btn" id="mercadopago-btn">Pagar con Mercado Pago</button>
-      </form>
+      <button class="pago-btn btn-checkout" onclick="pagarConCheckout()">Pagar con Checkout</button>
+      <button class="pago-btn btn-payoneer" onclick="pagarConPayoneer()">Pagar con Payoneer</button>
       <p style="font-size: 12px; color: #666; margin-top: 10px;">
-        PayPal no está disponible en tu país. Usa Mercado Pago para completar tu compra.
+        PayPal no está disponible en tu país. Usa Checkout o Payoneer.
       </p>
     `;
+  } 
+  // RESTO DEL MUNDO: PayPal
+  else {
+    console.log("Mostrando PayPal para país:", pais); // Debug
+    botonesPago.innerHTML = '<div id="paypal-button-container"></div>';
+    
+    // Pequeño delay para asegurar que el contenedor existe
+    setTimeout(() => {
+      renderizarBotonPayPal(moneda, total);
+    }, 100);
   }
 }
 
+// ===========================
+// Renderizar botón de PayPal
+// ===========================
+function renderizarBotonPayPal(moneda, total) {
+  const currencyCode = moneda.split(' ')[0];
+  
+  console.log("Renderizando PayPal con:", currencyCode, total); // Debug
+  
+  // Cargar SDK de PayPal dinámicamente si no está cargado
+  if (typeof paypal === 'undefined') {
+    console.log("Cargando SDK de PayPal...");
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=ATm4yt-gKXg7FW4GJv4lCsGj04VQTeRvg3Q9wXa55v3srOyACzrzkUrlVJ2LxSpHMdK-lLpcjRrMEAkI&currency=${currencyCode}`;
+    script.onload = function() {
+      console.log("SDK de PayPal cargado correctamente");
+      initPayPalButton(currencyCode, total);
+    };
+    script.onerror = function() {
+      console.error("Error al cargar SDK de PayPal");
+      botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Verifica tu conexión a internet.</p>';
+    };
+    document.head.appendChild(script);
+  } else {
+    initPayPalButton(currencyCode, total);
+  }
+}
+
+function initPayPalButton(currencyCode, total) {
+  paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      color: 'blue',
+      shape: 'rect',
+      label: 'paypal'
+    },
+    createOrder: function(data, actions) {
+      console.log("Creando orden PayPal"); // Debug
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total.toFixed(2),
+            currency_code: currencyCode
+          },
+          description: 'Compra en Librería Electrónica IA'
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      console.log("Pago aprobado"); // Debug
+      return actions.order.capture().then(function(details) {
+        alert('¡Pago completado con éxito! Gracias ' + details.payer.name.given_name);
+        localStorage.removeItem("carrito");
+        window.location.href = 'confirmacion.html';
+      });
+    },
+    onError: function(err) {
+      console.error('Error en el pago:', err);
+      alert('Hubo un error al procesar el pago. Por favor intenta de nuevo.');
+    }
+  }).render('#paypal-button-container').catch(function(err) {
+    console.error('Error al renderizar botón PayPal:', err);
+    botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Intenta recargar la página.</p>';
+  });
+}
+
+// ===========================
+// Funciones para Payoneer y Checkout
+// ===========================
+function pagarConPayoneer() {
+  alert('Redirigiendo a Payoneer... (Configura la URL de integración)');
+  // TODO: Agregar URL de integración de Payoneer
+  // window.location.href = 'URL_DE_PAYONEER';
+}
+
+function pagarConCheckout() {
+  alert('Redirigiendo a Checkout... (Configura la URL de integración)');
+  // TODO: Agregar URL de integración de Checkout
+  // window.location.href = 'URL_DE_CHECKOUT';
+}
+
+// ===========================
+// Inicializar carrito
+// ===========================
 window.addEventListener("load", mostrarCarrito);
 </script>
 </body>
