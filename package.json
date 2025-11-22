@@ -1,8 +1,8 @@
 {
   "name": "libreria-electronica-ia",
   "version": "1.0.0",
-  "description": "Librería Electrónica con IA",
+  "description": "Librería Electrónica con múltiples métodos de pago",
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "mercadopago": "^1.5.17"
   }
 }
