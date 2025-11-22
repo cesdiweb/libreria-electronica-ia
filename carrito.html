@@ -173,11 +173,11 @@ function agregarAlCarrito(titulo, precio, autor) {
 // ===========================
 function mostrarBotonesPago(pais, moneda, total) {
   botonesPago.innerHTML = "";
-
-  console.log("País detectado:", pais);
-  console.log("¿Es restringido PayPal?", paypalRestrictedCountries.includes(pais));
-
-  // 🇨🇴 COLOMBIA → Wompi
+  
+  console.log("País seleccionado:", pais); // Debug
+  console.log("¿Es restringido?", paypalRestrictedCountries.includes(pais)); // Debug
+  
+  // COLOMBIA: Wompi
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
@@ -188,43 +188,110 @@ function mostrarBotonesPago(pais, moneda, total) {
         <input type="hidden" name="amount-in-cents" value="${montoCentavos}" />
         <input type="hidden" name="reference" value="${referencia}" />
         <input type="hidden" name="redirect-url" value="https://cesdiweb.github.io/libreria-electronica-ia/confirmacion.html" />
-        <button type="submit" class="pago-btn btn-wompi">💳 Pagar con Wompi</button>
+        <button type="submit" class="pago-btn btn-wompi">Pagar con Wompi</button>
       </form>
     `;
-  }
-
-  // 🚫 PAÍSES RESTRINGIDOS → Mercado Pago (producción)
+  } 
+  // PAÍSES RESTRINGIDOS: Payoneer y Checkout
   else if (paypalRestrictedCountries.includes(pais)) {
     botonesPago.innerHTML = `
-      <div id="mercadoPagoButton"></div>
+      <button class="pago-btn btn-checkout" onclick="pagarConCheckout()">Pagar con Checkout</button>
+      <button class="pago-btn btn-payoneer" onclick="pagarConPayoneer()">Pagar con Payoneer</button>
       <p style="font-size: 12px; color: #666; margin-top: 10px;">
-        PayPal no está disponible en tu país. Usa Mercado Pago.
+        PayPal no está disponible en tu país. Usa Checkout o Payoneer.
       </p>
     `;
-
-    const mpScript = document.createElement("script");
-    mpScript.src = "https://sdk.mercadopago.com/js/v2";
-    mpScript.onload = () => {
-      const mp = new MercadoPago("APP_USR-c47dad4f-1a59-440e-a87e-d848998c527a", { locale: "es-CO" });
-
-      // ⚠️ Este preferenceId debe venir de tu backend o ser creado con la API de Mercado Pago.
-      // Por ahora puedes usar un ID temporal o de prueba mientras pruebas la integración.
-      const preferenceId = "PREFERENCE_ID_REAL_GENERADO";
-
-      mp.bricks().create("wallet", "mercadoPagoButton", {
-        initialization: { preferenceId }
-      });
-    };
-    document.body.appendChild(mpScript);
-  }
-
-  // 🌍 RESTO DEL MUNDO → PayPal
+  } 
+  // RESTO DEL MUNDO: PayPal
   else {
+    console.log("Mostrando PayPal para país:", pais); // Debug
     botonesPago.innerHTML = '<div id="paypal-button-container"></div>';
+    
+    // Pequeño delay para asegurar que el contenedor existe
     setTimeout(() => {
       renderizarBotonPayPal(moneda, total);
     }, 100);
   }
+}
+
+// ===========================
+// Renderizar botón de PayPal
+// ===========================
+function renderizarBotonPayPal(moneda, total) {
+  const currencyCode = moneda.split(' ')[0];
+  
+  console.log("Renderizando PayPal con:", currencyCode, total); // Debug
+  
+  // Cargar SDK de PayPal dinámicamente si no está cargado
+  if (typeof paypal === 'undefined') {
+    console.log("Cargando SDK de PayPal...");
+    const script = document.createElement('script');
+    script.src = `https://www.paypal.com/sdk/js?client-id=ATm4yt-gKXg7FW4GJv4lCsGj04VQTeRvg3Q9wXa55v3srOyACzrzkUrlVJ2LxSpHMdK-lLpcjRrMEAkI&currency=${currencyCode}`;
+    script.onload = function() {
+      console.log("SDK de PayPal cargado correctamente");
+      initPayPalButton(currencyCode, total);
+    };
+    script.onerror = function() {
+      console.error("Error al cargar SDK de PayPal");
+      botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Verifica tu conexión a internet.</p>';
+    };
+    document.head.appendChild(script);
+  } else {
+    initPayPalButton(currencyCode, total);
+  }
+}
+
+function initPayPalButton(currencyCode, total) {
+  paypal.Buttons({
+    style: {
+      layout: 'vertical',
+      color: 'blue',
+      shape: 'rect',
+      label: 'paypal'
+    },
+    createOrder: function(data, actions) {
+      console.log("Creando orden PayPal"); // Debug
+      return actions.order.create({
+        purchase_units: [{
+          amount: {
+            value: total.toFixed(2),
+            currency_code: currencyCode
+          },
+          description: 'Compra en Librería Electrónica IA'
+        }]
+      });
+    },
+    onApprove: function(data, actions) {
+      console.log("Pago aprobado"); // Debug
+      return actions.order.capture().then(function(details) {
+        alert('¡Pago completado con éxito! Gracias ' + details.payer.name.given_name);
+        localStorage.removeItem("carrito");
+        window.location.href = 'confirmacion.html';
+      });
+    },
+    onError: function(err) {
+      console.error('Error en el pago:', err);
+      alert('Hubo un error al procesar el pago. Por favor intenta de nuevo.');
+    }
+  }).render('#paypal-button-container').catch(function(err) {
+    console.error('Error al renderizar botón PayPal:', err);
+    botonesPago.innerHTML = '<p style="color: red;">Error al cargar PayPal. Intenta recargar la página.</p>';
+  });
+}
+
+// ===========================
+// Funciones para Payoneer y Checkout
+// ===========================
+function pagarConPayoneer() {
+  alert('Redirigiendo a Payoneer... (Configura la URL de integración)');
+  // TODO: Agregar URL de integración de Payoneer
+  // window.location.href = 'URL_DE_PAYONEER';
+}
+
+function pagarConCheckout() {
+  alert('Redirigiendo a Checkout... (Configura la URL de integración)');
+  // TODO: Agregar URL de integración de Checkout
+  // window.location.href = 'URL_DE_CHECKOUT';
 }
 
 // ===========================
