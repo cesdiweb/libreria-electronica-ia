@@ -219,15 +219,17 @@ function mostrarBotonesPago(pais, moneda, total) {
 // ===========================
 async function pagarConMercadoPago() {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
-  const moneda = localStorage.getItem("selectedCurrency") || "USD $";
-  let currencyCode = moneda.split(' ')[0];
   
-  // Asegurar que el código de moneda esté limpio (sin espacios ni símbolos)
-  currencyCode = currencyCode.trim().toUpperCase(); 
   if (carrito.length === 0) {
     alert("El carrito está vacío");
     return;
   }
+
+  const moneda = localStorage.getItem("selectedCurrency") || "USD $";
+  let currencyCode = moneda.split(' ')[0];
+  
+  // Asegurar que el código de moneda esté limpio (sin espacios ni símbolos)
+  currencyCode = currencyCode.trim().toUpperCase();
 
   // Mostrar loading
   loadingDiv.style.display = "block";
@@ -263,7 +265,6 @@ async function pagarConMercadoPago() {
     botonesPago.style.opacity = "1";
   }
 }
-
 // ===========================
 // Renderizar botón de PayPal (SIN TOCAR)
 // ===========================
