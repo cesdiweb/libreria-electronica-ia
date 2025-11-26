@@ -231,6 +231,15 @@ async function pagarConMercadoPago() {
   // Asegurar que el código de moneda esté limpio (sin espacios ni símbolos)
   currencyCode = currencyCode.trim().toUpperCase();
 
+  // Lista de monedas soportadas por Mercado Pago
+  const monedasSoportadas = ['ARS', 'BRL', 'CLP', 'COP', 'MXN', 'PEN', 'USD', 'UYU'];
+  
+  // Si la moneda no es soportada, usar USD
+  if (!monedasSoportadas.includes(currencyCode)) {
+    currencyCode = 'USD';
+    console.log(`Moneda ${moneda} no soportada por Mercado Pago. Usando USD.`);
+  }
+
   // Mostrar loading
   loadingDiv.style.display = "block";
   botonesPago.style.opacity = "0.5";
