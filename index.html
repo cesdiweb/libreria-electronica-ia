@@ -1,6 +1,3 @@
-
-
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -109,65 +106,64 @@
 </nav>
   
 
- <div class="selector-container">
-  <label>🌎 País:
-    <select id="country" aria-label="País"></select>
-  </label>
-  <label>🗣️ Idioma:
-    <select id="language" aria-label="Idioma"></select>
-  </label>
-  <label>💰 Moneda:
-    <select id="currency" aria-label="Moneda"></select>
-  </label>
-</div>
+  <div class="selector-container">
+    <label>🌎 País:
+      <select id="country" aria-label="País"></select>
+    </label>
+    <label>🗣️ Idioma:
+      <select id="language" aria-label="Idioma"></select>
+    </label>
+    <label>💰 Moneda:
+      <select id="currency" aria-label="Moneda"></select>
+    </label>
+  </div>
 
-<!-- ===========================
-     Catálogo de libros dinámico
-=========================== -->
+  <section class="catalogo">
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 1">
+    <h3>Introducción a la Inteligencia Artificial</h3>
+    <p><strong>Autor:</strong> Ana Pérez</p>
+    <!-- data-base = precio numérico (sin símbolo); updatePrices mostrará la moneda seleccionada -->
+    <p class="price" data-base="30000">COP $ 30000</p>
+    <button class="carrito-btn" 
+      onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000, 'Ana Pérez')">
+      Agregar al carrito
+    </button>
+  </div>
 
-<div id="catalogo"></div>
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 2">
+    <h3>Machine Learning Avanzado</h3>
+    <p><strong>Autor:</strong> John Smith</p>
+    <p class="price" data-base="20000">COP $ 20000</p>
+    <button class="carrito-btn" 
+      onclick="agregarAlCarrito('Machine Learning Avanzado', 20000, 'John Smith')">
+      Agregar al carrito
+    </button>
+  </div>
 
-<script>
-  // Lista de libros con título, autor y precio base
-  const libros = [
-    { titulo: "Delivering Success", autor: "PLR Database Licensed Content", precio: 12000 },
-    { titulo: "Marketing Mastery", autor: "PLR Database Licensed Content", precio: 15000 },
-    { titulo: "Financial Freedom", autor: "PLR Database Licensed Content", precio: 18000 },
-    { titulo: "Productivity Secrets", autor: "PLR Database Licensed Content", precio: 13000 },
-    { titulo: "Success Habits", autor: "PLR Database Licensed Content", precio: 14000 },
-    { titulo: "Wealth Building", autor: "PLR Database Licensed Content", precio: 16000 },
-    { titulo: "Leadership Skills", autor: "PLR Database Licensed Content", precio: 12500 },
-    { titulo: "Time Management Pro", autor: "PLR Database Licensed Content", precio: 13500 },
-    { titulo: "Entrepreneur Mindset", autor: "PLR Database Licensed Content", precio: 14500 },
-    { titulo: "Goal Setting Mastery", autor: "PLR Database Licensed Content", precio: 11000 }
-    // Puedes agregar más libros aquí siguiendo el mismo formato
-  ];
+  <div class="libro">
+    <img src="https://via.placeholder.com/150" alt="Libro 3">
+    <h3>Redes Neuronales con Python</h3>
+    <p><strong>Autor:</strong> María López</p>
+    <p class="price" data-base="18000">COP $ 18000</p>
+    <button class="carrito-btn" 
+      onclick="agregarAlCarrito('Redes Neuronales con Python', 18000, 'María López')">
+      Agregar al carrito
+    </button>
+  </div>
+</section>
+  
+  <footer>
 
-  const catalogoDiv = document.getElementById("catalogo");
-
-  // Generar el HTML de cada libro
-  libros.forEach(libro => {
-    const libroDiv = document.createElement("div");
-    libroDiv.className = "libro";
-    libroDiv.innerHTML = `
-      <h3>${libro.titulo}</h3>
-      <p><strong>Autor:</strong> ${libro.autor}</p>
-      <p class="price" data-base="${libro.precio}">COP $ ${libro.precio}</p>
-      <button onclick="agregarAlCarrito('${libro.titulo}', ${libro.precio})">Agregar al carrito</button>
-    `;
-    catalogoDiv.appendChild(libroDiv);
-  });
-</script>
-</script>
-
-<footer>
   <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   <p>
     <a href="terminos.html">Términos y Condiciones</a> | 
     <a href="reembolso.html">Política de Reembolso</a>
   </p>
 </footer>
-e
+   
+   <script>
    // Reemplaza tu exchangeRates por este bloque (valores aproximados)
 const exchangeRates = {
   "COP": 1,
@@ -635,7 +631,7 @@ function updatePrices(currencyLabel) {
     "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
     "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
     "GA","GN","ML","MD","MC","TR","PY"
-  ];	
+  ];
 
 // ===========================
 // Función que muestra/oculta métodos de pago según el país
