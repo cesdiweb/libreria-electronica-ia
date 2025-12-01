@@ -121,52 +121,80 @@
     </label>
   </div>
 
-  <section class="catalogo">
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 1">
-    <h3>Introducción a la Inteligencia Artificial</h3>
-    <p><strong>Autor:</strong> Ana Pérez</p>
-    <!-- data-base = precio numérico (sin símbolo); updatePrices mostrará la moneda seleccionada -->
-    <p class="price" data-base="30000">COP $ 30000</p>
-    <button class="carrito-btn" 
-      onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000, 'Ana Pérez')">
-      Agregar al carrito
-    </button>
-  </div>
-
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 2">
-    <h3>Machine Learning Avanzado</h3>
-    <p><strong>Autor:</strong> John Smith</p>
-    <p class="price" data-base="20000">COP $ 20000</p>
-    <button class="carrito-btn" 
-      onclick="agregarAlCarrito('Machine Learning Avanzado', 20000, 'John Smith')">
-      Agregar al carrito
-    </button>
-  </div>
-
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 3">
-    <h3>Redes Neuronales con Python</h3>
-    <p><strong>Autor:</strong> María López</p>
-    <p class="price" data-base="18000">COP $ 18000</p>
-    <button class="carrito-btn" 
-      onclick="agregarAlCarrito('Redes Neuronales con Python', 18000, 'María López')">
-      Agregar al carrito
-    </button>
-  </div>
+<section class="catalogo">
+  <div id="catalogo-libros"></div>
 </section>
-  
-  <footer>
 
+<script>
+const librosReales = [
+  {
+    title: "Delivering Success",
+    author: "PLR Database Licensed Content",
+    price: 12000,
+    image: "ruta/a/la/imagen.png",
+    file: "ruta/al/archivo.pdf"
+  },
+  {
+    title: "Segundo Libro",
+    author: "Autor Ejemplo",
+    price: 15000,
+    image: "ruta/a/la/imagen2.png",
+    file: "ruta/al/archivo2.pdf"
+  }
+  // Agrega aquí más libros siguiendo el mismo formato
+];
+
+const catalogo = document.getElementById("catalogo-libros");
+
+librosReales.forEach(libro => {
+  const div = document.createElement("div");
+  div.className = "libro"; // mantiene tu estilo anterior
+  div.dataset.title = libro.title;
+  div.dataset.author = libro.author;
+  div.dataset.price = libro.price;
+  div.dataset.image = libro.image;
+  div.dataset.file = libro.file;
+  
+  div.innerHTML = `
+    <img src="${libro.image}" alt="${libro.title}" style="width:150px; height:auto;">
+    <h3>${libro.title}</h3>
+    <p><strong>Autor:</strong> ${libro.author}</p>
+    <p class="price" data-base="${libro.price}">COP $ ${libro.price}</p>
+    <button class="carrito-btn" onclick="agregarAlCarrito('${libro.title}', ${libro.price}, '${libro.author}', '${libro.image}', '${libro.file}')">
+      Agregar al carrito
+    </button>
+  `;
+  
+  catalogo.appendChild(div);
+});
+
+function agregarAlCarrito(title, price, author, image, file) {
+  let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
+  
+  const index = carrito.findIndex(item => item.title === title);
+  if (index !== -1) {
+    carrito[index].cantidad += 1;
+  } else {
+    carrito.push({title, author, price, image, file, cantidad: 1});
+  }
+  
+  localStorage.setItem('carrito', JSON.stringify(carrito));
+  alert(title + " se ha agregado al carrito.");
+  
+  if (typeof mostrarCarrito === "function") {
+    mostrarCarrito();
+  }
+}
+</script>
+
+<footer>
   <p>&copy; 2025 Librería Electrónica IA. Todos los derechos reservados.</p>
   <p>
     <a href="terminos.html">Términos y Condiciones</a> | 
     <a href="reembolso.html">Política de Reembolso</a>
   </p>
 </footer>
-   
-   <script>
+
    // Reemplaza tu exchangeRates por este bloque (valores aproximados)
 const exchangeRates = {
   "COP": 1,
@@ -744,7 +772,6 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
-
 
 
 
