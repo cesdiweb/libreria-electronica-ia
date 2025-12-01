@@ -125,6 +125,84 @@
   <div id="catalogo-libros"></div>
 </section>
 
+<style>
+  /* Contenedor del catálogo */
+  #catalogo-libros {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 20px;
+    padding: 20px;
+  }
+
+  /* Cada libro */
+  .libro {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+  }
+
+  .libro:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  }
+
+  .libro img {
+    width: 100%;
+    max-width: 150px;
+    height: auto;
+    margin-bottom: 10px;
+  }
+
+  .libro h3 {
+    font-size: 1.1em;
+    margin: 10px 0 5px;
+  }
+
+  .libro p {
+    margin: 5px 0;
+    font-size: 0.9em;
+  }
+
+  .price {
+    font-weight: bold;
+    color: #1a73e8;
+    margin: 10px 0;
+  }
+
+  .carrito-btn {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 5px;
+    background-color: #1a73e8;
+    color: #fff;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+
+  .carrito-btn:hover {
+    background-color: #155ab6;
+  }
+
+  /* Footer */
+  footer {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #1a73e8;
+    color: #fff;
+    text-align: center;
+  }
+
+  footer a {
+    color: #fff;
+    text-decoration: underline;
+    margin: 0 5px;
+  }
+</style>
+
 <script>
 // Array de libros reales
 const librosReales = [
@@ -156,23 +234,22 @@ const librosReales = [
     image: "https://via.placeholder.com/150",
     file: "ruta/al/archivo4.pdf"
   }
-  // Agrega más libros siguiendo el mismo formato
 ];
 
-// Generar los libros en el catálogo usando tu función existente
+// Generar los libros en el catálogo
 const catalogo = document.getElementById("catalogo-libros");
 
 librosReales.forEach(libro => {
   const div = document.createElement("div");
-  div.className = "libro"; // mantiene tu estilo y CSS
+  div.className = "libro";
   div.dataset.title = libro.title;
   div.dataset.author = libro.author;
   div.dataset.price = libro.price;
   div.dataset.image = libro.image;
   div.dataset.file = libro.file;
-  
+
   div.innerHTML = `
-    <img src="${libro.image}" alt="${libro.title}" style="width:150px; height:auto;">
+    <img src="${libro.image}" alt="${libro.title}">
     <h3>${libro.title}</h3>
     <p><strong>Autor:</strong> ${libro.author}</p>
     <p class="price" data-base="${libro.price}">COP $ ${libro.price}</p>
@@ -180,7 +257,7 @@ librosReales.forEach(libro => {
       Agregar al carrito
     </button>
   `;
-  
+
   catalogo.appendChild(div);
 });
 </script>
@@ -192,6 +269,7 @@ librosReales.forEach(libro => {
     <a href="reembolso.html">Política de Reembolso</a>
   </p>
 </footer>
+
    // Reemplaza tu exchangeRates por este bloque (valores aproximados)
 const exchangeRates = {
   "COP": 1,
