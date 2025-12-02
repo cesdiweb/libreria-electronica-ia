@@ -118,18 +118,24 @@
     </label>
   </div>
 
-  <section class="catalogo">
   <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 1">
-    <h3>Introducción a la Inteligencia Artificial</h3>
-    <p><strong>Autor:</strong> Ana Pérez</p>
-    <!-- data-base = precio numérico (sin símbolo); updatePrices mostrará la moneda seleccionada -->
-    <p class="price" data-base="30000">COP $ 30000</p>
-    <button class="carrito-btn" 
-      onclick="agregarAlCarrito('Introducción a la Inteligencia Artificial', 30000, 'Ana Pérez')">
-      Agregar al carrito
-    </button>
-  </div>
+  <img src="Delivering Success.png" alt="Delivering Success">
+  <h3>Delivering Success</h3>
+  <p><strong>Autor:</strong> PLR Database Licensed Content</p>
+
+  <!-- Precio base en COP -->
+  <p class="price" data-base="12000">COP $ 12000</p>
+
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito('Delivering Success', 12000, 'PLR Database Licensed Content')">
+    Agregar al carrito
+  </button>
+
+  <!-- Enlace al PDF -->
+  <p><a href="delivering-success-mastering-the-postmates-side-hustle.pdf" target="_blank">
+    📄 Descargar PDF
+  </a></p>
+</div>
 
   <div class="libro">
     <img src="https://via.placeholder.com/150" alt="Libro 2">
@@ -741,6 +747,7 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
 
 
 
