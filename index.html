@@ -12,79 +12,6 @@
       background: #f3f6fa;
       color: #222;
     }
-/* Estilos para el libro con efecto hover */
-.libro-hover {
-  position: relative;
-  overflow: visible;
-}
-
-/* Ocultar la descripción por defecto */
-.hover-info {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  background: rgba(255, 255, 255, 0.98);
-  padding: 1rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
-  z-index: 10;
-  max-height: 280px;
-  overflow-y: auto;
-}
-
-/* Mostrar descripción al pasar el mouse */
-.libro-hover:hover .hover-info {
-  opacity: 1;
-  visibility: visible;
-}
-
-/* Ocultar la imagen cuando se muestra la descripción */
-.libro-hover:hover .portada-inclinada {
-  opacity: 0;
-}
-
-/* Estilos para la imagen */
-.portada-inclinada {
-  transition: opacity 0.3s ease;
-  max-width: 150px;
-  height: auto;
-}
-
-/* Estilos del texto dentro del hover */
-.hover-info h3 {
-  font-size: 1.1rem;
-  margin-bottom: 0.5rem;
-  color: #004080;
-}
-
-.hover-info p {
-  font-size: 0.85rem;
-  line-height: 1.4;
-  color: #333;
-  margin-bottom: 0.5rem;
-}
-
-.hover-info strong {
-  color: #0066cc;
-}
-
-/* Badge de precio o estado */
-.badge-price {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background-color: #0066cc;
-  color: white;
-  padding: 0.3rem 0.6rem;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  font-weight: bold;
-  z-index: 11;
-}
     header {
       background-color: #004080;
       color: white;
@@ -192,9 +119,10 @@
   </div>
 
  <div class="libro libro-hover">
-  <img src="DeliveringSuccess.png"
-     alt="Delivering Success"
-     class="portada-inclinada">
+  <img src="Delivering Success.png" 
+       alt="Delivering Success" 
+       class="portada-inclinada">
+
   <div class="hover-info">
     <h3>Delivering Success</h3>
     <p>
@@ -832,7 +760,6 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
-
 
 
 
