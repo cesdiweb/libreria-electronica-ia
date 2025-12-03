@@ -150,16 +150,37 @@
   </p>
 </div>
 
-  <div class="libro">
-    <img src="https://via.placeholder.com/150" alt="Libro 2">
-    <h3>Machine Learning Avanzado</h3>
-    <p><strong>Autor:</strong> John Smith</p>
-    <p class="price" data-base="20000">COP $ 20000</p>
-    <button class="carrito-btn" 
-      onclick="agregarAlCarrito('Machine Learning Avanzado', 20000, 'John Smith')">
+  <!-- FICHA: 52 Weeks Of Unstoppable AI Marketing -->
+<div class="libro">
+  <img
+    src="https://drive.google.com/uc?export=view&id=1DTB_nRdugf-_9tgqM3Xfnm_hf9zOGIOO"
+    alt="52 Weeks Of Unstoppable AI Marketing - Cover"
+    class="portada"
+    style="width:200px;height:auto;border-radius:8px;"
+  >
+  <div class="info-libro">
+    <h3>52 Weeks Of Unstoppable AI Marketing</h3>
+    <p>198 páginas · 52 artículos · PLR (rebrand & resell)</p>
+    <p><strong>Precio:</strong> $80.000 COP</p>
+    <button onclick="agregarAlCarrito('52-weeks-ai', 80000, 'https://drive.google.com/uc?export=view&id=DRIVE_PDF_FILE_ID')">
       Agregar al carrito
     </button>
+    <a href="https://drive.google.com/uc?export=view&id=DRIVE_PDF_FILE_ID" target="_blank" rel="noopener noreferrer">
+      Descargar / Ver (Drive)
+    </a>
   </div>
+</div>
+
+<script>
+function agregarAlCarrito(id, precio, pdfUrl){
+  const item = { id, titulo: '52 Weeks Of Unstoppable AI Marketing', precio, pdfUrl, qty: 1 };
+  let cart = JSON.parse(localStorage.getItem('carrito')) || [];
+  cart.push(item);
+  localStorage.setItem('carrito', JSON.stringify(cart));
+  alert('Agregado al carrito');
+}
+</script>
+
 
   <div class="libro">
     <img src="https://via.placeholder.com/150" alt="Libro 3">
@@ -754,7 +775,7 @@ window.addEventListener("load", () => {
         console.warn("No se pudo detectar el país automáticamente", error);
         actualizarMetodosDePago("CO"); // fallback a Colombia
       });
-  }
+  } 
   </script>
   
 
