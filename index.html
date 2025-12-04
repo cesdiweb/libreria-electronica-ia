@@ -118,24 +118,27 @@
     </label>
   </div>
 
- <div class="libro libro-hover">
-  <!-- Imagen desde Drive -->
+ <!-- ========================= -->
+<!--  LIBRO 1: Delivering Success -->
+<!-- ========================= -->
+
+<div class="libro libro-hover">
+
+  <!-- Imagen -->
   <img 
     src="https://drive.google.com/uc?export=view&id=1RJ_pqQWHFnoOD2UDTwTh3vqSOpL7n3EU"
     alt="Delivering Success"
     class="portada-inclinada"
   >
 
-  <!-- Hover Info -->
+  <!-- Hover -->
   <div class="hover-info">
     <h3>Delivering Success</h3>
     <p>
       “Delivering Success” es una guía esencial para cualquier persona interesada en aprovechar 
       la economía de los gig workers y generar ingresos adicionales utilizando aplicaciones como Postmates.
       El libro ofrece una visión clara, práctica y moderna del modelo laboral flexible que ha revolucionado 
-      la manera en que millones de personas trabajan en todo el mundo. Aprenderás estrategias para optimizar 
-      tus ganancias, realizar entregas eficientes y obtener mejores pedidos. Ideal para quienes desean 
-      ganar dinero extra o mejorar su rendimiento como repartidores.
+      la manera en que millones de personas trabajan en todo el mundo.
     </p>
     <p>
       <strong>License:</strong> Private Label Rights<br>
@@ -143,58 +146,88 @@
     </p>
   </div>
 
-  <!-- Información visible -->
+  <!-- Visible -->
   <h3>Delivering Success</h3>
   <p><strong>Autor:</strong> PLR Database Licensed Content</p>
+
   <p class="price" data-base="12000">COP $12000</p>
 
-  <!-- Botón del carrito -->
+  <!-- Carrito -->
   <button class="carrito-btn"
-    onclick="agregarAlCarrito('Delivering Success', 12000, 'https://drive.google.com/uc?export=view&id=1uIYyTxhuFD82f2hImaikXeD9JXBBpdUp')">
+    onclick="agregarAlCarrito(
+      'Delivering Success',
+      12000,
+      'https://drive.google.com/uc?export=view&id=1uIYyTxhuFD82f2hImaikXeD9JXBBpdUp'
+    )">
     Agregar al carrito
   </button>
 
-  <!-- Descargar PDF -->
+  <!-- PDF -->
   <p>
     <a 
-      href="https://drive.google.com/uc?export=view&id=1uIYyTxhuFD82f2hImaikXeD9JXBBpdUp" 
+      href="https://drive.google.com/uc?export=view&id=1uIYyTxhuFD82f2hImaikXeD9JXBBpdUp"
       target="_blank">
       📄 Descargar PDF
     </a>
   </p>
+
 </div>
 
 
-  <!-- FICHA: 52 Weeks Of Unstoppable AI Marketing -->
-<div class="libro">
+
+<!-- ================================================ -->
+<!--  LIBRO 2: 52 Weeks Of Unstoppable AI Marketing    -->
+<!-- ================================================ -->
+
+<div class="libro libro-hover">
+
+  <!-- Imagen -->
   <img
     src="https://drive.google.com/uc?export=view&id=1DTB_nRdugf-_9tgqM3Xfnm_hf9zOGIOO"
-    alt="52 Weeks Of Unstoppable AI Marketing - Cover"
-    class="portada"
-    style="width:200px;height:auto;border-radius:8px;"
+    alt="52 Weeks Of Unstoppable AI Marketing"
+    class="portada-inclinada"
   >
-  <div class="info-libro">
-    <h3>52 Weeks Of Unstoppable AI Marketing</h3>
-    <p>198 páginas · 52 artículos · PLR (rebrand & resell)</p>
-    <p><strong>Precio:</strong> $80.000 COP</p>
-    <button onclick="agregarAlCarrito('52-weeks-ai', 80000, 'https://drive.google.com/uc?export=view&id=DRIVE_PDF_FILE_ID')">
-      Agregar al carrito
-    </button>
-    <a href="https://drive.google.com/uc?export=view&id=DRIVE_PDF_FILE_ID" target="_blank" rel="noopener noreferrer">
-      Descargar / Ver (Drive)
-    </a>
-  </div>
-</div>
 
-<script>
-function agregarAlCarrito(id, precio, pdfUrl){
-  const item = { id, titulo: '52 Weeks Of Unstoppable AI Marketing', precio, pdfUrl, qty: 1 };
-  let cart = JSON.parse(localStorage.getItem('carrito')) || [];
-  cart.push(item);
-  localStorage.setItem('carrito', JSON.stringify(cart));
-  alert('Agregado al carrito');
-}
-</script>
+  <!-- Hover -->
+  <div class="hover-info">
+    <h3>52 Weeks Of Unstoppable AI Marketing</h3>
+    <p>
+      Un mega-reporte de 198 páginas con 52 artículos (uno por semana) 
+      que enseña habilidades clave para dominar el marketing con IA, 
+      generar tráfico, leads y convertir contenido en ingresos.
+    </p>
+    <p>
+      <strong>License:</strong> Private Label Rights<br>
+      <strong>Includes:</strong> Lead Magnet · Scripts · Email Swipes · Funnel
+    </p>
+  </div>
+
+  <!-- Visible -->
+  <h3>52 Weeks Of Unstoppable AI Marketing</h3>
+  <p><strong>Autor:</strong> PLR Database Licensed Content</p>
+
+  <p class="price" data-base="80000">COP $80.000</p>
+
+  <!-- Carrito -->
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito(
+      '52 Weeks Of Unstoppable AI Marketing',
+      80000,
+      'https://drive.google.com/uc?export=view&id=1I9wc2NS92z0uRU1gHfxpkw4l8-6XVWkk'
+    )">
+    Agregar al carrito
+  </button>
+
+  <!-- PDF -->
+  <p>
+    <a 
+      href="https://drive.google.com/uc?export=view&id=1I9wc2NS92z0uRU1gHfxpkw4l8-6XVWkk" 
+      target="_blank">
+      📄 Descargar PDF
+    </a>
+  </p>
+
+</div>
 
 
   <div class="libro">
@@ -796,6 +829,7 @@ window.addEventListener("load", () => {
 
 </body>
 </html>
+
 
 
 
