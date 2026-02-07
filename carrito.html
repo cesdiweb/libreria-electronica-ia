@@ -193,7 +193,9 @@ function mostrarBotonesPago(pais, moneda, total) {
     `;
   } 
   // PAÍSES RESTRINGIDOS: Mercado Pago
-  else if (paypalRestrictedCountries.includes(pais)) {
+  else if (false && paypalRestrictedCountries.includes(pais)) {
+  // Mercado Pago (DESACTIVADO TEMPORALMENTE)
+
     botonesPago.innerHTML = `
       <button class="pago-btn btn-mercadopago" onclick="pagarConMercadoPago()">
         Pagar con Mercado Pago
