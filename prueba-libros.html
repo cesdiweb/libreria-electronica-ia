@@ -1,40 +1,196 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Prueba de libros</title>
-</head>
+ <!-- LIBRO 1 -->
+  <div class="libro">
+    <img 
+      src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/Delivering%20Success.png"
+      alt="Delivering Success"
+      class="portada-inclinada"
+    />
+    <div class="tooltip">
+      “Delivering Success” es una guía esencial para aprovechar la economía de los gig workers y generar ingresos adicionales utilizando aplicaciones como Postmates.
+    </div>
+    <h3>Delivering Success</h3>
+    <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
+    <p class="price" data-base="12000">COP $12000</p>
+    <button class="carrito-btn"
+      onclick="agregarAlCarrito('Delivering Success', 12000, 'https://drive.google.com/uc?export=view&id=1uIYyTxhuFD82f2hImaikXeD9JXBBpdUp')">
+      Agregar al carrito
+    </button>
+    <p>
+     
+    </p>
+  </div>
 
-<body>
+  <!-- LIBRO 2 -->
+  <div class="libro">
+    <img 
+      src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/52%20Weeks%20of%20Unstoppable%20AI%20Marketing.png"
+      alt="52 Weeks Of Unstoppable AI Marketing"
+      class="portada-inclinada"
+    />
+    <div class="tooltip">
+      “52 Weeks Of Unstoppable AI Marketing” incluye 52 artículos listos para usar, estrategias de marketing impulsadas por IA y contenido PLR editable para rebranding y reventa.
+    </div>
+    <h3>52 Weeks Of Unstoppable AI Marketing</h3>
+    <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
+    <p class="price" data-base="80000">COP $80000</p>
+    <button class="carrito-btn"
+      onclick="agregarAlCarrito('52 Weeks Of Unstoppable AI Marketing', 80000, 'https://drive.google.com/drive/folders/1GwfHO8XYEBzQ7Y-j8IpDhIln_W293wcI?usp=sharing')">
+      Agregar al carrito
+    </button>
+    <p>
+     
+    </p>
+  </div>
 
-<h2>Acceso a libros de prueba</h2>
+ <!-- LIBRO 3 -->
+<div class="libro">
+  <img 
+    src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/Google%20Ads%20With%20AI.png"
+    alt="Google Ads With AI"
+    class="portada-inclinada"
+  />
 
-<input type="password" id="clave" placeholder="Ingrese la clave">
-<button onclick="verificar()">Entrar</button>
+  <div class="tooltip">
+    “Google Ads With AI” es una guía práctica para optimizar campañas de Google Ads mediante inteligencia artificial, reduciendo el CPC y aumentando el CTR de forma medible.
+  </div>
 
-<div id="libros" style="display:none; margin-top:20px;">
+  <h3>Google Ads With AI</h3>
+  <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
 
-<h3>Libros disponibles</h3>
+  <p class="price" data-base="48000">COP $48000</p>
 
-<a href="pdf/libro1.pdf" download>Descargar Libro 1</a><br><br>
-<a href="pdf/libro2.pdf" download>Descargar Libro 2</a>
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito(
+      'Google Ads With AI',
+      48000,
+      'https://drive.google.com/uc?export=download&id=1r017pTmiolVFCSfC2EMTDeYxEqa_y1ja'
+    )">
+    Agregar al carrito
+  </button>
 
+  <p>
+  
+  </p>
 </div>
 
-<script>
 
-function verificar(){
+<!-- LIBRO 4 -->
+<div class="libro">
+  <img 
+    src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/Low%20Cost%20and%20Fast%20Online%20List%20Building.png"
+    alt="Low Cost and Fast Online List Building"
+    class="portada-inclinada"
+  />
 
-var clave = document.getElementById("clave").value;
+  <div class="tooltip">
+    "Low Cost and Fast Online List Building" es una guía completa para construir una lista de email grande, rentable y de forma rápida sin gastar de más.
+  </div>
 
-if(clave === "1234libros"){
-document.getElementById("libros").style.display="block";
-}else{
-alert("Clave incorrecta");
-}
+  <h3>Low Cost and Fast Online List Building</h3>
+  <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
 
-}
+  <p class="price" data-base="12000">COP $12000</p>
 
-</script>
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito(
+      'Low Cost and Fast Online List Building',
+      12000,
+      'https://drive.google.com/uc?export=download&id=1y1EhBl-xcCwVlzHx1-IxBl1P-UUsr0cT'
+    )">
+    Agregar al carrito
+  </button>
 
-</body>
-</html>
+  <p>
+   
+  </p>
+</div>
+ <!-- LIBRO 5 -->
+<div class="libro">
+  <img 
+    src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/Affiliate%20AI.jpg"
+    alt="Affiliate AI"
+    class="portada-inclinada"
+  />
+
+  <div class="tooltip">
+    “Affiliate AI” es una guía sencilla que enseña cómo ganar dinero con marketing de afiliados usando inteligencia artificial, automatizando contenido, ventas y redes sociales.
+  </div>
+
+  <h3>Affiliate AI</h3>
+  <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
+
+  <p class="price" data-base="12000">COP $12000</p>
+
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito(
+      'Affiliate AI',
+      12000,
+      'https://drive.google.com/uc?export=download&id=1LOwsHdrUGk6gMJdhbY5uQK85n_cPefF-'
+    )">
+    Agregar al carrito
+  </button>
+
+  <p>
+   
+  </p>
+</div>
+<!-- LIBRO 6 -->
+<div class="libro">
+  <img 
+    src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/100%20Arts%20and%20Crafts%20Ideas%20To%20Profit%20From.png"
+    alt="100 Arts & Crafts Ideas"
+    class="portada-inclinada"
+  />
+
+  <div class="tooltip">
+    “100 Arts & Crafts Ideas” es una guía completa para convertir la creatividad en un negocio rentable, con 100 ideas de manualidades que sí se venden, estrategias de precios, marketing y ventas.
+  </div>
+
+  <h3>100 Arts & Crafts Ideas</h3>
+  <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
+
+  <p class="price" data-base="48000">COP $48000</p>
+
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito(
+      '100 Arts & Crafts Ideas',
+      48000,
+      'https://drive.google.com/uc?export=download&id=1pgnKwS9i0zl1gL8DO6-9fc6lr7veEF9h'
+    )">
+    Agregar al carrito
+  </button>
+
+  <p>
+   
+  </p>
+</div>
+<!-- LIBRO 7 -->
+<div class="libro">
+  <img 
+    src="https://raw.githubusercontent.com/cesdiweb/libreria-electronica-ia/main/Online%20Marketing%20For%20Stay%20At%20Home%20Moms.png"
+    alt="Online Marketing For Stay At Home Moms"
+    class="portada-inclinada"
+  />
+
+  <div class="tooltip">
+    “Online Marketing For Stay At Home Moms” es una guía práctica que enseña cómo crear un negocio online desde casa, elegir un nicho rentable, construir un sitio web y generar ingresos en internet mientras cuidas a tu familia.
+  </div>
+
+  <h3>Online Marketing For Stay At Home Moms</h3>
+  <p class="autor"><strong>Autor:</strong> PLR Database Licensed Content</p>
+
+  <p class="price" data-base="12000">COP $12000</p>
+
+  <button class="carrito-btn"
+    onclick="agregarAlCarrito(
+      'Online Marketing For Stay At Home Moms',
+      12000,
+      'https://drive.google.com/uc?export=download&id=1cf-er0waonBXDeFEhmWsmjc7_RKlmJ8i'
+    )">
+    Agregar al carrito
+  </button>
+
+  <p>
+   
+  </p>
+</div>
