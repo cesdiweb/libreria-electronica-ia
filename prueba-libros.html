@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Prueba de libros</title>
+</head>
+
+<body>
+
+<h2>Acceso a libros de prueba</h2>
+
+<input type="password" id="clave" placeholder="Ingrese la clave">
+<button onclick="verificar()">Entrar</button>
+
+<div id="libros" style="display:none; margin-top:20px;">
+
+<h3>Libros disponibles</h3>
+
+<a href="pdf/libro1.pdf" download>Descargar Libro 1</a><br><br>
+<a href="pdf/libro2.pdf" download>Descargar Libro 2</a>
+
+</div>
+
+<script>
+
+function verificar(){
+
+var clave = document.getElementById("clave").value;
+
+if(clave === "1234libros"){
+document.getElementById("libros").style.display="block";
+}else{
+alert("Clave incorrecta");
+}
+
+}
+
+</script>
+
+</body>
+</html>
