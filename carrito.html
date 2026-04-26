@@ -155,13 +155,13 @@ vaciarBtn.onclick = () => {
 // ===========================
 // Agregar libro al carrito
 // ===========================
-function agregarAlCarrito(titulo, precio, autor) {
+function agregarAlCarrito(titulo, precio, enlace) {
   const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
   const libroExistente = carrito.find(item => item.titulo === titulo);
   if (libroExistente) {
     libroExistente.cantidad += 1;
   } else {
-    carrito.push({ titulo, precio, autor, cantidad: 1 });
+    carrito.push({ titulo, precio, enlace, cantidad: 1 });
   }
   localStorage.setItem("carrito", JSON.stringify(carrito));
   mostrarCarrito();
