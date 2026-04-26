@@ -108,8 +108,7 @@ function mostrarCarrito() {
     div.innerHTML = `
       <div class="item-info">
         <strong>${item.titulo}</strong><br>
-        Autor: ${item.autor}<br>
-        Precio: ${moneda} ${precioConvertido.toFixed(2)} × ${item.cantidad}
+       Precio: ${moneda} ${precioConvertido.toFixed(2)} × ${item.cantidad}
       </div>
       <div class="acciones">
         <button onclick="cambiarCantidad(${index}, 1)">＋</button>
