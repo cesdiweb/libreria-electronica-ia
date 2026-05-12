@@ -1226,11 +1226,12 @@ function updatePrices(currencyLabel) {
   // ===========================
   // Lista de países restringidos para PayPal (códigos ISO)
   // ===========================
-  const paypalRestrictedCountries = [
-    "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
-    "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
-    "GA","GN","ML","MD","MC","TR","PY"
-  ];
+const paypalRestrictedCountries = [
+  "AF","BD","CM","CF","CI","CU","KP","GQ","GH","HT","IR","IQ",
+  "LB","LR","LY","MM","PK","SS","SD","SY","TL","UZ","VE","ZW",
+  "GA","GN","ML","MD","MC","TR","PY",
+  "CD","CG","GW","SO","YE"
+];
 
 // ===========================
 // Función que muestra/oculta métodos de pago según el país
@@ -1289,14 +1290,7 @@ window.addEventListener("load", () => {
   </style>
 <script>
   // ===========================
-  // 1️⃣ Lista de países restringidos por PayPal
-  // ===========================
-  const paypalRestrictedCountries = [
-    "AF", "BD", "CD", "CI", "CG", "CU", "GN", "GW",
-    "IR", "IQ", "KP", "LB", "LR", "LY", "MM", "PK",
-    "SO", "SD", "SY", "YE"
-  ];
-  
+   
   // ===========================
   // 2️⃣ Mostrar/Ocultar botones según el país
   // ===========================
