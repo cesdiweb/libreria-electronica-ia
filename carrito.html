@@ -180,6 +180,8 @@ function mostrarBotonesPago(pais, moneda, total) {
   if (pais === "CO") {
     const montoCentavos = Math.round(total * 100);
     const referencia = `ORD-${Date.now()}`;
+    const integritySecret = "AQUI_PEGA_TU_PROD_INTEGRITY_COMPLETA";
+    const cadena = `${referencia}${montoCentavos}COP${integritySecret}`;
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
         <input type="hidden" name="public-key" value="pub_prod_d3FZY9xt1PwMoKZx1ZhpFibwFkPoQHks" />
