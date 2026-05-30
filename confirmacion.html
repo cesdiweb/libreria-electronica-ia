@@ -92,6 +92,22 @@
 
     if (ref) document.getElementById("referencia").textContent = "Referencia: " + ref;
     if (amount) document.getElementById("monto").textContent = "Monto pagado: " + currency + " " + amount;
+ // ===========================
+// Descargar libro automáticamente
+// ===========================
+const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
+if (carrito.length > 0) {
+  const enlaceLibro = carrito[0].enlace;
+
+  // Esperar 2 segundos para que el usuario vea el mensaje
+  setTimeout(() => {
+    window.open(enlaceLibro, "_blank");
+
+    // Vaciar carrito después de la descarga
+    localStorage.removeItem("carrito");
+  }, 2000);
+}
   </script>
 </body>
 </html>
