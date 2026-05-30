@@ -166,7 +166,17 @@ function agregarAlCarrito(titulo, precio, enlace) {
   localStorage.setItem("carrito", JSON.stringify(carrito));
   mostrarCarrito();
 }
+async function generarFirma(cadena) {
+  const encoder = new TextEncoder();
+  const data = encoder.encode(cadena);
 
+  const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+  const hashArray = Array.from(new Uint8Array(hashBuffer));
+
+  return hashArray
+    .map(b => b.toString(16).padStart(2, "0"))
+    .join("");
+}
 // ===========================
 // Mostrar botones de pago según país
 // ===========================
@@ -177,22 +187,31 @@ function mostrarBotonesPago(pais, moneda, total) {
   console.log("¿Es restringido?", paypalRestrictedCountries.includes(pais));
   
   // COLOMBIA: Wompi (SIN TOCAR)
-  if (pais === "CO") {
-    const montoCentavos = Math.round(total * 100);
-    const referencia = `ORD-${Date.now()}`;
-    const integritySecret = "prod_integrity_mU7J31DgtWDqYMK1UZJF00RZF3k1y7Hk";
-    const cadena = `${referencia}${montoCentavos}COP${integritySecret}`;
+ if (pais === "CO") {
+  const montoCentavos = Math.round(total * 100);
+  const referencia = `ORD-${Date.now()}`;
+  const integritySecret = "prod_integrity_mU7J31DgtWDqYMK1UZJF00RZF3k1y7Hk";
+
+  const cadena = `${referencia}${montoCentavos}COP${integritySecret}`;
+
+  generarFirma(cadena).then(signature => {
+
     botonesPago.innerHTML = `
       <form action="https://checkout.wompi.co/p/" method="GET">
         <input type="hidden" name="public-key" value="pub_prod_d3FZY9xt1PwMoKZx1ZhpFibwFkPoQHks" />
         <input type="hidden" name="currency" value="COP" />
         <input type="hidden" name="amount-in-cents" value="${montoCentavos}" />
         <input type="hidden" name="reference" value="${referencia}" />
+       <input type="hidden" name="signature:integrity" value="${signature}" />
         <input type="hidden" name="redirect-url" value="https://cesdiweb.github.io/libreria-electronica-ia/confirmacion.html" />
-        <button type="submit" class="pago-btn btn-wompi">Pagar con Wompi</button>
+
+        <button type="submit" class="pago-btn btn-wompi">
+          Pagar con Wompi
+        </button>
       </form>
     `;
-  } 
+  });
+}
   // PAÍSES RESTRINGIDOS: Mercado Pago
   else if (false && paypalRestrictedCountries.includes(pais)) {
   // Mercado Pago (DESACTIVADO TEMPORALMENTE)
